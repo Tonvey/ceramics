@@ -1,0 +1,58 @@
+cmake_minimum_required(VERSION 3.2)
+project(three)
+enable_testing()
+set(CMAKE_CXX_STANDARD 11)
+if (${CMAKE_SYSTEM_NAME} STREQUAL "Emscripten")
+    set(EMSCRIPTEN TURE)
+    #set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE BOTH)
+endif()
+
+add_definitions(-g)
+
+find_package(PkgConfig REQUIRED)
+
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+
+include_directories(./3rdparty/stb)
+
+IF(EMSCRIPTEN)
+    include_directories(./3rdparty/glm)
+ELSE(EMSCRIPTEN)
+    IF(APPLE)
+        set(CMAKE_MACOSX_RPATH 1)
+        # FIND_LIBRARY(GLUT_LIBRARY GLUT )
+        FIND_PACKAGE(GLFW3 REQUIRED )
+        FIND_PACKAGE(GLEW REQUIRED )
+        FIND_PACKAGE(GLM REQUIRED )
+        FIND_LIBRARY(OpenGL_LIBRARY OpenGL )
+        if(GLFW3_FOUND)
+            message("GLFW3 Found")
+            SET(EXTRA_LIBS ${EXTRA_LIBS} glfw )
+        endif(GLFW3_FOUND)
+        if(GLEW_FOUND)
+            FIND_PATH(GLEW_INCLUDE_DIR GL/glew.h )
+            FIND_LIBRARY(GLEW_LIBRARY glew )
+            message("GLEW Found:" ${GLEW_INCLUDE_DIR})
+            include_directories(${GLEW_INCLUDE_DIR})
+            SET(EXTRA_LIBS ${EXTRA_LIBS} ${GLEW_LIBRARY} )
+        endif(GLEW_FOUND)
+        SET(EXTRA_LIBS ${EXTRA_LIBS} ${OpenGL_LIBRARY} )
+    ENDIF (APPLE)
+
+    IF(CMAKE_SYSTEM_NAME MATCHES "Linux")
+        FIND_PACKAGE(GLUT REQUIRED)
+        pkg_search_module(GLU REQUIRED glu)
+        pkg_search_module(OPENGL REQUIRED gl)
+        SET(EXTRA_LIBS ${EXTRA_LIBS} ${GLU_LIBRARIES} ${GLUT_LIBRARIES} ${OPENGL_LIBRARIES} m)
+    ENDIF(CMAKE_SYSTEM_NAME MATCHES "Linux")
+
+ENDIF(EMSCRIPTEN)
+
+file(GLOB THREE_LIB_SRCS src/**/*.cpp)
+add_library(${PROJECT_NAME} STATIC ${THREE_LIB_SRCS})
+target_link_libraries(${PROJECT_NAME} ${EXTRA_LIBS})
+
+add_definitions(-DGL_SILENCE_DEPRECATION -DSTB_IMAGE_IMPLEMENTATION)
+
+add_subdirectory(./examples/)
+add_subdirectory(./test/)
