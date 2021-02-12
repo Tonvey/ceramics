@@ -8,10 +8,10 @@
 #include "../TProperty.hpp"
 #include "TMathUtils.hpp"
 
-#include "../ThreeMacros.h"
+#include "../CeramicsMacro.h"
 #include "ERotationOrder.h"
 
-THREE_NAMESPACE_BEGIN
+CERAMICS_NAMESPACE_BEGIN
 
 template <class T>
 class TQuaternion;
@@ -164,7 +164,7 @@ public:
             default:
 
                 // TODO
-                // console.warn( 'THREE.Euler: .setFromRotationMatrix()
+                // console.warn( 'CERAMICS.Euler: .setFromRotationMatrix()
                 // encountered an unknown order: ' + order );
                 break;
         }
@@ -239,4 +239,4 @@ public:
 };
 template <class T>
 RotationOrder TEuler<T>::DefaultOrder = XYZ;
-THREE_NAMESPACE_END
+CERAMICS_NAMESPACE_END

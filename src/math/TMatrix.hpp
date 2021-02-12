@@ -3,9 +3,9 @@
 #include <cmath>
 #include <initializer_list>
 
-#include "../ThreeMacros.h"
+#include "../CeramicsMacro.h"
 #include "ERotationOrder.h"
-THREE_NAMESPACE_BEGIN
+CERAMICS_NAMESPACE_BEGIN
 
 template <class T, size_t dimension>
 class TVector;
@@ -18,13 +18,12 @@ class TQuaternion;
 
 template <class T, size_t rowNum, size_t colNum>
 class TMatrix {
-#define THREE_DECLARE_MATRIX_COMMON_PART(rowNum, colNum)                      \
+#define CERAMICS_DECLARE_MATRIX_COMMON_PART(rowNum, colNum)                      \
 public:                                                                       \
     typedef TMatrix<T, rowNum, colNum> type;                                  \
     typedef TMatrix<T, colNum, rowNum> transpose_type;                        \
     typedef const TMatrix<T, rowNum, colNum> const_type;                      \
     TMatrix(std::initializer_list<T> l) {                                     \
-        THREE_LOG_TEST("TMatrix(std::initializer_list<T> l)\n");              \
         size_t i = 0;                                                         \
         for (auto it = l.begin(); it != l.end() && i < rowNum * colNum;       \
              ++it, ++i) {                                                     \
@@ -35,7 +34,6 @@ public:                                                                       \
         }                                                                     \
     }                                                                         \
     TMatrix(const_type &other) {                                              \
-        THREE_LOG_TEST("TMatrix(const_type &other)\n");                       \
         for (size_t r = 0; r < rowNum; ++r) {                                 \
             for (size_t c = 0; c < colNum; ++c) {                             \
                 this->elements[r * colNum + c] =                              \
@@ -176,11 +174,10 @@ public:                                                                       \
     T elements[rowNum * colNum];                                              \
                                                                               \
 private:
-    THREE_DECLARE_MATRIX_COMMON_PART(rowNum, colNum);
+    CERAMICS_DECLARE_MATRIX_COMMON_PART(rowNum, colNum);
 
 public:
     TMatrix() {
-        THREE_LOG_TEST("TMatrix()\n");
         for (size_t r = 0; r < rowNum; ++r) {
             for (size_t c = 0; c < colNum; ++c) {
                 elements[r * colNum + c] = T(0);
@@ -192,11 +189,10 @@ public:
 // Squard Matrx
 template <class T, size_t dimension>
 class TMatrix<T, dimension, dimension> {
-    THREE_DECLARE_MATRIX_COMMON_PART(dimension, dimension);
-#define THREE_DECLARE_SQUARD_MATRIX_COMMON_PART(dimension)  \
+    CERAMICS_DECLARE_MATRIX_COMMON_PART(dimension, dimension);
+#define CERAMICS_DECLARE_SQUARD_MATRIX_COMMON_PART(dimension)  \
 public:                                                     \
     TMatrix() {                                             \
-        THREE_LOG_TEST("TMatrix()\n");                      \
         this->identity();                                   \
     }                                                       \
     type &identity() {                                      \
@@ -211,7 +207,7 @@ public:                                                     \
         return *this;                                       \
     }                                                       \
 
-    THREE_DECLARE_SQUARD_MATRIX_COMMON_PART(dimension)
+    CERAMICS_DECLARE_SQUARD_MATRIX_COMMON_PART(dimension)
 
 public:
     T determinant() const { return calculateDeterminant(elements, dimension); }
@@ -246,8 +242,8 @@ private:
 // Matrix3x3
 template <class T>
 class TMatrix<T, 3, 3> {
-    THREE_DECLARE_MATRIX_COMMON_PART(3, 3)
-    THREE_DECLARE_SQUARD_MATRIX_COMMON_PART(3)
+    CERAMICS_DECLARE_MATRIX_COMMON_PART(3, 3)
+    CERAMICS_DECLARE_SQUARD_MATRIX_COMMON_PART(3)
 public:
     type getInverse() const {
         auto me = this->elements;
@@ -344,8 +340,8 @@ public:
 };
 template <class T>
 class TMatrix<T, 4, 4> {
-    THREE_DECLARE_MATRIX_COMMON_PART(4, 4)
-    THREE_DECLARE_SQUARD_MATRIX_COMMON_PART(4)
+    CERAMICS_DECLARE_MATRIX_COMMON_PART(4, 4)
+    CERAMICS_DECLARE_SQUARD_MATRIX_COMMON_PART(4)
 public:
     type getInverse() const {
         auto me = this->elements;
@@ -885,6 +881,6 @@ public:
         return ret.compose(TVector<T, 3>::zero(), q, TVector<T, 3>::one());
     }
 };
-#undef THREE_DECLARE_MATRIX_COMMON_PART
-#undef THREE_DECLARE_SQUARD_MATRIX_COMMON_PART
-THREE_NAMESPACE_END
+#undef CERAMICS_DECLARE_MATRIX_COMMON_PART
+#undef CERAMICS_DECLARE_SQUARD_MATRIX_COMMON_PART
+CERAMICS_NAMESPACE_END

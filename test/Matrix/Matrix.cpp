@@ -1,10 +1,10 @@
 #include <iostream>
-#define THREE_TEST
+#define CERAMICS_TEST
 #include "../../src/math/TMatrix.hpp"
 #include "../TestBase.hpp"
 using namespace std;
-using THREE::TVector;
-using THREE::TMatrix;
+using CERAMICS::TVector;
+using CERAMICS::TMatrix;
 typedef TVector<float,2> Vector2;
 typedef TVector<float,3> Vector3;
 typedef TVector<float,4> Vector4;

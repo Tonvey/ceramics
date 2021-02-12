@@ -1,7 +1,7 @@
 #pragma once
 #include "TMathUtils.hpp"
-#include "../ThreeMacros.h"
-THREE_NAMESPACE_BEGIN
+#include "../CeramicsMacro.h"
+CERAMICS_NAMESPACE_BEGIN
 
 template <class T, size_t dimension>
 class TVector;
@@ -11,7 +11,7 @@ class TMatrix;
 
 template <class T, size_t dimension>
 class TLine {
-#define THREE_DECLARE_LINE_COMMON_PART(dimension)                             \
+#define CERAMICS_DECLARE_LINE_COMMON_PART(dimension)                             \
 public:                                                                       \
     typedef TLine<T, dimension> type;                                         \
     typedef const TLine<T, dimension> const_type;                             \
@@ -80,12 +80,12 @@ public:                                                                       \
     bool equals(const_type &line) {                                           \
         return line.start.equals(this->start) && line.end.equals(this->end);  \
     }
-    THREE_DECLARE_LINE_COMMON_PART(dimension)
+    CERAMICS_DECLARE_LINE_COMMON_PART(dimension)
 };
 
 template <class T>
 class TLine<T, 3> {
-    THREE_DECLARE_LINE_COMMON_PART(3)
+    CERAMICS_DECLARE_LINE_COMMON_PART(3)
 public:
     typedef TMatrix<T, 4, 4> matrix4_t;
     type &applyMatrix4(const matrix4_t &matrix) {
@@ -95,5 +95,5 @@ public:
     }
 };
 
-#undef THREE_DECLARE_LINE_COMMON_PART
-THREE_NAMESPACE_END
+#undef CERAMICS_DECLARE_LINE_COMMON_PART
+CERAMICS_NAMESPACE_END

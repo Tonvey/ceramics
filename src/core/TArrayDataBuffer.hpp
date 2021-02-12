@@ -1,7 +1,7 @@
 #pragma once
-#include "../ThreeMacros.h"
+#include "../CeramicsMacro.h"
 #include "IDataBuffer.h"
-THREE_NAMESPACE_BEGIN
+CERAMICS_NAMESPACE_BEGIN
 template<class T>
 class TArrayDataBuffer : public IDataBuffer{
 public:
@@ -111,4 +111,4 @@ private:
     size_t mCount = 0 ;
     T *mData=nullptr;
 };
-THREE_NAMESPACE_END
+CERAMICS_NAMESPACE_END

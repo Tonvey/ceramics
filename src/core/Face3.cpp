@@ -1,5 +1,5 @@
 #include "Face3.h"
-THREE_NAMESPACE_BEGIN
+CERAMICS_NAMESPACE_BEGIN
 Face3::Face3(size_t a, size_t b, size_t c, normal_array_t normals,
              color_array_t colors, int materialIndex) {
     this->a = a;
@@ -18,4 +18,4 @@ Face3 &Face3::copy(const Face3 &source) {
     this->vertexColors = source.vertexColors;
     return *this;
 }
-THREE_NAMESPACE_END
+CERAMICS_NAMESPACE_END

@@ -1,8 +1,8 @@
 #pragma once
 #include <array>
 #include <limits>
-#include "../ThreeMacros.h"
-THREE_NAMESPACE_BEGIN
+#include "../CeramicsMacro.h"
+CERAMICS_NAMESPACE_BEGIN
 
 template <class T, size_t dimension>
 class TVector;
@@ -21,7 +21,7 @@ class TTriangle;
 
 template <class T, size_t dimension>
 class TBox {
-#define THREE_DECLARE_BOX_COMMON_PART(dimension)                        \
+#define CERAMICS_DECLARE_BOX_COMMON_PART(dimension)                        \
     public:                                                             \
     typedef TVector<T, dimension> vec_t;                                \
     typedef TBox<T, dimension> type;                                    \
@@ -189,12 +189,12 @@ class TBox {
         return box.min.equals(this->min) && box.max.equals(this->max);  \
     }
 
-    THREE_DECLARE_BOX_COMMON_PART(dimension)
+    CERAMICS_DECLARE_BOX_COMMON_PART(dimension)
 };
 
 template <class T>
 class TBox<T, 3> {
-    THREE_DECLARE_BOX_COMMON_PART(3)
+    CERAMICS_DECLARE_BOX_COMMON_PART(3)
     public:
     // setFromBufferAttribute( attribute )
     // setFromObject( object )
@@ -348,5 +348,5 @@ class TBox<T, 3> {
     }
 
 };
-#undef THREE_DECLARE_BOX_COMMON_PART
-THREE_NAMESPACE_END
+#undef CERAMICS_DECLARE_BOX_COMMON_PART
+CERAMICS_NAMESPACE_END

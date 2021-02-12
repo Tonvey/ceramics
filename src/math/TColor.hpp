@@ -5,9 +5,9 @@
 #include <sstream>
 #include <iostream>
 #include <iomanip>
-#include "../ThreeMacros.h"
+#include "../CeramicsMacro.h"
 #include "TMathUtils.hpp"
-THREE_NAMESPACE_BEGIN
+CERAMICS_NAMESPACE_BEGIN
 template <class T>
 struct THSL {
     T h;
@@ -528,9 +528,9 @@ private:
     }
     static void handleAlpha(std::string string) {
         if (std::stof(string) < 1) {
-            // console.warn('THREE.Color: Alpha component of ' + style + ' will
+            // console.warn('CERAMICS.Color: Alpha component of ' + style + ' will
             // be ignored.');
         }
     }
 };
-THREE_NAMESPACE_END
+CERAMICS_NAMESPACE_END

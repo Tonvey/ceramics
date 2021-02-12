@@ -9,8 +9,8 @@
 #include "../TProperty.hpp"
 #include "TMathUtils.hpp"
 #include "ERotationOrder.h"
-#include "../ThreeMacros.h"
-THREE_NAMESPACE_BEGIN
+#include "../CeramicsMacro.h"
+CERAMICS_NAMESPACE_BEGIN
 
 template <class T>
 class TEuler;
@@ -205,7 +205,7 @@ public:
                 break;
 
             default:
-                // console.warn( 'THREE.Quaternion: .setFromEuler() encountered
+                // console.warn( 'CERAMICS.Quaternion: .setFromEuler() encountered
                 // an unknown order: ' + order );
                 break;
         }
@@ -540,4 +540,4 @@ private:
     T _w = T(1);
     callback_type _onChangeCallback;
 };
-THREE_NAMESPACE_END
+CERAMICS_NAMESPACE_END

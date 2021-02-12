@@ -1,7 +1,7 @@
 #pragma once
 #include <stdexcept>
-#include "../ThreeMacros.h"
-THREE_NAMESPACE_BEGIN
+#include "../CeramicsMacro.h"
+CERAMICS_NAMESPACE_BEGIN
 template <class T, size_t dimension>
 class TVector;
 template <class T>
@@ -239,4 +239,4 @@ public:
 	}
 
 };
-THREE_NAMESPACE_END
+CERAMICS_NAMESPACE_END

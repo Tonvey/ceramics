@@ -1,5 +1,5 @@
-#include "../ThreeTypes.h"
-THREE_NAMESPACE_BEGIN
+#include "../CeramicsType.h"
+CERAMICS_NAMESPACE_BEGIN
 const String REVISION = "120";
 struct EMOUSE{
     enum {
@@ -209,4 +209,4 @@ const GLenum DynamicCopyUsage = 35050;
 const GLenum StreamCopyUsage = 35042;
 const String GLSL1 = "100";
 const String GLSL3 = "300 es";
-THREE_NAMESPACE_END
+CERAMICS_NAMESPACE_END

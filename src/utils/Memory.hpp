@@ -1,8 +1,8 @@
 #pragma once
 #include <memory>
 
-#include "../ThreeTypes.h"
-#define THREE_FORCE_CLASS_SHARED_CREATE_DECLARE(className)       \
+#include "../CeramicsType.h"
+#define CERAMICS_FORCE_CLASS_SHARED_CREATE_DECLARE(className)       \
 public:                                                          \
     typedef SharedPtr<className> shared_ptr_t;                   \
     typedef WeakPtr<className> weak_ptr_t;                       \
@@ -16,7 +16,7 @@ protected:                                                       \
         ptr = DynamicPointerCast<className>(shared_from_this()); \
     }
 
-THREE_NAMESPACE_BEGIN
+CERAMICS_NAMESPACE_BEGIN
 // Wrapper for shared_ptr
 // TODO : Use single thread shared_ptr improve perfomance
 template <class... T>
@@ -43,4 +43,4 @@ public:
     virtual ~MultipleInheritableEnableSharedFromThis() {}
 };
 
-THREE_NAMESPACE_END
+CERAMICS_NAMESPACE_END

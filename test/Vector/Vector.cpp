@@ -1,11 +1,11 @@
 #include <iostream>
-#define THREE_TEST
+#define CERAMICS_TEST
 #include "../../src/math/TVector.hpp"
 #include "../TestBase.hpp"
 using namespace std;
-typedef THREE::TVector<float,2> Vector2;
-typedef THREE::TVector<float,3> Vector3;
-typedef THREE::TVector<float,4> Vector4;
+typedef CERAMICS::TVector<float,2> Vector2;
+typedef CERAMICS::TVector<float,3> Vector3;
+typedef CERAMICS::TVector<float,4> Vector4;
 template<class T>
 void printVec(T &vec){
     cout<<'{';

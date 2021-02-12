@@ -2,7 +2,7 @@
 #include <string>
 #include <type_traits>
 
-#include "ThreeMacros.h"
+#include "CeramicsMacro.h"
 #include "math/TBox.hpp"
 #include "math/TColor.hpp"
 #include "math/TEuler.hpp"
@@ -14,11 +14,11 @@
 #include "math/TSphere.hpp"
 #include "math/TTriangle.hpp"
 #include "math/TVector.hpp"
-THREE_NAMESPACE_BEGIN
+CERAMICS_NAMESPACE_BEGIN
 #define null nullptr;
-// THREE default number type is float
+// CERAMICS default number type is float
 typedef float number_t;
-// THREE default string type is std::string
+// CERAMICS default string type is std::string
 typedef std::string String;
 
 typedef TMathUtils<number_t> MathUtils;
@@ -43,4 +43,4 @@ typedef TTriangle<number_t> Triangle;
 typedef TPlane<number_t> Plane;
 
 typedef TColor<number_t> Color;
-THREE_NAMESPACE_END
+CERAMICS_NAMESPACE_END

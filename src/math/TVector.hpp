@@ -3,8 +3,8 @@
 #include <cassert>
 #include <cmath>
 #include <initializer_list>
-#include "../ThreeMacros.h"
-THREE_NAMESPACE_BEGIN
+#include "../CeramicsMacro.h"
+CERAMICS_NAMESPACE_BEGIN
 template <class T>
 class TEuler;
 
@@ -144,20 +144,20 @@ static void TFuncArrayDivideScalar(T arr1[], T scalar, size_t size) {
 template <class T, size_t dimension>
 class TVector {
     // TVector CommonPart
-#define THREE_DECLARE_VECTOR_COMMON_PART(dimension)                        \
+#define CERAMICS_DECLARE_VECTOR_COMMON_PART(dimension)                        \
 public:                                                                    \
     typedef TVector<T, dimension> type;                                    \
     typedef const TVector<T, dimension> const_type;                        \
     typedef std::array<T, dimension> array_t;                              \
     TVector(std::initializer_list<T> l) {                                  \
-        THREE_LOG_TEST("TVector(std::initializer_list<T> l)\n");           \
+        CERAMICS_LOG_TEST("TVector(std::initializer_list<T> l)\n");           \
         this->set(l);                                                      \
     }                                                                      \
     TVector(const_type &other) {                                           \
-        THREE_LOG_TEST("TVector(const_type &other)\n");                    \
+        CERAMICS_LOG_TEST("TVector(const_type &other)\n");                    \
         this->copy(other);                                                 \
     }                                                                      \
-    ~TVector() { THREE_LOG_TEST("~TVector()\n"); }                         \
+    ~TVector() { CERAMICS_LOG_TEST("~TVector()\n"); }                         \
     static type zero() { return type().setAll(T(0)); }                     \
     static type one() { return type().setAll(T(1)); }                      \
     const T &operator[](size_t idx) const {                                \
@@ -330,16 +330,16 @@ private:                                                                   \
 
 public:
     TVector() {
-        THREE_LOG_TEST("TVector()\n");
+        CERAMICS_LOG_TEST("TVector()\n");
         TFuncArraySet(this->mArr, T(0));
     }
-    THREE_DECLARE_VECTOR_COMMON_PART(dimension)
+    CERAMICS_DECLARE_VECTOR_COMMON_PART(dimension)
 };
 
 // TVector2
 template <class T>
 class TVector<T, 2> {
-    THREE_DECLARE_VECTOR_COMMON_PART(2)
+    CERAMICS_DECLARE_VECTOR_COMMON_PART(2)
 public:
     TVector(const T x = T(0), const T y = T(0)) { this->set(x, y); }
     type &set(const T x = T(0), const T y = T(0)) {
@@ -363,7 +363,7 @@ public:
 // TVector3
 template <class T>
 class TVector<T, 3> {
-    THREE_DECLARE_VECTOR_COMMON_PART(3)
+    CERAMICS_DECLARE_VECTOR_COMMON_PART(3)
 public:
     TVector(const T x = T(0), const T y = T(0), const T z = T(0)) {
         this->set(x, y, z);
@@ -502,7 +502,7 @@ public:
 // TVector4
 template <class T>
 class TVector<T, 4> {
-    THREE_DECLARE_VECTOR_COMMON_PART(4)
+    CERAMICS_DECLARE_VECTOR_COMMON_PART(4)
 public:
     TVector(const T x = T(0), const T y = T(0), const T z = T(0),
             const T w = T(0)) {
@@ -522,5 +522,5 @@ public:
     T &w = mArr[3];
 };
 
-#undef THREE_DECLARE_VECTOR_COMMON_PART
-THREE_NAMESPACE_END
+#undef CERAMICS_DECLARE_VECTOR_COMMON_PART
+CERAMICS_NAMESPACE_END

@@ -1,10 +1,10 @@
 #pragma once
 #include <vector>
 
-#include "../ThreeMacros.h"
-#include "../ThreeTypes.h"
+#include "../CeramicsMacro.h"
+#include "../CeramicsType.h"
 #include "../utils/Memory.hpp"
-THREE_NAMESPACE_BEGIN
+CERAMICS_NAMESPACE_BEGIN
 class Face3 {
 public:
     typedef std::vector<Vector3> normal_array_t;
@@ -26,4 +26,4 @@ public:
     Face3 &copy(const Face3 &source);
     Face3 &operator=(const Face3 &source) { return this->copy(source); }
 };
-THREE_NAMESPACE_END
+CERAMICS_NAMESPACE_END

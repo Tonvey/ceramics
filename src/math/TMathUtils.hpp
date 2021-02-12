@@ -6,9 +6,9 @@
 #include <sstream>
 #include <string>
 
-#include "../ThreeMacros.h"
+#include "../CeramicsMacro.h"
 #include "ERotationOrder.h"
-THREE_NAMESPACE_BEGIN
+CERAMICS_NAMESPACE_BEGIN
 std::ostringstream ss;
 
 /* long _seed = 1234567; */
@@ -192,7 +192,7 @@ public:
 
             default:
                 break;
-                // console.warn( 'THREE.TMathUtils:
+                // console.warn( 'CERAMICS.TMathUtils:
                 // .setQuaternionFromProperEuler() encountered an unknown order:
                 // ' + order );
         }
@@ -204,4 +204,4 @@ template <class T>
 T TMathUtils<T>::RAD2DEG = T(180 / PI);
 template <class T>
 T TMathUtils<T>::LN2 = std::log(T(2));
-THREE_NAMESPACE_END
+CERAMICS_NAMESPACE_END
