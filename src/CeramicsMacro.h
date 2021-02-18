@@ -21,6 +21,7 @@ const double PI = std::atan(1.0)*4;
 
 #ifndef EM_PORT_API
 #	if defined(__EMSCRIPTEN__)
+#       define CERAMICS_EMSCRIPTEN
 #		include <emscripten.h>
 #		if defined(__cplusplus)
 #			define EM_PORT_API(rettype) extern "C" rettype EMSCRIPTEN_KEEPALIVE

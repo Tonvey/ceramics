@@ -68,8 +68,6 @@ public:
         auto m21 = te[1], m22 = te[5], m23 = te[9];
         auto m31 = te[2], m32 = te[6], m33 = te[10];
 
-        order = order;
-
         switch (order) {
             case RotationOrder::XYZ:
 

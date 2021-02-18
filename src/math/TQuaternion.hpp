@@ -397,7 +397,7 @@ public:
     }
 
     type &multiply(const_type &q, const_type &p) {
-        return this->multiplyQuaternions(q, q);
+        return this->multiplyQuaternions(q, p);
     }
 
     type &premultiply(const_type &q) {

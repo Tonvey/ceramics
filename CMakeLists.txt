@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.2)
-project(three)
+project(ceramics)
 enable_testing()
 set(CMAKE_CXX_STANDARD 11)
 if (${CMAKE_SYSTEM_NAME} STREQUAL "Emscripten")
@@ -48,11 +48,12 @@ ELSE(EMSCRIPTEN)
 
 ENDIF(EMSCRIPTEN)
 
-file(GLOB THREE_LIB_SRCS src/**/*.cpp)
-add_library(${PROJECT_NAME} STATIC ${THREE_LIB_SRCS})
+file(GLOB CERAMICS_LIB_SRCS src/**/*.cpp)
+add_library(${PROJECT_NAME} STATIC ${CERAMICS_LIB_SRCS})
 target_link_libraries(${PROJECT_NAME} ${EXTRA_LIBS})
 
 add_definitions(-DGL_SILENCE_DEPRECATION -DSTB_IMAGE_IMPLEMENTATION)
 
+set(EXTRA_LIBS ${EXTRA_LIBS} ${PROJECT_NAME})
 add_subdirectory(./examples/)
 add_subdirectory(./test/)

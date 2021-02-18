@@ -9,7 +9,6 @@
 #include "../CeramicsMacro.h"
 #include "ERotationOrder.h"
 CERAMICS_NAMESPACE_BEGIN
-std::ostringstream ss;
 
 /* long _seed = 1234567; */
 #define PI (3.14159265358979323846264338327950288)
@@ -21,6 +20,7 @@ public:
     static T LN2;
 
     static std::string generateUUID() {
+        std::ostringstream ss;
         static bool _lut_init = false;
         static std::string _lut[256];
         if (!_lut_init) {
@@ -44,13 +44,14 @@ public:
         auto d2 = std::rand() * 0xffffffff | 0;
         auto d3 = std::rand() * 0xffffffff | 0;
         auto uuid = _lut[d0 & 0xff] + _lut[d0 >> 8 & 0xff] +
-                    _lut[d0 >> 16 & 0xff] + _lut[d0 >> 24 & 0xff] + '-' +
-                    _lut[d1 & 0xff] + _lut[d1 >> 8 & 0xff] + '-' +
-                    _lut[d1 >> 16 & 0x0f | 0x40] + _lut[d1 >> 24 & 0xff] + '-' +
-                    _lut[d2 & 0x3f | 0x80] + _lut[d2 >> 8 & 0xff] + '-' +
-                    _lut[d2 >> 16 & 0xff] + _lut[d2 >> 24 & 0xff] +
-                    _lut[d3 & 0xff] + _lut[d3 >> 8 & 0xff] +
-                    _lut[d3 >> 16 & 0xff] + _lut[d3 >> 24 & 0xff];
+            _lut[d0 >> 16 & 0xff] + _lut[d0 >> 24 & 0xff] + '-' +
+            _lut[d1 & 0xff] + _lut[d1 >> 8 & 0xff] + '-' +
+            // TODO ?添加了括号不确定算法对错
+            _lut[(d1 >> 16 & 0x0f) | 0x40] + _lut[d1 >> 24 & 0xff] + '-' +
+            _lut[(d2 & 0x3f) | 0x80] + _lut[d2 >> 8 & 0xff] + '-' +
+            _lut[d2 >> 16 & 0xff] + _lut[d2 >> 24 & 0xff] +
+            _lut[d3 & 0xff] + _lut[d3 >> 8 & 0xff] +
+            _lut[d3 >> 16 & 0xff] + _lut[d3 >> 24 & 0xff];
 
         // .toUpperCase() here flattens concatenated strings to save heap memory
         // space. */ return uuid.toUpperCase();

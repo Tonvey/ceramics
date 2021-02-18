@@ -18,161 +18,161 @@ class TQuaternion;
 
 template <class T, size_t rowNum, size_t colNum>
 class TMatrix {
-#define CERAMICS_DECLARE_MATRIX_COMMON_PART(rowNum, colNum)                      \
-public:                                                                       \
-    typedef TMatrix<T, rowNum, colNum> type;                                  \
-    typedef TMatrix<T, colNum, rowNum> transpose_type;                        \
-    typedef const TMatrix<T, rowNum, colNum> const_type;                      \
-    TMatrix(std::initializer_list<T> l) {                                     \
-        size_t i = 0;                                                         \
-        for (auto it = l.begin(); it != l.end() && i < rowNum * colNum;       \
-             ++it, ++i) {                                                     \
-            elements[i] = *it;                                                \
-        }                                                                     \
-        for (; i < rowNum * colNum; ++i) {                                    \
-            elements[i] = T(0);                                               \
-        }                                                                     \
-    }                                                                         \
-    TMatrix(const_type &other) {                                              \
-        for (size_t r = 0; r < rowNum; ++r) {                                 \
-            for (size_t c = 0; c < colNum; ++c) {                             \
-                this->elements[r * colNum + c] =                              \
-                    other.elements[r * colNum + c];                           \
-            }                                                                 \
-        }                                                                     \
-    }                                                                         \
-    ~TMatrix() {}                                                             \
-    transpose_type transpose() const {                                        \
-        transpose_type ret;                                                   \
-        for (size_t r = 0; r < rowNum; ++r) {                                 \
-            for (size_t c = 0; c < colNum; ++c) {                             \
-                ret[c * rowNum + r] = this->elements[r * colNum + c];         \
-            }                                                                 \
-        }                                                                     \
-        return ret;                                                           \
-    }                                                                         \
-    T &operator[](size_t idx) {                                               \
-        assert(idx < rowNum);                                                 \
-        return elements[idx];                                                 \
-    }                                                                         \
-    type operator+(T s) const {                                               \
-        type ret;                                                             \
-        for (size_t r = 0; r < rowNum; ++r) {                                 \
-            for (size_t c = 0; c < colNum; ++c) {                             \
-                ret->elements[r * colNum + c] =                               \
-                    this->elements[r * colNum + c] + s;                       \
-            }                                                                 \
-        }                                                                     \
-        return ret;                                                           \
-    }                                                                         \
-    type operator-(T s) const {                                               \
-        type ret;                                                             \
-        for (size_t r = 0; r < rowNum; ++r) {                                 \
-            for (size_t c = 0; c < colNum; ++c) {                             \
-                ret->elements[r * colNum + c] =                               \
-                    this->elements[r * colNum + c] - s;                       \
-            }                                                                 \
-        }                                                                     \
-        return ret;                                                           \
-    }                                                                         \
-    type operator*(T s) const {                                               \
-        type ret;                                                             \
-        for (size_t r = 0; r < rowNum; ++r) {                                 \
-            for (size_t c = 0; c < colNum; ++c) {                             \
-                ret->elements[r * colNum + c] =                               \
-                    this->elements[r * colNum + c] * s;                       \
-            }                                                                 \
-        }                                                                     \
-        return ret;                                                           \
-    }                                                                         \
-    type operator/(T s) const {                                               \
-        type ret;                                                             \
-        for (size_t r = 0; r < rowNum; ++r) {                                 \
-            for (size_t c = 0; c < colNum; ++c) {                             \
-                ret->elements[r * colNum + c] =                               \
-                    this->elements[r * colNum + c] / s;                       \
-            }                                                                 \
-        }                                                                     \
-        return ret;                                                           \
-    }                                                                         \
-    type operator+(const_type &other) const {                                 \
-        type ret = *this;                                                     \
-        for (size_t r = 0; r < rowNum; ++r) {                                 \
-            for (size_t c = 0; c < colNum; ++c) {                             \
-                ret->elements[r * colNum + c] =                               \
-                    this->elements[r * colNum + c] +                          \
-                    other.elements[r * colNum + c];                           \
-            }                                                                 \
-        }                                                                     \
-        return ret;                                                           \
-    }                                                                         \
-    type operator-(const_type &other) const {                                 \
-        type ret = *this;                                                     \
-        for (size_t r = 0; r < rowNum; ++r) {                                 \
-            for (size_t c = 0; c < colNum; ++c) {                             \
-                ret->elements[r * colNum + c] =                               \
-                    this->elements[r * colNum + c] -                          \
-                    other.elements[r * colNum + c];                           \
-            }                                                                 \
-        }                                                                     \
-        return ret;                                                           \
-    }                                                                         \
-    template <size_t colNum2>                                                 \
+#define CERAMICS_DECLARE_MATRIX_COMMON_PART(rowNum, colNum)             \
+    public:                                                             \
+    typedef TMatrix<T, rowNum, colNum> type;                            \
+    typedef TMatrix<T, colNum, rowNum> transpose_type;                  \
+    typedef const TMatrix<T, rowNum, colNum> const_type;                \
+    TMatrix(std::initializer_list<T> l) {                               \
+        size_t i = 0;                                                   \
+        for (auto it = l.begin(); it != l.end() && i < rowNum * colNum; \
+             ++it, ++i) {                                               \
+            elements[i] = *it;                                          \
+        }                                                               \
+        for (; i < rowNum * colNum; ++i) {                              \
+            elements[i] = T(0);                                         \
+        }                                                               \
+    }                                                                   \
+    TMatrix(const_type &other) {                                        \
+        for (size_t r = 0; r < rowNum; ++r) {                           \
+            for (size_t c = 0; c < colNum; ++c) {                       \
+                this->elements[r * colNum + c] =                        \
+                    other.elements[r * colNum + c];                     \
+            }                                                           \
+        }                                                               \
+    }                                                                   \
+    ~TMatrix() {}                                                       \
+    transpose_type transpose() const {                                  \
+        transpose_type ret;                                             \
+        for (size_t r = 0; r < rowNum; ++r) {                           \
+            for (size_t c = 0; c < colNum; ++c) {                       \
+                ret[c * rowNum + r] = this->elements[r * colNum + c];   \
+            }                                                           \
+        }                                                               \
+        return ret;                                                     \
+    }                                                                   \
+    T &operator[](size_t idx) {                                         \
+        assert(idx < rowNum);                                           \
+        return elements[idx];                                           \
+    }                                                                   \
+    type operator+(T s) const {                                         \
+        type ret;                                                       \
+        for (size_t r = 0; r < rowNum; ++r) {                           \
+            for (size_t c = 0; c < colNum; ++c) {                       \
+                ret->elements[r * colNum + c] =                         \
+                    this->elements[r * colNum + c] + s;                 \
+            }                                                           \
+        }                                                               \
+        return ret;                                                     \
+    }                                                                   \
+    type operator-(T s) const {                                         \
+        type ret;                                                       \
+        for (size_t r = 0; r < rowNum; ++r) {                           \
+            for (size_t c = 0; c < colNum; ++c) {                       \
+                ret->elements[r * colNum + c] =                         \
+                    this->elements[r * colNum + c] - s;                 \
+            }                                                           \
+        }                                                               \
+        return ret;                                                     \
+    }                                                                   \
+    type operator*(T s) const {                                         \
+        type ret;                                                       \
+        for (size_t r = 0; r < rowNum; ++r) {                           \
+            for (size_t c = 0; c < colNum; ++c) {                       \
+                ret->elements[r * colNum + c] =                         \
+                    this->elements[r * colNum + c] * s;                 \
+            }                                                           \
+        }                                                               \
+        return ret;                                                     \
+    }                                                                   \
+    type operator/(T s) const {                                         \
+        type ret;                                                       \
+        for (size_t r = 0; r < rowNum; ++r) {                           \
+            for (size_t c = 0; c < colNum; ++c) {                       \
+                ret->elements[r * colNum + c] =                         \
+                    this->elements[r * colNum + c] / s;                 \
+            }                                                           \
+        }                                                               \
+        return ret;                                                     \
+    }                                                                   \
+    type operator+(const_type &other) const {                           \
+        type ret = *this;                                               \
+        for (size_t r = 0; r < rowNum; ++r) {                           \
+            for (size_t c = 0; c < colNum; ++c) {                       \
+                ret->elements[r * colNum + c] =                         \
+                    this->elements[r * colNum + c] +                    \
+                    other.elements[r * colNum + c];                     \
+            }                                                           \
+        }                                                               \
+        return ret;                                                     \
+    }                                                                   \
+    type operator-(const_type &other) const {                           \
+        type ret = *this;                                               \
+        for (size_t r = 0; r < rowNum; ++r) {                           \
+            for (size_t c = 0; c < colNum; ++c) {                       \
+                ret->elements[r * colNum + c] =                         \
+                    this->elements[r * colNum + c] -                    \
+                    other.elements[r * colNum + c];                     \
+            }                                                           \
+        }                                                               \
+        return ret;                                                     \
+    }                                                                   \
+    template <size_t colNum2>                                           \
     TMatrix<T, rowNum, colNum2> operator*(TMatrix<T, colNum, colNum2> &other) \
-        const {                                                               \
-        TMatrix<T, rowNum, colNum2> ret;                                      \
-        auto te = ret.elements;                                               \
-        for (size_t r = 0; r < rowNum; ++r) {                                 \
-            for (size_t c = 0; c < colNum2; ++c) {                            \
-                T sum = T(0);                                                 \
-                for (size_t i = 0; i < colNum; ++i) {                         \
-                    sum += this->elements[r * colNum + i] *                   \
-                           other[i * colNum2 + c];                            \
-                }                                                             \
-                te[r * colNum + c] = sum;                                     \
-            }                                                                 \
-        }                                                                     \
-        return ret;                                                           \
-    }                                                                         \
-    type operator/(const_type &other) const {                                 \
-        type ret = *this;                                                     \
-        for (size_t r = 0; r < rowNum; ++r) {                                 \
-            for (size_t c = 0; c < colNum; ++c) {                             \
-                ret[r * colNum + c] = this->elements[r * colNum + c] /        \
-                                      other.elements[r * colNum + c];         \
-            }                                                                 \
-        }                                                                     \
-        return ret;                                                           \
-    }                                                                         \
-    type &operator=(const_type &other) {                                      \
-        for (size_t r = 0; r < rowNum; ++r) {                                 \
-            for (size_t c = 0; c < colNum; ++c) {                             \
-                this->elements[r * colNum + c] =                              \
-                    other.elements[r * colNum + c];                           \
-            }                                                                 \
-        }                                                                     \
-        return *this;                                                         \
-    }                                                                         \
-    bool operator==(const_type &other) const {                                \
-        for (size_t r = 0; r < rowNum; ++r) {                                 \
-            for (size_t c = 0; c < colNum; ++c) {                             \
-                if (this->elements[r * colNum + c] !=                         \
-                    other.elements[r * colNum + c])                           \
-                    return false;                                             \
-            }                                                                 \
-        }                                                                     \
-        return true;                                                          \
-    }                                                                         \
-    type &copy(const_type &other) {                                           \
-        *this = other;                                                        \
-        return *this;                                                         \
-    }                                                                         \
-    size_t row() const { return rowNum; }                                     \
-    size_t col() const { return colNum; }                                     \
-    bool operator!=(const_type &other) const { return !(*this == other); }    \
-    static type makeZero() { return {0}; }                                    \
-    T elements[rowNum * colNum];                                              \
-                                                                              \
+        const {                                                         \
+        TMatrix<T, rowNum, colNum2> ret;                                \
+        auto te = ret.elements;                                         \
+        for (size_t r = 0; r < rowNum; ++r) {                           \
+            for (size_t c = 0; c < colNum2; ++c) {                      \
+                T sum = T(0);                                           \
+                for (size_t i = 0; i < colNum; ++i) {                   \
+                    sum += this->elements[r * colNum + i] *             \
+                        other[i * colNum2 + c];                         \
+                }                                                       \
+                te[r * colNum + c] = sum;                               \
+            }                                                           \
+        }                                                               \
+        return ret;                                                     \
+    }                                                                   \
+    type operator/(const_type &other) const {                           \
+        type ret = *this;                                               \
+        for (size_t r = 0; r < rowNum; ++r) {                           \
+            for (size_t c = 0; c < colNum; ++c) {                       \
+                ret[r * colNum + c] = this->elements[r * colNum + c] /  \
+                    other.elements[r * colNum + c];                     \
+            }                                                           \
+        }                                                               \
+        return ret;                                                     \
+    }                                                                   \
+    type &operator=(const_type &other) {                                \
+        for (size_t r = 0; r < rowNum; ++r) {                           \
+            for (size_t c = 0; c < colNum; ++c) {                       \
+                this->elements[r * colNum + c] =                        \
+                    other.elements[r * colNum + c];                     \
+            }                                                           \
+        }                                                               \
+        return *this;                                                   \
+    }                                                                   \
+    bool operator==(const_type &other) const {                          \
+        for (size_t r = 0; r < rowNum; ++r) {                           \
+            for (size_t c = 0; c < colNum; ++c) {                       \
+                if (this->elements[r * colNum + c] !=                   \
+                    other.elements[r * colNum + c])                     \
+                    return false;                                       \
+            }                                                           \
+        }                                                               \
+        return true;                                                    \
+    }                                                                   \
+    type &copy(const_type &other) {                                     \
+        *this = other;                                                  \
+        return *this;                                                   \
+    }                                                                   \
+    size_t row() const { return rowNum; }                               \
+    size_t col() const { return colNum; }                               \
+    bool operator!=(const_type &other) const { return !(*this == other); } \
+    static type makeZero() { return {0}; }                              \
+    T elements[rowNum * colNum];                                        \
+                                                                        \
 private:
     CERAMICS_DECLARE_MATRIX_COMMON_PART(rowNum, colNum);
 
@@ -190,26 +190,26 @@ public:
 template <class T, size_t dimension>
 class TMatrix<T, dimension, dimension> {
     CERAMICS_DECLARE_MATRIX_COMMON_PART(dimension, dimension);
-#define CERAMICS_DECLARE_SQUARD_MATRIX_COMMON_PART(dimension)  \
-public:                                                     \
-    TMatrix() {                                             \
-        this->identity();                                   \
-    }                                                       \
-    type &identity() {                                      \
-        for (size_t r = 0; r < dimension; ++r) {            \
-            for (size_t c = 0; c < dimension; ++c) {        \
-                if (r == c)                                 \
-                    elements[r * dimension + c] = T(1);     \
-                else                                        \
-                    elements[r * dimension + c] = T(0);     \
-            }                                               \
-        }                                                   \
-        return *this;                                       \
-    }                                                       \
+#define CERAMICS_DECLARE_SQUARD_MATRIX_COMMON_PART(dimension)   \
+    public:                                                     \
+    TMatrix() {                                                 \
+        this->identity();                                       \
+    }                                                           \
+    type &identity() {                                          \
+        for (size_t r = 0; r < dimension; ++r) {                \
+            for (size_t c = 0; c < dimension; ++c) {            \
+                if (r == c)                                     \
+                    elements[r * dimension + c] = T(1);         \
+                else                                            \
+                    elements[r * dimension + c] = T(0);         \
+            }                                                   \
+        }                                                       \
+        return *this;                                           \
+    }                                                           \
 
     CERAMICS_DECLARE_SQUARD_MATRIX_COMMON_PART(dimension)
 
-public:
+    public:
     T determinant() const { return calculateDeterminant(elements, dimension); }
 
 private:
@@ -244,16 +244,16 @@ template <class T>
 class TMatrix<T, 3, 3> {
     CERAMICS_DECLARE_MATRIX_COMMON_PART(3, 3)
     CERAMICS_DECLARE_SQUARD_MATRIX_COMMON_PART(3)
-public:
+    public:
     type getInverse() const {
         auto me = this->elements;
         auto n11 = me[0], n21 = me[1], n31 = me[2], n12 = me[3], n22 = me[4],
-             n32 = me[5], n13 = me[6], n23 = me[7], n33 = me[8],
+            n32 = me[5], n13 = me[6], n23 = me[7], n33 = me[8],
 
-             t11 = n33 * n22 - n32 * n23, t12 = n32 * n13 - n33 * n12,
-             t13 = n23 * n12 - n22 * n13,
+            t11 = n33 * n22 - n32 * n23, t12 = n32 * n13 - n33 * n12,
+            t13 = n23 * n12 - n22 * n13,
 
-             det = n11 * t11 + n21 * t12 + n31 * t13;
+            det = n11 * t11 + n21 * t12 + n31 * t13;
 
         if (det == 0) return type::makeZero();
         type ret;
@@ -279,10 +279,10 @@ public:
         const auto te = this->elements;
 
         const auto a = te[0], b = te[1], c = te[2], d = te[3], e = te[4],
-                   f = te[5], g = te[6], h = te[7], i = te[8];
+            f = te[5], g = te[6], h = te[7], i = te[8];
 
         return a * e * i - a * f * h - b * d * i + b * f * g + c * d * h -
-               c * e * g;
+            c * e * g;
     }
     type &scale(T sx, T sy) {
         auto te = this->elements;
@@ -342,22 +342,22 @@ template <class T>
 class TMatrix<T, 4, 4> {
     CERAMICS_DECLARE_MATRIX_COMMON_PART(4, 4)
     CERAMICS_DECLARE_SQUARD_MATRIX_COMMON_PART(4)
-public:
+    public:
     type getInverse() const {
         auto me = this->elements;
         auto n11 = me[0], n21 = me[1], n31 = me[2], n41 = me[3], n12 = me[4],
-             n22 = me[5], n32 = me[6], n42 = me[7], n13 = me[8], n23 = me[9],
-             n33 = me[10], n43 = me[11], n14 = me[12], n24 = me[13],
-             n34 = me[14], n44 = me[15],
+            n22 = me[5], n32 = me[6], n42 = me[7], n13 = me[8], n23 = me[9],
+            n33 = me[10], n43 = me[11], n14 = me[12], n24 = me[13],
+            n34 = me[14], n44 = me[15],
 
-             t11 = n23 * n34 * n42 - n24 * n33 * n42 + n24 * n32 * n43 -
-                   n22 * n34 * n43 - n23 * n32 * n44 + n22 * n33 * n44,
-             t12 = n14 * n33 * n42 - n13 * n34 * n42 - n14 * n32 * n43 +
-                   n12 * n34 * n43 + n13 * n32 * n44 - n12 * n33 * n44,
-             t13 = n13 * n24 * n42 - n14 * n23 * n42 + n14 * n22 * n43 -
-                   n12 * n24 * n43 - n13 * n22 * n44 + n12 * n23 * n44,
-             t14 = n14 * n23 * n32 - n13 * n24 * n32 - n14 * n22 * n33 +
-                   n12 * n24 * n33 + n13 * n22 * n34 - n12 * n23 * n34;
+            t11 = n23 * n34 * n42 - n24 * n33 * n42 + n24 * n32 * n43 -
+            n22 * n34 * n43 - n23 * n32 * n44 + n22 * n33 * n44,
+            t12 = n14 * n33 * n42 - n13 * n34 * n42 - n14 * n32 * n43 +
+            n12 * n34 * n43 + n13 * n32 * n44 - n12 * n33 * n44,
+            t13 = n13 * n24 * n42 - n14 * n23 * n42 + n14 * n22 * n43 -
+            n12 * n24 * n43 - n13 * n22 * n44 + n12 * n23 * n44,
+            t14 = n14 * n23 * n32 - n13 * n24 * n32 - n14 * n22 * n33 +
+            n12 * n24 * n33 + n13 * n22 * n34 - n12 * n23 * n34;
 
         auto det = n11 * t11 + n21 * t12 + n31 * t13 + n41 * t14;
 
@@ -371,46 +371,46 @@ public:
         te[0] = t11 * detInv;
         te[1] = (n24 * n33 * n41 - n23 * n34 * n41 - n24 * n31 * n43 +
                  n21 * n34 * n43 + n23 * n31 * n44 - n21 * n33 * n44) *
-                detInv;
+            detInv;
         te[2] = (n22 * n34 * n41 - n24 * n32 * n41 + n24 * n31 * n42 -
                  n21 * n34 * n42 - n22 * n31 * n44 + n21 * n32 * n44) *
-                detInv;
+            detInv;
         te[3] = (n23 * n32 * n41 - n22 * n33 * n41 - n23 * n31 * n42 +
                  n21 * n33 * n42 + n22 * n31 * n43 - n21 * n32 * n43) *
-                detInv;
+            detInv;
 
         te[4] = t12 * detInv;
         te[5] = (n13 * n34 * n41 - n14 * n33 * n41 + n14 * n31 * n43 -
                  n11 * n34 * n43 - n13 * n31 * n44 + n11 * n33 * n44) *
-                detInv;
+            detInv;
         te[6] = (n14 * n32 * n41 - n12 * n34 * n41 - n14 * n31 * n42 +
                  n11 * n34 * n42 + n12 * n31 * n44 - n11 * n32 * n44) *
-                detInv;
+            detInv;
         te[7] = (n12 * n33 * n41 - n13 * n32 * n41 + n13 * n31 * n42 -
                  n11 * n33 * n42 - n12 * n31 * n43 + n11 * n32 * n43) *
-                detInv;
+            detInv;
 
         te[8] = t13 * detInv;
         te[9] = (n14 * n23 * n41 - n13 * n24 * n41 - n14 * n21 * n43 +
                  n11 * n24 * n43 + n13 * n21 * n44 - n11 * n23 * n44) *
-                detInv;
+            detInv;
         te[10] = (n12 * n24 * n41 - n14 * n22 * n41 + n14 * n21 * n42 -
                   n11 * n24 * n42 - n12 * n21 * n44 + n11 * n22 * n44) *
-                 detInv;
+            detInv;
         te[11] = (n13 * n22 * n41 - n12 * n23 * n41 - n13 * n21 * n42 +
                   n11 * n23 * n42 + n12 * n21 * n43 - n11 * n22 * n43) *
-                 detInv;
+            detInv;
 
         te[12] = t14 * detInv;
         te[13] = (n13 * n24 * n31 - n14 * n23 * n31 + n14 * n21 * n33 -
                   n11 * n24 * n33 - n13 * n21 * n34 + n11 * n23 * n34) *
-                 detInv;
+            detInv;
         te[14] = (n14 * n22 * n31 - n12 * n24 * n31 - n14 * n21 * n32 +
                   n11 * n24 * n32 + n12 * n21 * n34 - n11 * n22 * n34) *
-                 detInv;
+            detInv;
         te[15] = (n12 * n23 * n31 - n13 * n22 * n31 + n13 * n21 * n32 -
                   n11 * n23 * n32 - n12 * n21 * n33 + n11 * n22 * n33) *
-                 detInv;
+            detInv;
 
         return ret;
     }
@@ -438,7 +438,7 @@ public:
         auto te = this->elements;
 
         auto x = quaternion._x, y = quaternion._y, z = quaternion._z,
-             w = quaternion._w;
+            w = quaternion._w;
         auto x2 = x + x, y2 = y + y, z2 = z + z;
         auto xx = x * x2, xy = x * y2, xz = x * z2;
         auto yy = y * y2, yz = y * z2, zz = z * z2;
@@ -488,7 +488,7 @@ public:
                 n44 * (-n13 * n22 * n31 - n11 * n23 * n32 + n11 * n22 * n33 +
                        n13 * n21 * n32 - n12 * n21 * n33 + n12 * n23 * n31)
 
-        );
+                );
     }
 
     type &decompose(TVector<T, 3> &position, TQuaternion<T> &quaternion,
@@ -691,8 +691,8 @@ public:
         auto x = axis.x, y = axis.y, z = axis.z;
         auto tx = t * x, ty = t * y;
         ret={tx * x + c, tx * y - s * z, tx * z + s * y, 0, tx * y + s * z,
-                ty * y + c, ty * z - s * x, 0, tx * z - s * y, ty * z + s * x,
-                t * z * z + c, 0, 0, 0, 0, 1};
+            ty * y + c, ty * z - s * x, 0, tx * z - s * y, ty * z + s * x,
+            t * z * z + c, 0, 0, 0, 0, 1};
         return ret;
     }
     static type makeScale(T x, T y, T z) {

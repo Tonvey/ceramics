@@ -144,189 +144,205 @@ static void TFuncArrayDivideScalar(T arr1[], T scalar, size_t size) {
 template <class T, size_t dimension>
 class TVector {
     // TVector CommonPart
-#define CERAMICS_DECLARE_VECTOR_COMMON_PART(dimension)                        \
-public:                                                                    \
-    typedef TVector<T, dimension> type;                                    \
-    typedef const TVector<T, dimension> const_type;                        \
-    typedef std::array<T, dimension> array_t;                              \
-    TVector(std::initializer_list<T> l) {                                  \
-        CERAMICS_LOG_TEST("TVector(std::initializer_list<T> l)\n");           \
-        this->set(l);                                                      \
-    }                                                                      \
-    TVector(const_type &other) {                                           \
-        CERAMICS_LOG_TEST("TVector(const_type &other)\n");                    \
-        this->copy(other);                                                 \
-    }                                                                      \
-    ~TVector() { CERAMICS_LOG_TEST("~TVector()\n"); }                         \
-    static type zero() { return type().setAll(T(0)); }                     \
-    static type one() { return type().setAll(T(1)); }                      \
-    const T &operator[](size_t idx) const {                                \
-        assert(idx < dimension);                                           \
-        return mArr[idx];                                                  \
-    }                                                                      \
-    T &operator[](size_t idx) {                                            \
-        assert(idx < dimension);                                           \
-        return mArr[idx];                                                  \
-    }                                                                      \
-    type operator+(T s) const {                                            \
-        type ret;                                                          \
-        TFuncArrayAddScalar(ret.mArr, s);                                  \
-        return ret;                                                        \
-    }                                                                      \
-    type operator-(T s) const {                                            \
-        type ret;                                                          \
-        TFuncArraySubScalar(ret.mArr, s);                                  \
-        return ret;                                                        \
-    }                                                                      \
-    type operator*(T s) const {                                            \
-        type ret;                                                          \
-        TFuncArrayMultiplyScalar(ret.mArr, s);                             \
-        return ret;                                                        \
-    }                                                                      \
-    type operator/(T s) const {                                            \
-        type ret;                                                          \
-        TFuncArrayDivideScalar(ret.mArr, s);                               \
-        return ret;                                                        \
-    }                                                                      \
-    type operator+(const_type &other) const {                              \
-        type ret = *this;                                                  \
-        TFuncArrayAdd(ret.mArr, other.mArr);                               \
-        return ret;                                                        \
-    }                                                                      \
-    type operator-(const_type &other) const {                              \
-        type ret = *this;                                                  \
-        TFuncArraySub(ret.mArr, other.mArr);                               \
-        return ret;                                                        \
-    }                                                                      \
-    type operator*(const_type &other) const {                              \
-        type ret = *this;                                                  \
-        TFuncArrayMultiply(ret.mArr, other.mArr, dimension);               \
-        return ret;                                                        \
-    }                                                                      \
-    type operator/(const_type &other) const {                              \
-        type ret = *this;                                                  \
-        TFuncArrayDivide(ret.mArr, other.mArr, dimension);                 \
-        return ret;                                                        \
-    }                                                                      \
-    type &operator=(const_type &other) { return this->copy(other); }       \
-    type &operator=(std::initializer_list<T> l) {                          \
-        this->set(l);                                                      \
-        return *this;                                                      \
-    }                                                                      \
-    bool operator==(const_type &other) const {                             \
-        for (size_t i = 0; i < dimension; ++i) {                           \
-            if (this->mArr[i] != other.mArr[i]) return false;              \
-        }                                                                  \
-        return true;                                                       \
-    }                                                                      \
+#define CERAMICS_DECLARE_VECTOR_COMMON_PART(dimension)                  \
+    public:                                                             \
+    typedef TVector<T, dimension> type;                                 \
+    typedef const TVector<T, dimension> const_type;                     \
+    typedef std::array<T, dimension> array_t;                           \
+    TVector(std::initializer_list<T> l) {                               \
+        CERAMICS_LOG_TEST("TVector(std::initializer_list<T> l)\n");     \
+        this->set(l);                                                   \
+    }                                                                   \
+    TVector(const_type &other) {                                        \
+        CERAMICS_LOG_TEST("TVector(const_type &other)\n");              \
+        this->copy(other);                                              \
+    }                                                                   \
+    ~TVector() { CERAMICS_LOG_TEST("~TVector()\n"); }                   \
+    static type zero() { return type().setAll(T(0)); }                  \
+    static type one() { return type().setAll(T(1)); }                   \
+    const T &operator[](size_t idx) const {                             \
+        assert(idx < dimension);                                        \
+        return mArr[idx];                                               \
+    }                                                                   \
+    T &operator[](size_t idx) {                                         \
+        assert(idx < dimension);                                        \
+        return mArr[idx];                                               \
+    }                                                                   \
+    type operator+(T s) const {                                         \
+        type ret;                                                       \
+        TFuncArrayAddScalar(ret.mArr, s);                               \
+        return ret;                                                     \
+    }                                                                   \
+    type operator-(T s) const {                                         \
+        type ret;                                                       \
+        TFuncArraySubScalar(ret.mArr, s);                               \
+        return ret;                                                     \
+    }                                                                   \
+    type operator*(T s) const {                                         \
+        type ret;                                                       \
+        TFuncArrayMultiplyScalar(ret.mArr, s);                          \
+        return ret;                                                     \
+    }                                                                   \
+    type operator/(T s) const {                                         \
+        type ret;                                                       \
+        TFuncArrayDivideScalar(ret.mArr, s);                            \
+        return ret;                                                     \
+    }                                                                   \
+    type operator+(const_type &other) const {                           \
+        type ret = *this;                                               \
+        TFuncArrayAdd(ret.mArr, other.mArr);                            \
+        return ret;                                                     \
+    }                                                                   \
+    type &operator+=(const_type &other) {                               \
+        TFuncArrayAdd(this->mArr, other.mArr);                          \
+        return *this;                                                   \
+    }                                                                   \
+    type operator-(const_type &other) const {                           \
+        type ret = *this;                                               \
+        TFuncArraySub(ret.mArr, other.mArr);                            \
+        return ret;                                                     \
+    }                                                                   \
+    type &operator-=(const_type &other) {                               \
+        TFuncArraySub(this->mArr, other.mArr);                          \
+        return *this;                                                   \
+    }                                                                   \
+    type operator*(const_type &other) const {                           \
+        type ret = *this;                                               \
+        TFuncArrayMultiply(ret.mArr, other.mArr);                       \
+        return ret;                                                     \
+    }                                                                   \
+    type &operator*=(const_type &other) {                               \
+        TFuncArrayMultiply(this->mArr, other.mArr);                     \
+        return *this;                                                   \
+    }                                                                   \
+    type operator/(const_type &other) const {                           \
+        type ret = *this;                                               \
+        TFuncArrayDivide(ret.mArr, other.mArr);                         \
+        return ret;                                                     \
+    }                                                                   \
+    type &operator/=(const_type &other) {                               \
+        TFuncArrayDivide(this->mArr, other.mArr);                       \
+        return *this;                                                   \
+    }                                                                   \
+    type &operator=(const_type &other) { return this->copy(other); }    \
+    type &operator=(std::initializer_list<T> l) {                       \
+        this->set(l);                                                   \
+        return *this;                                                   \
+    }                                                                   \
+    bool operator==(const_type &other) const {                          \
+        for (size_t i = 0; i < dimension; ++i) {                        \
+            if (this->mArr[i] != other.mArr[i]) return false;           \
+        }                                                               \
+        return true;                                                    \
+    }                                                                   \
     bool operator!=(const_type &other) const { return !(*this == other); } \
-    size_t size() const { return dimension; }                              \
-    type &copy(const_type &other) {                                        \
-        for (size_t i = 0; i < dimension; ++i) {                           \
-            this->mArr[i] = other.mArr[i];                                 \
-        }                                                                  \
-        return *this;                                                      \
-    }                                                                      \
-    type &setAll(T value) {                                                \
-        for (auto &i : this->mArr) {                                       \
-            i = value;                                                     \
-        }                                                                  \
-        return *this;                                                      \
-    }                                                                      \
-    type &add(const_type &other) {                                         \
-        TFuncArrayAdd(this->mArr, other.mArr);                             \
-        return *this;                                                      \
-    }                                                                      \
-    type &addScalar(T s) {                                                 \
-        TFuncArrayAddScalar(this->mArr, s);                                \
-        return *this;                                                      \
-    }                                                                      \
-    type &sub(const_type &other) {                                         \
-        TFuncArraySub(this->mArr, other.mArr);                             \
-        return *this;                                                      \
-    }                                                                      \
-    type &subScalar(T s) {                                                 \
-        TFuncArraySubScalar(this->mArr, s);                                \
-        return *this;                                                      \
-    }                                                                      \
-    type &subVectors(const_type &v1, const_type &v2) {                     \
-        *this = v1 - v2;                                                   \
-        return *this;                                                      \
-    }                                                                      \
-    type &multiply(const_type &other) {                                    \
-        TFuncArrayMultiply(this->mArr, other.mArr);                        \
-        return *this;                                                      \
-    }                                                                      \
-    type &multiplyScalar(T s) {                                            \
-        TFuncArrayMultiplyScalar(this->mArr, s);                           \
-        return *this;                                                      \
-    }                                                                      \
-    type &divide(const_type &other) {                                      \
-        TFuncArrayDivide(this->mArr, other.mArr);                          \
-        return *this;                                                      \
-    }                                                                      \
-    type &divideScalar(T s) {                                              \
-        TFuncArrayDivideScalar(this->mArr, s);                             \
-        return *this;                                                      \
-    }                                                                      \
-    type &min(const_type &other) {                                         \
-        for (size_t i = 0; i < dimension; ++i) {                           \
-            this->mArr[i] = std::min(this->mArr[i], other.mArr[i]);        \
-        }                                                                  \
-        return *this;                                                      \
-    }                                                                      \
-    type &max(const_type &other) {                                         \
-        for (size_t i = 0; i < dimension; ++i) {                           \
-            this->mArr[i] = std::max(this->mArr[i], other.mArr[i]);        \
-        }                                                                  \
-        return *this;                                                      \
-    }                                                                      \
-    T dot(const_type &other) const {                                       \
-        T sum = T(0);                                                      \
-        for (size_t i = 0; i < dimension; ++i) {                           \
-            sum += (*this)[i] * other.mArr[i];                             \
-        }                                                                  \
-        return sum;                                                        \
-    }                                                                      \
-    type &negate() {                                                       \
-        TFuncArrayNegate(this->mArr);                                      \
-        return *this;                                                      \
-    }                                                                      \
-    T length() const {                                                     \
-        T sum = T(0);                                                      \
-        for (size_t i = 0; i < dimension; ++i) {                           \
-            sum += mArr[i] * mArr[i];                                      \
-        }                                                                  \
-        return std::sqrt(sum);                                             \
-    }                                                                      \
-    T lengthSq() {                                                         \
-        T sum = T(0);                                                      \
-        for (auto &i : mArr) {                                             \
-            sum += i;                                                      \
-        }                                                                  \
-        return sum;                                                        \
-    }                                                                      \
-    T manhattanLength() {                                                  \
-        T sum = T(0);                                                      \
-        for (size_t i = 0; i < dimension; ++i) {                           \
-            sum += std::abs(mArr[i]);                                      \
-        }                                                                  \
-        return sum;                                                        \
-    }                                                                      \
-    type &clamp(const_type &min, const_type &max) {                        \
-        for (size_t i = 0; i < dimension; ++i) {                           \
-            mArr[i] = std::max(min[i], std::min(max[i], mArr[i]));         \
-        }                                                                  \
-        return *this;                                                      \
-    }                                                                      \
-    type &normalize() {                                                    \
-        T length = this->length();                                         \
-        return this->divideScalar(length == T(0) ? T(1) : length);         \
-    }                                                                      \
-    type clone() const { return *this; }                                   \
-                                                                           \
-private:                                                                   \
-    array_t mArr;
+    size_t size() const { return dimension; }                           \
+    type &copy(const_type &other) {                                     \
+        for (size_t i = 0; i < dimension; ++i) {                        \
+            this->mArr[i] = other.mArr[i];                              \
+        }                                                               \
+        return *this;                                                   \
+    }                                                                   \
+    type &setAll(T value) {                                             \
+        for (auto &i : this->mArr) {                                    \
+            i = value;                                                  \
+        }                                                               \
+        return *this;                                                   \
+    }                                                                   \
+    type &add(const_type &other) {                                      \
+        TFuncArrayAdd(this->mArr, other.mArr);                          \
+        return *this;                                                   \
+    }                                                                   \
+    type &addScalar(T s) {                                              \
+        TFuncArrayAddScalar(this->mArr, s);                             \
+        return *this;                                                   \
+    }                                                                   \
+    type &sub(const_type &other) {                                      \
+        TFuncArraySub(this->mArr, other.mArr);                          \
+        return *this;                                                   \
+    }                                                                   \
+    type &subScalar(T s) {                                              \
+        TFuncArraySubScalar(this->mArr, s);                             \
+        return *this;                                                   \
+    }                                                                   \
+    type &subVectors(const_type &v1, const_type &v2) {                  \
+        *this = v1 - v2;                                                \
+        return *this;                                                   \
+    }                                                                   \
+    type &multiply(const_type &other) {                                 \
+        TFuncArrayMultiply(this->mArr, other.mArr);                     \
+        return *this;                                                   \
+    }                                                                   \
+    type &multiplyScalar(T s) {                                         \
+        TFuncArrayMultiplyScalar(this->mArr, s);                        \
+        return *this;                                                   \
+    }                                                                   \
+    type &divide(const_type &other) {                                   \
+        TFuncArrayDivide(this->mArr, other.mArr);                       \
+        return *this;                                                   \
+    }                                                                   \
+    type &divideScalar(T s) {                                           \
+        TFuncArrayDivideScalar(this->mArr, s);                          \
+        return *this;                                                   \
+    }                                                                   \
+    type &min(const_type &other) {                                      \
+        for (size_t i = 0; i < dimension; ++i) {                        \
+            this->mArr[i] = std::min(this->mArr[i], other.mArr[i]);     \
+        }                                                               \
+        return *this;                                                   \
+    }                                                                   \
+    type &max(const_type &other) {                                      \
+        for (size_t i = 0; i < dimension; ++i) {                        \
+            this->mArr[i] = std::max(this->mArr[i], other.mArr[i]);     \
+        }                                                               \
+        return *this;                                                   \
+    }                                                                   \
+    T dot(const_type &other) const {                                    \
+        T sum = T(0);                                                   \
+        for (size_t i = 0; i < dimension; ++i) {                        \
+            sum += (*this)[i] * other.mArr[i];                          \
+        }                                                               \
+        return sum;                                                     \
+    }                                                                   \
+    type &negate() {                                                    \
+        TFuncArrayNegate(this->mArr);                                   \
+        return *this;                                                   \
+    }                                                                   \
+    T length() const {                                                  \
+        T sum = T(0);                                                   \
+        for (size_t i = 0; i < dimension; ++i) {                        \
+            sum += mArr[i] * mArr[i];                                   \
+        }                                                               \
+        return std::sqrt(sum);                                          \
+    }                                                                   \
+    T lengthSq() {                                                      \
+        T sum = T(0);                                                   \
+        for (auto &i : mArr) {                                          \
+            sum += i;                                                   \
+        }                                                               \
+        return sum;                                                     \
+    }                                                                   \
+    T manhattanLength() {                                               \
+        T sum = T(0);                                                   \
+        for (size_t i = 0; i < dimension; ++i) {                        \
+            sum += std::abs(mArr[i]);                                   \
+        }                                                               \
+        return sum;                                                     \
+    }                                                                   \
+    type &clamp(const_type &min, const_type &max) {                     \
+        for (size_t i = 0; i < dimension; ++i) {                        \
+            mArr[i] = std::max(min[i], std::min(max[i], mArr[i]));      \
+        }                                                               \
+        return *this;                                                   \
+    }                                                                   \
+    type &normalize() {                                                 \
+        T length = this->length();                                      \
+        return this->divideScalar(length == T(0) ? T(1) : length);      \
+    }                                                                   \
+    type clone() const { return *this; }                                \
+                                                                        \
+private:                                                                \
+ array_t mArr;
 
 public:
     TVector() {
@@ -340,7 +356,7 @@ public:
 template <class T>
 class TVector<T, 2> {
     CERAMICS_DECLARE_VECTOR_COMMON_PART(2)
-public:
+    public:
     TVector(const T x = T(0), const T y = T(0)) { this->set(x, y); }
     type &set(const T x = T(0), const T y = T(0)) {
         this->x = x;
@@ -354,17 +370,17 @@ public:
         const auto x = this->x;
         const auto y = this->y;
         const auto &e = m.elements;
-		this->x = e[ 0 ] * x + e[ 3 ] * y + e[ 6 ];
-		this->y = e[ 1 ] * x + e[ 4 ] * y + e[ 7 ];
-		return *this;
-	}
+        this->x = e[ 0 ] * x + e[ 3 ] * y + e[ 6 ];
+        this->y = e[ 1 ] * x + e[ 4 ] * y + e[ 7 ];
+        return *this;
+    }
 };
 
 // TVector3
 template <class T>
 class TVector<T, 3> {
     CERAMICS_DECLARE_VECTOR_COMMON_PART(3)
-public:
+    public:
     TVector(const T x = T(0), const T y = T(0), const T z = T(0)) {
         this->set(x, y, z);
     }
@@ -397,18 +413,18 @@ public:
         return *this;
     }
 
-	type &applyMatrix3(const TMatrix<T,3,3> &m ) {
+    type &applyMatrix3(const TMatrix<T,3,3> &m ) {
 
-		auto x = this->x, y = this->y, z = this->z;
-		auto e = m.elements;
+        auto x = this->x, y = this->y, z = this->z;
+        auto e = m.elements;
 
-		this->x = e[ 0 ] * x + e[ 3 ] * y + e[ 6 ] * z;
-		this->y = e[ 1 ] * x + e[ 4 ] * y + e[ 7 ] * z;
-		this->z = e[ 2 ] * x + e[ 5 ] * y + e[ 8 ] * z;
+        this->x = e[ 0 ] * x + e[ 3 ] * y + e[ 6 ] * z;
+        this->y = e[ 1 ] * x + e[ 4 ] * y + e[ 7 ] * z;
+        this->z = e[ 2 ] * x + e[ 5 ] * y + e[ 8 ] * z;
 
-		return *this;
+        return *this;
 
-	}
+    }
     type &applyMatrix4(const TMatrix<T, 4, 4> &m) {
         auto x = this->x, y = this->y, z = this->z;
         auto e = m.elements;
@@ -444,18 +460,18 @@ public:
 
         return *this;
     }
-	type &transformDirection(const TMatrix<T,4,4> &m ) {
+    type &transformDirection(const TMatrix<T,4,4> &m ) {
 
-		const auto x = this->x, y = this->y, z = this->z;
-		const auto &e = m->elements;
+        const auto x = this->x, y = this->y, z = this->z;
+        const auto &e = m->elements;
 
-		this->x = e[ 0 ] * x + e[ 4 ] * y + e[ 8 ] * z;
-		this->y = e[ 1 ] * x + e[ 5 ] * y + e[ 9 ] * z;
-		this->z = e[ 2 ] * x + e[ 6 ] * y + e[ 10 ] * z;
+        this->x = e[ 0 ] * x + e[ 4 ] * y + e[ 8 ] * z;
+        this->y = e[ 1 ] * x + e[ 5 ] * y + e[ 9 ] * z;
+        this->z = e[ 2 ] * x + e[ 6 ] * y + e[ 10 ] * z;
 
-		return this->normalize();
+        return this->normalize();
 
-	}
+    }
     type &setFromMatrixPosition(const TMatrix<T, 4, 4> &m) {
         const auto e = m.elements;
 
@@ -495,7 +511,7 @@ public:
     }
     T distanceToSquared(const_type &v){
         auto dx = this->x - v.x, dy = this->y - v.y, dz = this->z - v.z;
-		return dx * dx + dy * dy + dz * dz;    
+        return dx * dx + dy * dy + dz * dz;    
     }
 };
 
@@ -503,7 +519,7 @@ public:
 template <class T>
 class TVector<T, 4> {
     CERAMICS_DECLARE_VECTOR_COMMON_PART(4)
-public:
+    public:
     TVector(const T x = T(0), const T y = T(0), const T z = T(0),
             const T w = T(0)) {
         this->set(x, y, z, w);

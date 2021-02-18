@@ -71,7 +71,7 @@ function main
         pushd "$emscriptenBuildDir"
         emcmake cmake .. || return -1
         emmake make  || return -1
-        emcc libthree.a -o three.js || return -1
+        emcc libceramics.a -o ceramics.js || return -1
         popd
     fi
     if [ "$localPlatform" = "1" ]
