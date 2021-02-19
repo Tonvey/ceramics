@@ -4,8 +4,7 @@
 #include "../CeramicsType.h"
 CERAMICS_NAMESPACE_USING
 
-class ApplicationCoreProfile : public ApplicationBase
-{
+class ApplicationCoreProfile : public ApplicationBase {
 public:
     ApplicationCoreProfile(int argc,char **argv);
     virtual void versionSelect()override;

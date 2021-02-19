@@ -4,8 +4,7 @@
 #include <string>
 #include "ShaderPrograme.h"
 
-class ApplicationBase
-{
+class ApplicationBase {
 public:
     ApplicationBase(int argc,char **argv);
     virtual void init();

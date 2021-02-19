@@ -1,20 +1,20 @@
 #pragma once
 #include <memory>
 
-#include "../CeramicsType.h"
-#define CERAMICS_FORCE_CLASS_SHARED_CREATE_DECLARE(className)       \
-public:                                                          \
-    typedef SharedPtr<className> shared_ptr_t;                   \
-    typedef WeakPtr<className> weak_ptr_t;                       \
-    template <class... T>                                        \
-    static shared_ptr_t create(T... args) {                      \
-        return shared_ptr_t(new className(args...));             \
-    }                                                            \
-                                                                 \
-protected:                                                       \
-    void getSharedPtr(shared_ptr_t& ptr) {                       \
-        ptr = DynamicPointerCast<className>(shared_from_this()); \
-    }
+#include "../CeramicsMacro.h"
+#define CERAMICS_FORCE_CLASS_SHARED_CREATE_DECLARE(className)   \
+    public:                                                     \
+    typedef SharedPtr<className> shared_ptr_t;                  \
+    typedef WeakPtr<className> weak_ptr_t;                      \
+    template <class... T>                                       \
+    static shared_ptr_t create(T... args) {                     \
+        return shared_ptr_t(new className(args...));            \
+    }                                                           \
+                                                                \
+protected:                                                      \
+ void getSharedPtr(shared_ptr_t& ptr) {                         \
+     ptr = DynamicPointerCast<className>(shared_from_this());   \
+ }
 
 CERAMICS_NAMESPACE_BEGIN
 // Wrapper for shared_ptr

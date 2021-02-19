@@ -7,8 +7,7 @@
 #include "FileUtil.h"
 using namespace std;
 
-void ApplicationBase::printOpenGLInfo()
-{
+void ApplicationBase::printOpenGLInfo() {
     CERAMICS_LOG_DEBUG("OpenGL version: %s\n", glGetString(GL_VERSION));
     CERAMICS_LOG_DEBUG("GLSL version: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
     CERAMICS_LOG_DEBUG("Vendor: %s\n", glGetString(GL_VENDOR));
@@ -26,13 +25,11 @@ ApplicationBase::ApplicationBase(int argc,char **argv)
     }
 }
 
-void ApplicationBase::versionSelect()
-{
+void ApplicationBase::versionSelect() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR,this->mGLMajorVersion);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR,this->mGLMinorVersion);
 }
-void ApplicationBase::init()
-{
+void ApplicationBase::init() {
     glfwSetErrorCallback([](int error , const char *description){
                              //this->openGLErrorCallBack(error,description);
         cerr<<"Error : "<< error << " " << description << endl;
@@ -83,17 +80,14 @@ void ApplicationBase::init()
                 glfwSetWindowShouldClose(window, GLFW_TRUE);
         });
 }
-void ApplicationBase::render(double elapse)
-{
+void ApplicationBase::render(double elapse) {
 }
 
-void ApplicationBase::openGLErrorCallBack(int error, const char *description)
-{
+void ApplicationBase::openGLErrorCallBack(int error, const char *description) {
     cerr<<"Error : "<< error << " " << description << endl;
 }
 
-int ApplicationBase::run()
-{
+int ApplicationBase::run() {
     this->init();
     printOpenGLInfo();
     clock_t last_time = clock();
@@ -109,8 +103,7 @@ int ApplicationBase::run()
     }
     return 0;
 }
-bool ApplicationBase::createVertexShader(const std::string fileName,GLuint &id)
-{
+bool ApplicationBase::createVertexShader(const std::string fileName,GLuint &id) {
     //创建顶点shader
     GLuint vertexShaderId = glCreateShader(GL_VERTEX_SHADER);
     string vertexShaderCode;
@@ -146,8 +139,7 @@ bool ApplicationBase::createVertexShader(const std::string fileName,GLuint &id)
     id = vertexShaderId;
     return true;
 }
-bool ApplicationBase::createFragmentShader(const std::string fileName,GLuint &id)
-{
+bool ApplicationBase::createFragmentShader(const std::string fileName,GLuint &id) {
     //创建片段shader
     GLuint fragShaderId = glCreateShader(GL_FRAGMENT_SHADER);
     string fragShaderCode;
@@ -182,8 +174,7 @@ bool ApplicationBase::createFragmentShader(const std::string fileName,GLuint &id
     id = fragShaderId;
     return true;
 }
-ShaderProgram ApplicationBase::loadShader(string vertShaderFile,string fragShaderFile)
-{
+ShaderProgram ApplicationBase::loadShader(string vertShaderFile,string fragShaderFile) {
     ShaderProgram prog;
     prog.reset(vertShaderFile,fragShaderFile);
     return prog;

@@ -14,6 +14,7 @@
 #include "math/TSphere.hpp"
 #include "math/TTriangle.hpp"
 #include "math/TVector.hpp"
+#include "utils/Memory.hpp"
 CERAMICS_NAMESPACE_BEGIN
 #define null nullptr;
 // CERAMICS default number type is float
