@@ -17,12 +17,11 @@ template <class T>
 class TQuaternion;
 
 template <class T, size_t rowNum, size_t colNum>
-class TMatrix {
+struct TMatrix {
 #define CERAMICS_DECLARE_MATRIX_COMMON_PART(rowNum, colNum)             \
-    public:                                                             \
+    typedef T value_type;                                               \
     typedef TMatrix<T, rowNum, colNum> type;                            \
     typedef TMatrix<T, colNum, rowNum> transpose_type;                  \
-    typedef const TMatrix<T, rowNum, colNum> const_type;                \
     TMatrix(std::initializer_list<T> l) {                               \
         size_t i = 0;                                                   \
         for (auto it = l.begin(); it != l.end() && i < rowNum * colNum; \
@@ -33,7 +32,7 @@ class TMatrix {
             elements[i] = T(0);                                         \
         }                                                               \
     }                                                                   \
-    TMatrix(const_type &other) {                                        \
+    TMatrix(const type &other) {                                        \
         for (size_t r = 0; r < rowNum; ++r) {                           \
             for (size_t c = 0; c < colNum; ++c) {                       \
                 this->elements[r * colNum + c] =                        \
@@ -41,7 +40,6 @@ class TMatrix {
             }                                                           \
         }                                                               \
     }                                                                   \
-    ~TMatrix() {}                                                       \
     transpose_type transpose() const {                                  \
         transpose_type ret;                                             \
         for (size_t r = 0; r < rowNum; ++r) {                           \
@@ -65,6 +63,14 @@ class TMatrix {
         }                                                               \
         return ret;                                                     \
     }                                                                   \
+    type &operator+=(T s) {                                             \
+        for (size_t r = 0; r < rowNum; ++r) {                           \
+            for (size_t c = 0; c < colNum; ++c) {                       \
+                this->elements[r * colNum + c] += s;                    \
+            }                                                           \
+        }                                                               \
+        return *this;                                                   \
+    }                                                                   \
     type operator-(T s) const {                                         \
         type ret;                                                       \
         for (size_t r = 0; r < rowNum; ++r) {                           \
@@ -74,6 +80,14 @@ class TMatrix {
             }                                                           \
         }                                                               \
         return ret;                                                     \
+    }                                                                   \
+    type &operator-=(T s) {                                             \
+        for (size_t r = 0; r < rowNum; ++r) {                           \
+            for (size_t c = 0; c < colNum; ++c) {                       \
+                this->elements[r * colNum + c] -= s;                    \
+            }                                                           \
+        }                                                               \
+        return *this;                                                   \
     }                                                                   \
     type operator*(T s) const {                                         \
         type ret;                                                       \
@@ -85,6 +99,14 @@ class TMatrix {
         }                                                               \
         return ret;                                                     \
     }                                                                   \
+    type &operator*=(T s) {                                             \
+        for (size_t r = 0; r < rowNum; ++r) {                           \
+            for (size_t c = 0; c < colNum; ++c) {                       \
+                this->elements[r * colNum + c] *= s;                    \
+            }                                                           \
+        }                                                               \
+        return *this;                                                   \
+    }                                                                   \
     type operator/(T s) const {                                         \
         type ret;                                                       \
         for (size_t r = 0; r < rowNum; ++r) {                           \
@@ -95,7 +117,15 @@ class TMatrix {
         }                                                               \
         return ret;                                                     \
     }                                                                   \
-    type operator+(const_type &other) const {                           \
+    type &operator/=(T s) {                                             \
+        for (size_t r = 0; r < rowNum; ++r) {                           \
+            for (size_t c = 0; c < colNum; ++c) {                       \
+                this->elements[r * colNum + c] /= s;                    \
+            }                                                           \
+        }                                                               \
+        return *this;                                                   \
+    }                                                                   \
+    type operator+(const type &other) const {                           \
         type ret = *this;                                               \
         for (size_t r = 0; r < rowNum; ++r) {                           \
             for (size_t c = 0; c < colNum; ++c) {                       \
@@ -106,7 +136,16 @@ class TMatrix {
         }                                                               \
         return ret;                                                     \
     }                                                                   \
-    type operator-(const_type &other) const {                           \
+    type &operator+=(const type &other) {                               \
+        for (size_t r = 0; r < rowNum; ++r) {                           \
+            for (size_t c = 0; c < colNum; ++c) {                       \
+                this->elements[r * colNum + c] +=                       \
+                    other.elements[r * colNum + c];                     \
+            }                                                           \
+        }                                                               \
+        return *this;                                                   \
+    }                                                                   \
+    type operator-(const type &other) const {                           \
         type ret = *this;                                               \
         for (size_t r = 0; r < rowNum; ++r) {                           \
             for (size_t c = 0; c < colNum; ++c) {                       \
@@ -116,6 +155,15 @@ class TMatrix {
             }                                                           \
         }                                                               \
         return ret;                                                     \
+    }                                                                   \
+    type &operator-=(const type &other) {                               \
+        for (size_t r = 0; r < rowNum; ++r) {                           \
+            for (size_t c = 0; c < colNum; ++c) {                       \
+                this->elements[r * colNum + c] -=                       \
+                    other.elements[r * colNum + c];                     \
+            }                                                           \
+        }                                                               \
+        return *this;                                                   \
     }                                                                   \
     template <size_t colNum2>                                           \
     TMatrix<T, rowNum, colNum2> operator*(TMatrix<T, colNum, colNum2> &other) \
@@ -134,7 +182,7 @@ class TMatrix {
         }                                                               \
         return ret;                                                     \
     }                                                                   \
-    type operator/(const_type &other) const {                           \
+    type operator/(const type &other) const {                           \
         type ret = *this;                                               \
         for (size_t r = 0; r < rowNum; ++r) {                           \
             for (size_t c = 0; c < colNum; ++c) {                       \
@@ -144,7 +192,16 @@ class TMatrix {
         }                                                               \
         return ret;                                                     \
     }                                                                   \
-    type &operator=(const_type &other) {                                \
+    type &operator/=(const type &other) {                               \
+        for (size_t r = 0; r < rowNum; ++r) {                           \
+            for (size_t c = 0; c < colNum; ++c) {                       \
+                this->elements[r * colNum + c] /=                       \
+                    other.elements[r * colNum + c];                     \
+            }                                                           \
+        }                                                               \
+        return *this;                                                   \
+    }                                                                   \
+    type &operator=(const type &other) {                                \
         for (size_t r = 0; r < rowNum; ++r) {                           \
             for (size_t c = 0; c < colNum; ++c) {                       \
                 this->elements[r * colNum + c] =                        \
@@ -153,7 +210,7 @@ class TMatrix {
         }                                                               \
         return *this;                                                   \
     }                                                                   \
-    bool operator==(const_type &other) const {                          \
+    bool operator==(const type &other) const {                          \
         for (size_t r = 0; r < rowNum; ++r) {                           \
             for (size_t c = 0; c < colNum; ++c) {                       \
                 if (this->elements[r * colNum + c] !=                   \
@@ -163,20 +220,18 @@ class TMatrix {
         }                                                               \
         return true;                                                    \
     }                                                                   \
-    type &copy(const_type &other) {                                     \
+    type &copy(const type &other) {                                     \
         *this = other;                                                  \
         return *this;                                                   \
     }                                                                   \
     size_t row() const { return rowNum; }                               \
     size_t col() const { return colNum; }                               \
-    bool operator!=(const_type &other) const { return !(*this == other); } \
+    bool operator!=(const type &other) const { return !(*this == other); } \
     static type makeZero() { return {0}; }                              \
     T elements[rowNum * colNum];                                        \
-                                                                        \
-private:
+
     CERAMICS_DECLARE_MATRIX_COMMON_PART(rowNum, colNum);
 
-public:
     TMatrix() {
         for (size_t r = 0; r < rowNum; ++r) {
             for (size_t c = 0; c < colNum; ++c) {
@@ -188,10 +243,9 @@ public:
 
 // Squard Matrx
 template <class T, size_t dimension>
-class TMatrix<T, dimension, dimension> {
+struct TMatrix<T, dimension, dimension> {
     CERAMICS_DECLARE_MATRIX_COMMON_PART(dimension, dimension);
 #define CERAMICS_DECLARE_SQUARD_MATRIX_COMMON_PART(dimension)   \
-    public:                                                     \
     TMatrix() {                                                 \
         this->identity();                                       \
     }                                                           \
@@ -206,13 +260,27 @@ class TMatrix<T, dimension, dimension> {
         }                                                       \
         return *this;                                           \
     }                                                           \
+    type &operator*=(const type &other){                        \
+        type result;                                            \
+        auto te = result.elements;                              \
+        for (size_t r = 0; r < dimension; ++r) {                \
+            for (size_t c = 0; c < dimension; ++c) {            \
+                T sum = T(0);                                   \
+                for (size_t i = 0; i < dimension; ++i) {        \
+                    sum += this->elements[r * dimension + i] *  \
+                        other[i * dimension + c];               \
+                }                                               \
+                te[r * dimension + c] = sum;                    \
+            }                                                   \
+        }                                                       \
+        copy(result);                                           \
+        return *this;                                           \
+    }                                                           \
 
     CERAMICS_DECLARE_SQUARD_MATRIX_COMMON_PART(dimension)
 
-    public:
     T determinant() const { return calculateDeterminant(elements, dimension); }
 
-private:
     static T calculateDeterminant(const T *matrix, size_t n) {
         T det = T(0);
         if (n == 2)
@@ -241,10 +309,9 @@ private:
 };
 // Matrix3x3
 template <class T>
-class TMatrix<T, 3, 3> {
+struct TMatrix<T, 3, 3> {
     CERAMICS_DECLARE_MATRIX_COMMON_PART(3, 3)
     CERAMICS_DECLARE_SQUARD_MATRIX_COMMON_PART(3)
-    public:
     type getInverse() const {
         auto me = this->elements;
         auto n11 = me[0], n21 = me[1], n31 = me[2], n12 = me[3], n22 = me[4],
@@ -339,10 +406,9 @@ class TMatrix<T, 3, 3> {
     }
 };
 template <class T>
-class TMatrix<T, 4, 4> {
+struct TMatrix<T, 4, 4> {
     CERAMICS_DECLARE_MATRIX_COMMON_PART(4, 4)
     CERAMICS_DECLARE_SQUARD_MATRIX_COMMON_PART(4)
-    public:
     type getInverse() const {
         auto me = this->elements;
         auto n11 = me[0], n21 = me[1], n31 = me[2], n41 = me[3], n12 = me[4],
@@ -437,8 +503,8 @@ class TMatrix<T, 4, 4> {
                   const TVector<T, 3> scale) {
         auto te = this->elements;
 
-        auto x = quaternion._x, y = quaternion._y, z = quaternion._z,
-            w = quaternion._w;
+        auto x = quaternion.x, y = quaternion.y, z = quaternion.z,
+            w = quaternion.w;
         auto x2 = x + x, y2 = y + y, z2 = z + z;
         auto xx = x * x2, xy = x * y2, xz = x * z2;
         auto yy = y * y2, yz = y * z2, zz = z * z2;
@@ -536,14 +602,14 @@ class TMatrix<T, 4, 4> {
 
         return *this;
     }
-    type &multiply(const_type &m) { return this->multiplyMatrices(*this, m); }
-    type &multiply(const_type &m, const_type &n) {
+    type &multiply(const type &m) { return this->multiplyMatrices(*this, m); }
+    type &multiply(const type &m, const type &n) {
         return this->multiplyMatrices(m, n);
     }
-    type &premultiply(const_type &m) {
+    type &premultiply(const type &m) {
         return this->multiplyMatrices(m, *this);
     }
-    type &multiplyMatrices(const_type &a, const_type &b) {
+    type &multiplyMatrices(const type &a, const type &b) {
         auto ae = a.elements;
         auto be = b.elements;
         auto te = this->elements;
@@ -623,7 +689,7 @@ class TMatrix<T, 4, 4> {
         te[10] = _z.z;
         return *this;
     }
-    type &extractRotation(const_type &m) {
+    type &extractRotation(const type &m) {
         // this method does not support reflection matrices
 
         TVector<T, 3> _v1;

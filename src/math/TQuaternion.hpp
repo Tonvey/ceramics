@@ -22,14 +22,13 @@ template <class T, size_t dimension>
 class TVector;
 
 template <class T>
-class TQuaternion {
-public:
+struct TQuaternion {
+    typedef T value_type;
     typedef TQuaternion<T> type;
-    typedef const TQuaternion<T> const_type;
     typedef std::function<void()> callback_type;
     friend TMatrix<T, 4, 4>;
     // TODO change callback
-    TProperty<T> x, y, z, w;
+    //TProperty<T> x, y, z, w;
     TQuaternion(T x = T(0), T y = T(0), T z = T(0), T w = T(1)) {
         this->x = x;
         this->y = y;
@@ -109,38 +108,38 @@ public:
 
     // }
 
-    // T x() const { return this->_x; }
+    // T x() const { return this->x; }
     // void x(T value) {
-    //     this->_x = value;
+    //     this->x = value;
     //     // TODO change callback
     // }
-    // T y() const { return this->_y; }
+    // T y() const { return this->y; }
     // void y(T value) {
-    //     this->_y = value;
+    //     this->y = value;
     //     // TODO change callback
     // }
-    // T z() const { return this->_z; }
+    // T z() const { return this->z; }
     // void z(T value) {
-    //     this->_z = value;
+    //     this->z = value;
     //     // TODO change callback
     // }
-    // T w() const { return this->_w; }
+    // T w() const { return this->w; }
     // void w(T value) {
-    //     this->_w = value;
+    //     this->w = value;
     //     // TODO change callback
     // }
     void set(T x, T y, T z, T w) {
-        this->_x = x;
-        this->_y = y;
-        this->_z = z;
-        this->_w = w;
+        this->x = x;
+        this->y = y;
+        this->z = z;
+        this->w = w;
         // TODO change callback
     }
     type &operator=(const type &other) {
-        this->_x = other._x;
-        this->_y = other._y;
-        this->_z = other._z;
-        this->_w = other._w;
+        this->x = other.x;
+        this->y = other.y;
+        this->z = other.z;
+        this->w = other.w;
         return *this;
     }
 
@@ -163,45 +162,45 @@ public:
 
         switch (order) {
             case XYZ:
-                this->_x = s1 * c2 * c3 + c1 * s2 * s3;
-                this->_y = c1 * s2 * c3 - s1 * c2 * s3;
-                this->_z = c1 * c2 * s3 + s1 * s2 * c3;
-                this->_w = c1 * c2 * c3 - s1 * s2 * s3;
+                this->x = s1 * c2 * c3 + c1 * s2 * s3;
+                this->y = c1 * s2 * c3 - s1 * c2 * s3;
+                this->z = c1 * c2 * s3 + s1 * s2 * c3;
+                this->w = c1 * c2 * c3 - s1 * s2 * s3;
                 break;
 
             case YXZ:
-                this->_x = s1 * c2 * c3 + c1 * s2 * s3;
-                this->_y = c1 * s2 * c3 - s1 * c2 * s3;
-                this->_z = c1 * c2 * s3 - s1 * s2 * c3;
-                this->_w = c1 * c2 * c3 + s1 * s2 * s3;
+                this->x = s1 * c2 * c3 + c1 * s2 * s3;
+                this->y = c1 * s2 * c3 - s1 * c2 * s3;
+                this->z = c1 * c2 * s3 - s1 * s2 * c3;
+                this->w = c1 * c2 * c3 + s1 * s2 * s3;
                 break;
 
             case ZXY:
-                this->_x = s1 * c2 * c3 - c1 * s2 * s3;
-                this->_y = c1 * s2 * c3 + s1 * c2 * s3;
-                this->_z = c1 * c2 * s3 + s1 * s2 * c3;
-                this->_w = c1 * c2 * c3 - s1 * s2 * s3;
+                this->x = s1 * c2 * c3 - c1 * s2 * s3;
+                this->y = c1 * s2 * c3 + s1 * c2 * s3;
+                this->z = c1 * c2 * s3 + s1 * s2 * c3;
+                this->w = c1 * c2 * c3 - s1 * s2 * s3;
                 break;
 
             case ZYX:
-                this->_x = s1 * c2 * c3 - c1 * s2 * s3;
-                this->_y = c1 * s2 * c3 + s1 * c2 * s3;
-                this->_z = c1 * c2 * s3 - s1 * s2 * c3;
-                this->_w = c1 * c2 * c3 + s1 * s2 * s3;
+                this->x = s1 * c2 * c3 - c1 * s2 * s3;
+                this->y = c1 * s2 * c3 + s1 * c2 * s3;
+                this->z = c1 * c2 * s3 - s1 * s2 * c3;
+                this->w = c1 * c2 * c3 + s1 * s2 * s3;
                 break;
 
             case YZX:
-                this->_x = s1 * c2 * c3 + c1 * s2 * s3;
-                this->_y = c1 * s2 * c3 + s1 * c2 * s3;
-                this->_z = c1 * c2 * s3 - s1 * s2 * c3;
-                this->_w = c1 * c2 * c3 - s1 * s2 * s3;
+                this->x = s1 * c2 * c3 + c1 * s2 * s3;
+                this->y = c1 * s2 * c3 + s1 * c2 * s3;
+                this->z = c1 * c2 * s3 - s1 * s2 * c3;
+                this->w = c1 * c2 * c3 - s1 * s2 * s3;
                 break;
 
             case XZY:
-                this->_x = s1 * c2 * c3 - c1 * s2 * s3;
-                this->_y = c1 * s2 * c3 - s1 * c2 * s3;
-                this->_z = c1 * c2 * s3 + s1 * s2 * c3;
-                this->_w = c1 * c2 * c3 + s1 * s2 * s3;
+                this->x = s1 * c2 * c3 - c1 * s2 * s3;
+                this->y = c1 * s2 * c3 - s1 * c2 * s3;
+                this->z = c1 * c2 * s3 + s1 * s2 * c3;
+                this->w = c1 * c2 * c3 + s1 * s2 * s3;
                 break;
 
             default:
@@ -223,10 +222,10 @@ public:
 
         const auto halfAngle = angle / 2, s = std::sin(halfAngle);
 
-        this->_x = axis.x * s;
-        this->_y = axis.y * s;
-        this->_z = axis.z * s;
-        this->_w = std::cos(halfAngle);
+        this->x = axis.x * s;
+        this->y = axis.y * s;
+        this->z = axis.z * s;
+        this->w = std::cos(halfAngle);
 
         this->_onChangeCallback();
 
@@ -248,34 +247,34 @@ public:
         if (trace > 0) {
             auto s = 0.5 / std::sqrt(trace + 1.0);
 
-            this->_w = 0.25 / s;
-            this->_x = (m32 - m23) * s;
-            this->_y = (m13 - m31) * s;
-            this->_z = (m21 - m12) * s;
+            this->w = 0.25 / s;
+            this->x = (m32 - m23) * s;
+            this->y = (m13 - m31) * s;
+            this->z = (m21 - m12) * s;
 
         } else if (m11 > m22 && m11 > m33) {
             auto s = 2.0 * std::sqrt(1.0 + m11 - m22 - m33);
 
-            this->_w = (m32 - m23) / s;
-            this->_x = 0.25 * s;
-            this->_y = (m12 + m21) / s;
-            this->_z = (m13 + m31) / s;
+            this->w = (m32 - m23) / s;
+            this->x = 0.25 * s;
+            this->y = (m12 + m21) / s;
+            this->z = (m13 + m31) / s;
 
         } else if (m22 > m33) {
             auto s = 2.0 * std::sqrt(1.0 + m22 - m11 - m33);
 
-            this->_w = (m13 - m31) / s;
-            this->_x = (m12 + m21) / s;
-            this->_y = 0.25 * s;
-            this->_z = (m23 + m32) / s;
+            this->w = (m13 - m31) / s;
+            this->x = (m12 + m21) / s;
+            this->y = 0.25 * s;
+            this->z = (m23 + m32) / s;
 
         } else {
             auto s = 2.0 * std::sqrt(1.0 + m33 - m11 - m22);
 
-            this->_w = (m21 - m12) / s;
-            this->_x = (m13 + m31) / s;
-            this->_y = (m23 + m32) / s;
-            this->_z = 0.25 * s;
+            this->w = (m21 - m12) / s;
+            this->x = (m13 + m31) / s;
+            this->y = (m23 + m32) / s;
+            this->z = 0.25 * s;
         }
 
         this->_onChangeCallback();
@@ -294,37 +293,37 @@ public:
             r = T(0);
 
             if (std::abs(vFrom.x) > std::abs(vFrom.z)) {
-                this->_x = -vFrom.y;
-                this->_y = vFrom.x;
-                this->_z = T(0);
-                this->_w = r;
+                this->x = -vFrom.y;
+                this->y = vFrom.x;
+                this->z = T(0);
+                this->w = r;
 
             } else {
-                this->_x = T(0);
-                this->_y = -vFrom.z;
-                this->_z = vFrom.y;
-                this->_w = r;
+                this->x = T(0);
+                this->y = -vFrom.z;
+                this->z = vFrom.y;
+                this->w = r;
             }
 
         } else {
             // crossVectors( vFrom, vTo ); // inlined to avoid cyclic dependency
             // on Vector3
 
-            this->_x = vFrom.y * vTo.z - vFrom.z * vTo.y;
-            this->_y = vFrom.z * vTo.x - vFrom.x * vTo.z;
-            this->_z = vFrom.x * vTo.y - vFrom.y * vTo.x;
-            this->_w = r;
+            this->x = vFrom.y * vTo.z - vFrom.z * vTo.y;
+            this->y = vFrom.z * vTo.x - vFrom.x * vTo.z;
+            this->z = vFrom.x * vTo.y - vFrom.y * vTo.x;
+            this->w = r;
         }
 
         return this->normalize();
     }
 
-    T angleTo(const_type &q) {
+    T angleTo(const type &q) {
         return 2 *
                std::acos(std::abs(TMathUtils<T>::clamp(this->dot(q), -1, 1)));
     }
 
-    type &rotateTowards(const_type q, T step) {
+    type &rotateTowards(const type q, T step) {
         const auto angle = this->angleTo(q);
 
         if (angle == 0) return *this;
@@ -345,46 +344,46 @@ public:
     }
 
     type &conjugate() {
-        this->_x *= T(-1);
-        this->_y *= T(-1);
-        this->_z *= T(-1);
+        this->x *= T(-1);
+        this->y *= T(-1);
+        this->z *= T(-1);
 
         this->_onChangeCallback();
 
         return *this;
     }
 
-    T dot(const_type &v) {
-        return this->_x * v._x + this->_y * v._y + this->_z * v._z +
-               this->_w * v._w;
+    T dot(const type &v) {
+        return this->x * v.x + this->y * v.y + this->z * v.z +
+               this->w * v.w;
     }
 
     T lengthSq() {
-        return this->_x * this->_x + this->_y * this->_y + this->_z * this->_z +
-               this->_w * this->_w;
+        return this->x * this->x + this->y * this->y + this->z * this->z +
+               this->w * this->w;
     }
 
     T length() {
-        return std::sqrt(this->_x * this->_x + this->_y * this->_y +
-                         this->_z * this->_z + this->_w * this->_w);
+        return std::sqrt(this->x * this->x + this->y * this->y +
+                         this->z * this->z + this->w * this->w);
     }
 
     type &normalize() {
         T l = this->length();
 
         if (l == T(0)) {
-            this->_x = T(0);
-            this->_y = T(0);
-            this->_z = T(0);
-            this->_w = T(1);
+            this->x = T(0);
+            this->y = T(0);
+            this->z = T(0);
+            this->w = T(1);
 
         } else {
             l = 1 / l;
 
-            this->_x *= l;
-            this->_y *= l;
-            this->_z *= l;
-            this->_w *= l;
+            this->x *= l;
+            this->y *= l;
+            this->z *= l;
+            this->w *= l;
         }
 
         this->_onChangeCallback();
@@ -392,50 +391,50 @@ public:
         return *this;
     }
 
-    type &multiply(const_type &q) {
+    type &multiply(const type &q) {
         return this->multiplyQuaternions(*this, q);
     }
 
-    type &multiply(const_type &q, const_type &p) {
+    type &multiply(const type &q, const type &p) {
         return this->multiplyQuaternions(q, p);
     }
 
-    type &premultiply(const_type &q) {
+    type &premultiply(const type &q) {
         return this->multiplyQuaternions(q, *this);
     }
 
-    type &multiplyQuaternions(const_type &a, const_type &b) {
+    type &multiplyQuaternions(const type &a, const type &b) {
         // from
         // http://www.euclideanspace.com/maths/algebra/realNormedAlgebra/quaternions/code/index.htm
 
-        const auto qax = a._x, qay = a._y, qaz = a._z, qaw = a._w;
-        const auto qbx = b._x, qby = b._y, qbz = b._z, qbw = b._w;
+        const auto qax = a.x, qay = a.y, qaz = a.z, qaw = a.w;
+        const auto qbx = b.x, qby = b.y, qbz = b.z, qbw = b.w;
 
-        this->_x = qax * qbw + qaw * qbx + qay * qbz - qaz * qby;
-        this->_y = qay * qbw + qaw * qby + qaz * qbx - qax * qbz;
-        this->_z = qaz * qbw + qaw * qbz + qax * qby - qay * qbx;
-        this->_w = qaw * qbw - qax * qbx - qay * qby - qaz * qbz;
+        this->x = qax * qbw + qaw * qbx + qay * qbz - qaz * qby;
+        this->y = qay * qbw + qaw * qby + qaz * qbx - qax * qbz;
+        this->z = qaz * qbw + qaw * qbz + qax * qby - qay * qbx;
+        this->w = qaw * qbw - qax * qbx - qay * qby - qaz * qbz;
 
         this->_onChangeCallback();
 
         return *this;
     }
 
-    type &slerp(const_type &qb, T t) {
+    type &slerp(const type &qb, T t) {
         if (t == 0) return *this;
         if (t == 1) return this->copy(qb);
 
-        const auto x = this->_x, y = this->_y, z = this->_z, w = this->_w;
+        const auto x = this->x, y = this->y, z = this->z, w = this->w;
 
         // http://www.euclideanspace.com/maths/algebra/realNormedAlgebra/quaternions/slerp/
 
-        auto cosHalfTheta = w * qb._w + x * qb._x + y * qb._y + z * qb._z;
+        auto cosHalfTheta = w * qb.w + x * qb.x + y * qb.y + z * qb.z;
 
         if (cosHalfTheta < 0) {
-            this->_w = -qb._w;
-            this->_x = -qb._x;
-            this->_y = -qb._y;
-            this->_z = -qb._z;
+            this->w = -qb.w;
+            this->x = -qb.x;
+            this->y = -qb.y;
+            this->z = -qb.z;
 
             cosHalfTheta = -cosHalfTheta;
 
@@ -444,10 +443,10 @@ public:
         }
 
         if (cosHalfTheta >= 1.0) {
-            this->_w = w;
-            this->_x = x;
-            this->_y = y;
-            this->_z = z;
+            this->w = w;
+            this->x = x;
+            this->y = y;
+            this->z = z;
 
             return *this;
         }
@@ -456,10 +455,10 @@ public:
 
         if (sqrSinHalfTheta <= std::numeric_limits<T>::epsilon()) {
             const auto s = 1 - t;
-            this->_w = s * w + t * this->_w;
-            this->_x = s * x + t * this->_x;
-            this->_y = s * y + t * this->_y;
-            this->_z = s * z + t * this->_z;
+            this->w = s * w + t * this->w;
+            this->x = s * x + t * this->x;
+            this->y = s * y + t * this->y;
+            this->z = s * z + t * this->z;
 
             this->normalize();
             this->_onChangeCallback();
@@ -472,29 +471,29 @@ public:
         const auto ratioA = std::sin((1 - t) * halfTheta) / sinHalfTheta,
                    ratioB = std::sin(t * halfTheta) / sinHalfTheta;
 
-        this->_w = (w * ratioA + this->_w * ratioB);
-        this->_x = (x * ratioA + this->_x * ratioB);
-        this->_y = (y * ratioA + this->_y * ratioB);
-        this->_z = (z * ratioA + this->_z * ratioB);
+        this->w = (w * ratioA + this->w * ratioB);
+        this->x = (x * ratioA + this->x * ratioB);
+        this->y = (y * ratioA + this->y * ratioB);
+        this->z = (z * ratioA + this->z * ratioB);
 
         this->_onChangeCallback();
 
         return *this;
     }
 
-    bool equals(const_type &quaternion) {
-        return (quaternion._x == this->_x) && (quaternion._y == this->_y) &&
-               (quaternion._z == this->_z) && (quaternion._w == this->_w);
+    bool equals(const type &quaternion) {
+        return (quaternion.x == this->x) && (quaternion.y == this->y) &&
+               (quaternion.z == this->z) && (quaternion.w == this->w);
     }
 
     // fromArray( array, offset ) {
 
     // 	if ( offset == undefined ) offset = 0;
 
-    // 	this->_x = array[ offset ];
-    // 	this->_y = array[ offset + 1 ];
-    // 	this->_z = array[ offset + 2 ];
-    // 	this->_w = array[ offset + 3 ];
+    // 	this->x = array[ offset ];
+    // 	this->y = array[ offset + 1 ];
+    // 	this->z = array[ offset + 2 ];
+    // 	this->w = array[ offset + 3 ];
 
     // 	this->_onChangeCallback();
 
@@ -507,10 +506,10 @@ public:
     // 	if ( array == undefined ) array = [];
     // 	if ( offset == undefined ) offset = 0;
 
-    // 	array[ offset ] = this->_x;
-    // 	array[ offset + 1 ] = this->_y;
-    // 	array[ offset + 2 ] = this->_z;
-    // 	array[ offset + 3 ] = this->_w;
+    // 	array[ offset ] = this->x;
+    // 	array[ offset + 1 ] = this->y;
+    // 	array[ offset + 2 ] = this->z;
+    // 	array[ offset + 3 ] = this->w;
 
     // 	return array;
 
@@ -518,10 +517,10 @@ public:
 
     // fromBufferAttribute( attribute, index ) {
 
-    // 	this->_x = attribute.getX( index );
-    // 	this->_y = attribute.getY( index );
-    // 	this->_z = attribute.getZ( index );
-    // 	this->_w = attribute.getW( index );
+    // 	this->x = attribute.getX( index );
+    // 	this->y = attribute.getY( index );
+    // 	this->z = attribute.getZ( index );
+    // 	this->w = attribute.getW( index );
 
     // 	return *this;
 
@@ -529,15 +528,13 @@ public:
 
     type &_onChange(callback_type callback) {
         this->_onChangeCallback = callback;
-
         return *this;
     }
 
-private:
-    T _x = T(0);
-    T _y = T(0);
-    T _z = T(0);
-    T _w = T(1);
+    T x = T(0);
+    T y = T(0);
+    T z = T(0);
+    T w = T(1);
     callback_type _onChangeCallback;
 };
 CERAMICS_NAMESPACE_END
