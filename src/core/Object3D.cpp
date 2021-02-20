@@ -176,7 +176,7 @@ Object3D::type_ref Object3D::add(shared_ptr_t &object) {
         object->parent = ptr;
         this->children.push_back(object);
 
-        object->addEvent.dispatch();
+        object->addEvent();
     }
 
     return *this;
@@ -189,7 +189,7 @@ Object3D::type_ref Object3D::remove(shared_ptr_t &object) {
         object->parent.reset();
         children.erase(it);
 
-        object->removeEvent.dispatch();
+        object->removeEvent();
     }
 
     return *this;
@@ -201,7 +201,7 @@ Object3D::type_ref Object3D::clear() {
 
         it = children.erase(it);
 
-        (*it)->removeEvent.dispatch();
+        (*it)->removeEvent();
     }
 
     return *this;

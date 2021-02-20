@@ -13,10 +13,10 @@ find_package(PkgConfig REQUIRED)
 
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
-include_directories(./3rdparty/stb)
+include_directories(./thirdparty/stb)
 
 IF(EMSCRIPTEN)
-    include_directories(./3rdparty/glm)
+    include_directories(./thirdparty/glm)
 ELSE(EMSCRIPTEN)
     IF(APPLE)
         set(CMAKE_MACOSX_RPATH 1)

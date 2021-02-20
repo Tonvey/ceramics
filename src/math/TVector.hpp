@@ -150,14 +150,12 @@ class TVector {
     typedef const TVector<T, dimension> const_type;                     \
     typedef std::array<T, dimension> array_t;                           \
     TVector(std::initializer_list<T> l) {                               \
-        CERAMICS_LOG_TEST("TVector(std::initializer_list<T> l)\n");     \
         this->set(l);                                                   \
     }                                                                   \
     TVector(const_type &other) {                                        \
-        CERAMICS_LOG_TEST("TVector(const_type &other)\n");              \
         this->copy(other);                                              \
     }                                                                   \
-    ~TVector() { CERAMICS_LOG_TEST("~TVector()\n"); }                   \
+    ~TVector() { }                                                      \
     static type zero() { return type().setAll(T(0)); }                  \
     static type one() { return type().setAll(T(1)); }                   \
     const T &operator[](size_t idx) const {                             \
@@ -318,7 +316,7 @@ class TVector {
     T lengthSq() {                                                      \
         T sum = T(0);                                                   \
         for (auto &i : mArr) {                                          \
-            sum += i;                                                   \
+            sum += i*i;                                                 \
         }                                                               \
         return sum;                                                     \
     }                                                                   \
@@ -346,7 +344,6 @@ private:                                                                \
 
 public:
     TVector() {
-        CERAMICS_LOG_TEST("TVector()\n");
         TFuncArraySet(this->mArr, T(0));
     }
     CERAMICS_DECLARE_VECTOR_COMMON_PART(dimension)

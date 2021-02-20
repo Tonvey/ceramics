@@ -2,6 +2,7 @@
 CERAMICS_NAMESPACE_BEGIN
 
 class PerspectiveCamera : public Camera{
+    CERAMICS_FORCE_CLASS_SHARED_CREATE_DECLARE(PerspectiveCamera)
 public:
     struct View{
         bool enabled= false;
@@ -100,7 +101,7 @@ public:
     void setViewOffset(int fullWidth,int fullHeight,int x,int y,int width,int height );
     void clearViewOffset() ;
 
-    void updateProjectionMatrix();
+    virtual void updateProjectionMatrix() override;
 };
 
 

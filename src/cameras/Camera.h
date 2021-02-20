@@ -8,16 +8,12 @@ public:
     Matrix4 projectionMatrix;
     Matrix4 projectionMatrixInverse;
     virtual ~Camera(){};
-
-    virtual Vector3 getWorldDirection( );
-
-    virtual void updateMatrixWorld(bool force );
-
-    virtual void updateWorldMatrix(bool updateParents,bool updateChildren );
-
+    virtual Vector3 getWorldDirection();
+    virtual void updateMatrixWorld(bool force) override;
+    virtual void updateWorldMatrix(bool updateParents,bool updateChildren) override;
+    virtual void updateProjectionMatrix() = 0;
 protected:
     Camera(){}
 
 };
-
 CERAMICS_NAMESPACE_END
