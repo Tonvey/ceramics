@@ -1,23 +1,27 @@
 #include "../CeramicsType.h"
 CERAMICS_NAMESPACE_BEGIN
 const String REVISION = "120";
-struct EMOUSE{
-    enum {
-        LEFT= 0,
-        MIDDLE= 1,
-        RIGHT= 2,
-        ROTATE= 0,
-        DOLLY= 1,
-        PAN= 2,
-    };
+struct EMOUSE
+{
+    enum
+        {
+            LEFT= 0,
+            MIDDLE= 1,
+            RIGHT= 2,
+            ROTATE= 0,
+            DOLLY= 1,
+            PAN= 2,
+        };
 };
-struct ETOUCH {
-    enum{
-        ROTATE= 0,
-        PAN= 1,
-        DOLLY_PAN= 2,
-        DOLLY_ROTATE= 3,
-    };
+struct ETOUCH
+{
+    enum
+        {
+            ROTATE= 0,
+            PAN= 1,
+            DOLLY_PAN= 2,
+            DOLLY_ROTATE= 3,
+        };
 };
 const GLenum CullFaceNone = 0;
 const GLenum CullFaceBack = 1; const GLenum CullFaceFront = 2;

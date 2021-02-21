@@ -15,338 +15,440 @@ template <class T, size_t d1, size_t d2>
 class TMatrix;
 
 template <class T, size_t d>
-static void TFuncArraySet(std::array<T, d> &arr, T val) {
-    for (size_t i = 0; i < d; ++i) {
+static void TFuncArraySet(std::array<T, d> &arr, T val)
+{
+    for (size_t i = 0; i < d; ++i)
+    {
         arr[i] = val;
     }
 }
 template <class T>
-static void TFuncArraySet(T arr[], size_t size, T val) {
-    for (size_t i = 0; i < size; ++i) {
+static void TFuncArraySet(T arr[], size_t size, T val)
+{
+    for (size_t i = 0; i < size; ++i)
+    {
         arr[i] = val;
     }
 }
 template <class T, size_t d>
-static void TFuncArrayNegate(std::array<T, d> &arr) {
-    for (size_t i = 0; i < d; ++i) {
+static void TFuncArrayNegate(std::array<T, d> &arr)
+{
+    for (size_t i = 0; i < d; ++i)
+    {
         arr[i] = -arr[i];
     }
 }
 template <class T>
-static void TFuncArrayNegate(T arr[], size_t size) {
-    for (size_t i = 0; i < size; ++i) {
+static void TFuncArrayNegate(T arr[], size_t size)
+{
+    for (size_t i = 0; i < size; ++i)
+    {
         arr[i] = -arr[i];
     }
 }
 template <class T, size_t d>
 static void TFuncArrayAdd(std::array<T, d> &arr1,
-                          const std::array<T, d> &arr2) {
-    for (size_t i = 0; i < d; ++i) {
+                          const std::array<T, d> &arr2)
+{
+    for (size_t i = 0; i < d; ++i)
+    {
         arr1[i] += arr2[i];
     }
 }
 template <class T>
-static void TFuncArrayAdd(T arr1[], const T arr2[], size_t size) {
-    for (size_t i = 0; i < size; ++i) {
+static void TFuncArrayAdd(T arr1[], const T arr2[], size_t size)
+{
+    for (size_t i = 0; i < size; ++i)
+    {
         arr1[i] += arr2[i];
     }
 }
 template <class T, size_t d>
 static void TFuncArraySub(std::array<T, d> &arr1,
-                          const std::array<T, d> &arr2) {
-    for (size_t i = 0; i < d; ++i) {
+                          const std::array<T, d> &arr2)
+{
+    for (size_t i = 0; i < d; ++i)
+    {
         arr1[i] -= arr2[i];
     }
 }
 template <class T>
-static void TFuncArraySub(T arr1[], const T arr2[], size_t size) {
-    for (size_t i = 0; i < size; ++i) {
+static void TFuncArraySub(T arr1[], const T arr2[], size_t size)
+{
+    for (size_t i = 0; i < size; ++i)
+    {
         arr1[i] -= arr2[i];
     }
 }
 template <class T, size_t d>
 static void TFuncArrayMultiply(std::array<T, d> &arr1,
-                               const std::array<T, d> &arr2) {
-    for (size_t i = 0; i < d; ++i) {
+                               const std::array<T, d> &arr2)
+{
+    for (size_t i = 0; i < d; ++i)
+    {
         arr1[i] *= arr2[i];
     }
 }
 template <class T>
-static void TFuncArrayMultiply(T arr1[], const T arr2[], size_t size) {
-    for (size_t i = 0; i < size; ++i) {
+static void TFuncArrayMultiply(T arr1[], const T arr2[], size_t size)
+{
+    for (size_t i = 0; i < size; ++i)
+    {
         arr1[i] *= arr2[i];
     }
 }
 template <class T, size_t d>
 static void TFuncArrayDivide(std::array<T, d> &arr1,
-                             const std::array<T, d> &arr2) {
-    for (size_t i = 0; i < d; ++i) {
+                             const std::array<T, d> &arr2)
+{
+    for (size_t i = 0; i < d; ++i)
+    {
         arr1[i] /= arr2[i];
     }
 }
 template <class T>
-static void TFuncArrayDivide(T arr1[], const T arr2[], size_t size) {
-    for (size_t i = 0; i < size; ++i) {
+static void TFuncArrayDivide(T arr1[], const T arr2[], size_t size)
+{
+    for (size_t i = 0; i < size; ++i)
+    {
         arr1[i] /= arr2[i];
     }
 }
 template <class T, size_t d>
 static void TFuncArrayAddScalar(std::array<T, d> &arr1,
-                                T scalar) {
-    for (size_t i = 0; i < d; ++i) {
+                                T scalar)
+{
+    for (size_t i = 0; i < d; ++i)
+    {
         arr1[i] += scalar;
     }
 }
 template <class T>
-static void TFuncArrayAddScalar(T arr1[], const T scalar, size_t size) {
-    for (size_t i = 0; i < size; ++i) {
+static void TFuncArrayAddScalar(T arr1[], const T scalar, size_t size)
+{
+    for (size_t i = 0; i < size; ++i)
+    {
         arr1[i] += scalar;
     }
 }
 template <class T, size_t d>
-static void TFuncArraySubScalar(std::array<T, d> &arr1, T scalar) {
-    for (size_t i = 0; i < d; ++i) {
+static void TFuncArraySubScalar(std::array<T, d> &arr1, T scalar)
+{
+    for (size_t i = 0; i < d; ++i)
+    {
         arr1[i] -= scalar;
     }
 }
 template <class T>
-static void TFuncArraySubScalar(T arr1[], const T scalar, size_t size) {
-    for (size_t i = 0; i < size; ++i) {
+static void TFuncArraySubScalar(T arr1[], const T scalar, size_t size)
+{
+    for (size_t i = 0; i < size; ++i)
+    {
         arr1[i] -= scalar;
     }
 }
 template <class T, size_t d>
-static void TFuncArrayMultiplyScalar(std::array<T, d> &arr1, T scalar) {
-    for (size_t i = 0; i < d; ++i) {
+static void TFuncArrayMultiplyScalar(std::array<T, d> &arr1, T scalar)
+{
+    for (size_t i = 0; i < d; ++i)
+    {
         arr1[i] *= scalar;
     }
 }
 template <class T>
-static void TFuncArrayMultiplyScalar(T arr1[], T scalar, size_t size) {
-    for (size_t i = 0; i < size; ++i) {
+static void TFuncArrayMultiplyScalar(T arr1[], T scalar, size_t size)
+{
+    for (size_t i = 0; i < size; ++i)
+    {
         arr1[i] *= scalar;
     }
 }
 template <class T, size_t d>
-static void TFuncArrayDivideScalar(std::array<T, d> &arr1, T scalar) {
-    for (size_t i = 0; i < d; ++i) {
+static void TFuncArrayDivideScalar(std::array<T, d> &arr1, T scalar)
+{
+    for (size_t i = 0; i < d; ++i)
+    {
         arr1[i] /= scalar;
     }
 }
 template <class T>
-static void TFuncArrayDivideScalar(T arr1[], T scalar, size_t size) {
-    for (size_t i = 0; i < size; ++i) {
+static void TFuncArrayDivideScalar(T arr1[], T scalar, size_t size)
+{
+    for (size_t i = 0; i < size; ++i)
+    {
         arr1[i] /= scalar;
     }
 }
 
-    // TVector CommonPart
+// TVector CommonPart
 #define CERAMICS_DECLARE_VECTOR_COMMON_PART(dimension)                  \
     typedef TVector<T, dimension> type;                                 \
-    std::array<T,dimension> elements;                                       \
-    TVector(std::initializer_list<T> l) {                               \
+    std::array<T,dimension> elements;                                   \
+    TVector(std::initializer_list<T> l)                                 \
+    {                                                                   \
         this->set(l);                                                   \
     }                                                                   \
-    TVector(const type &other) {                                        \
+    TVector(const type &other)                                          \
+    {                                                                   \
         this->copy(other);                                              \
     }                                                                   \
     static type zero() { return type().setAll(T(0)); }                  \
     static type one() { return type().setAll(T(1)); }                   \
-    const T &operator[](size_t idx) const {                             \
+    const T &operator[](size_t idx) const                               \
+    {                                                                   \
         assert(idx < dimension);                                        \
-        return elements[idx];                                               \
+        return elements[idx];                                           \
     }                                                                   \
-    T &operator[](size_t idx) {                                         \
+    T &operator[](size_t idx)                                           \
+    {                                                                   \
         assert(idx < dimension);                                        \
-        return elements[idx];                                               \
+        return elements[idx];                                           \
     }                                                                   \
-    type operator+(T s) const {                                         \
+    type operator+(T s) const                                           \
+    {                                                                   \
         type ret;                                                       \
-        TFuncArrayAddScalar(ret.elements, s);                               \
+        TFuncArrayAddScalar(ret.elements, s);                           \
         return ret;                                                     \
     }                                                                   \
-    type operator-(T s) const {                                         \
+    type operator-(T s) const                                           \
+    {                                                                   \
         type ret;                                                       \
-        TFuncArraySubScalar(ret.elements, s);                               \
+        TFuncArraySubScalar(ret.elements, s);                           \
         return ret;                                                     \
     }                                                                   \
-    type operator*(T s) const {                                         \
+    type operator*(T s) const                                           \
+    {                                                                   \
         type ret;                                                       \
-        TFuncArrayMultiplyScalar(ret.elements, s);                          \
+        TFuncArrayMultiplyScalar(ret.elements, s);                      \
         return ret;                                                     \
     }                                                                   \
-    type operator/(T s) const {                                         \
+    type operator/(T s) const                                           \
+    {                                                                   \
         type ret;                                                       \
-        TFuncArrayDivideScalar(ret.elements, s);                            \
+        TFuncArrayDivideScalar(ret.elements, s);                        \
         return ret;                                                     \
     }                                                                   \
-    type operator+(const type &other) const {                           \
+    type operator+(const type &other) const                             \
+    {                                                                   \
         type ret = *this;                                               \
-        TFuncArrayAdd(ret.elements, other.elements);                            \
+        TFuncArrayAdd(ret.elements, other.elements);                    \
         return ret;                                                     \
     }                                                                   \
-    type &operator+=(const type &other) {                               \
-        TFuncArrayAdd(this->elements, other.elements);                          \
+    type &operator+=(const type &other)                                 \
+    {                                                                   \
+        TFuncArrayAdd(this->elements, other.elements);                  \
         return *this;                                                   \
     }                                                                   \
-    type operator-(const type &other) const {                           \
+    type operator-(const type &other) const                             \
+    {                                                                   \
         type ret = *this;                                               \
-        TFuncArraySub(ret.elements, other.elements);                            \
+        TFuncArraySub(ret.elements, other.elements);                    \
         return ret;                                                     \
     }                                                                   \
-    type &operator-=(const type &other) {                               \
-        TFuncArraySub(this->elements, other.elements);                          \
+    type &operator-=(const type &other)                                 \
+    {                                                                   \
+        TFuncArraySub(this->elements, other.elements);                  \
         return *this;                                                   \
     }                                                                   \
-    type operator*(const type &other) const {                           \
+    type operator*(const type &other) const                             \
+    {                                                                   \
         type ret = *this;                                               \
-        TFuncArrayMultiply(ret.elements, other.elements);                       \
+        TFuncArrayMultiply(ret.elements, other.elements);               \
         return ret;                                                     \
     }                                                                   \
-    type &operator*=(const type &other) {                               \
-        TFuncArrayMultiply(this->elements, other.elements);                     \
+    type &operator*=(const type &other)                                 \
+    {                                                                   \
+        TFuncArrayMultiply(this->elements, other.elements);             \
         return *this;                                                   \
     }                                                                   \
-    type operator/(const type &other) const {                           \
+    type operator/(const type &other) const                             \
+    {                                                                   \
         type ret = *this;                                               \
-        TFuncArrayDivide(ret.elements, other.elements);                         \
+        TFuncArrayDivide(ret.elements, other.elements);                 \
         return ret;                                                     \
     }                                                                   \
-    type &operator/=(const type &other) {                               \
-        TFuncArrayDivide(this->elements, other.elements);                       \
+    type &operator/=(const type &other)                                 \
+    {                                                                   \
+        TFuncArrayDivide(this->elements, other.elements);               \
         return *this;                                                   \
     }                                                                   \
     type &operator=(const type &other) { return this->copy(other); }    \
-    type &operator=(std::initializer_list<T> l) {                       \
+    type &operator=(std::initializer_list<T> l)                         \
+    {                                                                   \
         this->set(l);                                                   \
         return *this;                                                   \
     }                                                                   \
-    bool operator==(const type &other) const {                          \
-        for (size_t i = 0; i < dimension; ++i) {                        \
-            if (this->elements[i] != other.elements[i]) return false;           \
+    bool operator==(const type &other) const                            \
+    {                                                                   \
+        for (size_t i = 0; i < dimension; ++i)                          \
+        {                                                               \
+            if (this->elements[i] != other.elements[i]) return false;   \
         }                                                               \
         return true;                                                    \
     }                                                                   \
     bool operator!=(const type &other) const { return !(*this == other); } \
     size_t size() const { return dimension; }                           \
-    type &copy(const type &other) {                                     \
-        for (size_t i = 0; i < dimension; ++i) {                        \
-            this->elements[i] = other.elements[i];                              \
+    type &copy(const type &other)                                       \
+    {                                                                   \
+        for (size_t i = 0; i < dimension; ++i)                          \
+        {                                                               \
+            this->elements[i] = other.elements[i];                      \
         }                                                               \
         return *this;                                                   \
     }                                                                   \
-    type &setAll(T value) {                                             \
-        elements.fill(value);                                               \
+    type &setAll(T value)                                               \
+    {                                                                   \
+        elements.fill(value);                                           \
         return *this;                                                   \
     }                                                                   \
-    type &add(const type &other) {                                      \
-        TFuncArrayAdd(this->elements, other.elements);                          \
+    type &add(const type &other)                                        \
+    {                                                                   \
+        TFuncArrayAdd(this->elements, other.elements);                  \
         return *this;                                                   \
     }                                                                   \
-    type &addScalar(T s) {                                              \
-        TFuncArrayAddScalar(this->elements, s);                             \
+    type &addScalar(T s)                                                \
+    {                                                                   \
+        TFuncArrayAddScalar(this->elements, s);                         \
         return *this;                                                   \
     }                                                                   \
-    type &sub(const type &other) {                                      \
-        TFuncArraySub(this->elements, other.elements);                          \
+    type &sub(const type &other)                                        \
+    {                                                                   \
+        TFuncArraySub(this->elements, other.elements);                  \
         return *this;                                                   \
     }                                                                   \
-    type &subScalar(T s) {                                              \
-        TFuncArraySubScalar(this->elements, s);                             \
+    type &subScalar(T s)                                                \
+    {                                                                   \
+        TFuncArraySubScalar(this->elements, s);                         \
         return *this;                                                   \
     }                                                                   \
-    type &subVectors(const type &v1, const type &v2) {                  \
+    type &subVectors(const type &v1, const type &v2)                    \
+    {                                                                   \
         *this = v1 - v2;                                                \
         return *this;                                                   \
     }                                                                   \
-    type &multiply(const type &other) {                                 \
-        TFuncArrayMultiply(this->elements, other.elements);                     \
+    type &multiply(const type &other)                                   \
+    {                                                                   \
+        TFuncArrayMultiply(this->elements, other.elements);             \
         return *this;                                                   \
     }                                                                   \
-    type &multiplyScalar(T s) {                                         \
-        TFuncArrayMultiplyScalar(this->elements, s);                        \
+    type &multiplyScalar(T s)                                           \
+    {                                                                   \
+        TFuncArrayMultiplyScalar(this->elements, s);                    \
         return *this;                                                   \
     }                                                                   \
-    type &divide(const type &other) {                                   \
-        TFuncArrayDivide(this->elements, other.elements);                       \
+    type &divide(const type &other)                                     \
+    {                                                                   \
+        TFuncArrayDivide(this->elements, other.elements);               \
         return *this;                                                   \
     }                                                                   \
-    type &divideScalar(T s) {                                           \
-        TFuncArrayDivideScalar(this->elements, s);                          \
+    type &divideScalar(T s)                                             \
+    {                                                                   \
+        TFuncArrayDivideScalar(this->elements, s);                      \
         return *this;                                                   \
     }                                                                   \
-    type &min(const type &other) {                                      \
-        for (size_t i = 0; i < dimension; ++i) {                        \
-            this->elements[i] = std::min(this->elements[i], other.elements[i]);     \
+    type &min(const type &other)                                        \
+    {                                                                   \
+        for (size_t i = 0; i < dimension; ++i)                          \
+        {                                                               \
+            this->elements[i] = std::min(this->elements[i], other.elements[i]); \
         }                                                               \
         return *this;                                                   \
     }                                                                   \
-    type &max(const type &other) {                                      \
-        for (size_t i = 0; i < dimension; ++i) {                        \
-            this->elements[i] = std::max(this->elements[i], other.elements[i]);     \
+    type &max(const type &other)                                        \
+    {                                                                   \
+        for (size_t i = 0; i < dimension; ++i)                          \
+        {                                                               \
+            this->elements[i] = std::max(this->elements[i], other.elements[i]); \
         }                                                               \
         return *this;                                                   \
     }                                                                   \
-    T dot(const type &other) const {                                    \
+    T dot(const type &other) const                                      \
+    {                                                                   \
         T sum = T(0);                                                   \
-        for (size_t i = 0; i < dimension; ++i) {                        \
-            sum += (*this)[i] * other.elements[i];                          \
+        for (size_t i = 0; i < dimension; ++i)                          \
+        {                                                               \
+            sum += (*this)[i] * other.elements[i];                      \
         }                                                               \
         return sum;                                                     \
     }                                                                   \
-    type &negate() {                                                    \
-        TFuncArrayNegate(this->elements);                                   \
+    type &negate()                                                      \
+    {                                                                   \
+        TFuncArrayNegate(this->elements);                               \
         return *this;                                                   \
     }                                                                   \
-    T length() const {                                                  \
+    T length() const                                                    \
+    {                                                                   \
         T sum = T(0);                                                   \
-        for (size_t i = 0; i < dimension; ++i) {                        \
-            sum += elements[i] * elements[i];                                   \
+        for (size_t i = 0; i < dimension; ++i)                          \
+        {                                                               \
+            sum += elements[i] * elements[i];                           \
         }                                                               \
         return std::sqrt(sum);                                          \
     }                                                                   \
-    T lengthSq() {                                                      \
+    T lengthSq()                                                        \
+    {                                                                   \
         T sum = T(0);                                                   \
-        for (auto &i : elements) {                                          \
+        for (auto &i : elements)                                        \
+        {                                                               \
             sum += i*i;                                                 \
         }                                                               \
         return sum;                                                     \
     }                                                                   \
-    T manhattanLength() {                                               \
+    T manhattanLength()                                                 \
+    {                                                                   \
         T sum = T(0);                                                   \
-        for (size_t i = 0; i < dimension; ++i) {                        \
-            sum += std::abs(elements[i]);                                   \
+        for (size_t i = 0; i < dimension; ++i)                          \
+        {                                                               \
+            sum += std::abs(elements[i]);                               \
         }                                                               \
         return sum;                                                     \
     }                                                                   \
-    type &clamp(const type &min, const type &max) {                     \
-        for (size_t i = 0; i < dimension; ++i) {                        \
-            elements[i] = std::max(min[i], std::min(max[i], elements[i]));      \
+    type &clamp(const type &min, const type &max)                       \
+    {                                                                   \
+        for (size_t i = 0; i < dimension; ++i)                          \
+        {                                                               \
+            elements[i] = std::max(min[i], std::min(max[i], elements[i])); \
         }                                                               \
         return *this;                                                   \
     }                                                                   \
-    type &normalize() {                                                 \
+    type &normalize()                                                   \
+    {                                                                   \
         T length = this->length();                                      \
         return this->divideScalar(length == T(0) ? T(1) : length);      \
     }                                                                   \
 
 // TVectorBase
 template <class T, size_t dimension>
-struct TVector {
+struct TVector
+{
 
-    TVector() {
+    TVector()
+    {
         TFuncArraySet(this->elements, T(0));
     }
     CERAMICS_DECLARE_VECTOR_COMMON_PART(dimension)
+    template<class ArrayT>
+    type &set(ArrayT arr)
+    {
+        size_t i = 0;
+        for(auto item : arr)
+        {
+            elements[i] = item;
+            ++i;
+        }
+        return *this;
+    }
 };
 
 //TODO use inline
 // TVector2
 template <class T>
-struct TVector<T, 2> {
+struct TVector<T, 2>
+{
     CERAMICS_DECLARE_VECTOR_COMMON_PART(2)
     TVector(const T x = T(0), const T y = T(0)) { this->set(x, y); }
-    type &set(const T x = T(0), const T y = T(0)) {
+    type &set(const T x = T(0), const T y = T(0))
+    {
         this->x = x;
         this->y = y;
         return *this;
@@ -354,7 +456,8 @@ struct TVector<T, 2> {
     T cross(const type &other) { return this->x * other.y - this->y * other.x; }
     T &x = elements[0];
     T &y = elements[1];
-    type &applyMatrix3(const TMatrix<T,3,3> &m ) {
+    type &applyMatrix3(const TMatrix<T,3,3> &m )
+    {
         const auto x = this->x;
         const auto y = this->y;
         const auto &e = m.elements;
@@ -366,21 +469,25 @@ struct TVector<T, 2> {
 
 // TVector3
 template <class T>
-struct TVector<T, 3> {
+struct TVector<T, 3>
+{
     CERAMICS_DECLARE_VECTOR_COMMON_PART(3)
-    TVector(const T x = T(0), const T y = T(0), const T z = T(0)) {
+    TVector(const T x = T(0), const T y = T(0), const T z = T(0))
+    {
         this->set(x, y, z);
     }
     T &x = elements[0];
     T &y = elements[1];
     T &z = elements[2];
-    type &set(const T x = T(0), const T y = T(0), const T z = T(0)) {
+    type &set(const T x = T(0), const T y = T(0), const T z = T(0))
+    {
         this->x = x;
         this->y = y;
         this->z = z;
         return *this;
     }
-    type &cross(const type &other) {
+    type &cross(const type &other)
+    {
         T ax = this->x, ay = this->y, az = this->z;
         T bx = other.x, by = other.y, bz = other.z;
 
@@ -389,7 +496,8 @@ struct TVector<T, 3> {
         z = ax * by - ay * bx;
         return *this;
     }
-    type &crossVectors(const type &a, const type &b) {
+    type &crossVectors(const type &a, const type &b)
+    {
         const auto ax = a.x, ay = a.y, az = a.z;
         const auto bx = b.x, by = b.y, bz = b.z;
 
@@ -400,7 +508,8 @@ struct TVector<T, 3> {
         return *this;
     }
 
-    type &applyMatrix3(const TMatrix<T,3,3> &m ) {
+    type &applyMatrix3(const TMatrix<T,3,3> &m )
+    {
 
         auto x = this->x, y = this->y, z = this->z;
         auto e = m.elements;
@@ -412,7 +521,8 @@ struct TVector<T, 3> {
         return *this;
 
     }
-    type &applyMatrix4(const TMatrix<T, 4, 4> &m) {
+    type &applyMatrix4(const TMatrix<T, 4, 4> &m)
+    {
         auto x = this->x, y = this->y, z = this->z;
         auto e = m.elements;
 
@@ -424,11 +534,13 @@ struct TVector<T, 3> {
 
         return *this;
     }
-    type &applyNormalMatrix(const TMatrix<T, 3, 3> &m) {
+    type &applyNormalMatrix(const TMatrix<T, 3, 3> &m)
+    {
         return this->applyMatrix3( m ).normalize();
     }
 
-    type &applyQuaternion(const TQuaternion<T> &q) {
+    type &applyQuaternion(const TQuaternion<T> &q)
+    {
         const auto x = this->x, y = this->y, z = this->z;
         const auto qx = q.x, qy = q.y, qz = q.z, qw = q.w;
 
@@ -447,7 +559,8 @@ struct TVector<T, 3> {
 
         return *this;
     }
-    type &transformDirection(const TMatrix<T,4,4> &m ) {
+    type &transformDirection(const TMatrix<T,4,4> &m )
+    {
 
         const auto x = this->x, y = this->y, z = this->z;
         const auto &e = m->elements;
@@ -459,7 +572,8 @@ struct TVector<T, 3> {
         return this->normalize();
 
     }
-    type &setFromMatrixPosition(const TMatrix<T, 4, 4> &m) {
+    type &setFromMatrixPosition(const TMatrix<T, 4, 4> &m)
+    {
         const auto e = m.elements;
 
         this->x = e[12];
@@ -469,7 +583,8 @@ struct TVector<T, 3> {
         return *this;
     }
 
-    type &setFromMatrixScale(const TMatrix<T, 4, 4> &m) {
+    type &setFromMatrixScale(const TMatrix<T, 4, 4> &m)
+    {
         const auto sx = this->setFromMatrixColumn(m, 0).length();
         const auto sy = this->setFromMatrixColumn(m, 1).length();
         const auto sz = this->setFromMatrixColumn(m, 2).length();
@@ -481,22 +596,26 @@ struct TVector<T, 3> {
         return *this;
     }
 
-    type &setFromMatrixColumn(const TMatrix<T, 4, 4> &m, int index) {
+    type &setFromMatrixColumn(const TMatrix<T, 4, 4> &m, int index)
+    {
         return this->froelementsay(m.elements, index * 4);
     }
 
-    type &setFromMatrix3Column(const TMatrix<T, 3, 3> &m, int index) {
+    type &setFromMatrix3Column(const TMatrix<T, 3, 3> &m, int index)
+    {
         return this->froelementsay(m.elements, index * 3);
     }
 
-    type &froelementsay(const T *array, int offset = 0) {
+    type &froelementsay(const T *array, int offset = 0)
+    {
         this->x = array[offset + 0];
         this->y = array[offset + 1];
         this->z = array[offset + 2];
 
         return *this;
     }
-    T distanceToSquared(const type &v){
+    T distanceToSquared(const type &v)
+    {
         auto dx = this->x - v.x, dy = this->y - v.y, dz = this->z - v.z;
         return dx * dx + dy * dy + dz * dz;    
     }
@@ -504,14 +623,17 @@ struct TVector<T, 3> {
 
 // TVector4
 template <class T>
-struct TVector<T, 4> {
+struct TVector<T, 4>
+{
     CERAMICS_DECLARE_VECTOR_COMMON_PART(4)
     TVector(const T x = T(0), const T y = T(0), const T z = T(0),
-            const T w = T(0)) {
+            const T w = T(0))
+    {
         this->set(x, y, z, w);
     }
     type &set(const T x = T(0), const T y = T(0), const T z = T(0),
-              const T w = T(0)) {
+              const T w = T(0))
+    {
         this->x = x;
         this->y = y;
         this->z = z;

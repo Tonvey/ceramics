@@ -6,8 +6,9 @@
 #include "../CeramicsType.h"
 #include "TEvent.hpp"
 CERAMICS_NAMESPACE_BEGIN
-class Object3D : public MultipleInheritableEnableSharedFromThis {
-    CERAMICS_FORCE_CLASS_SHARED_CREATE_DECLARE(Object3D)
+class Object3D : public MultipleInheritableEnableSharedFromThis
+{
+    CERAMICS_FORCE_CLASS_SHARED_CREATE_DECLARE(Object3D);
 public:
     typedef Object3D type;
     typedef Object3D &type_ref;
@@ -23,13 +24,13 @@ public:
 protected:
     Object3D();
 
-//     template <class... T>
-//     static shared_ptr_t create(T... args) {
-//         return shared_ptr_t(new type(args...));
-//     }
+    //     template <class... T>
+    //     static shared_ptr_t create(T... args) {
+    //         return shared_ptr_t(new type(args...));
+    //     }
 
-// protected:
-//     shared_ptr_t getSharedPtr();
+    // protected:
+    //     shared_ptr_t getSharedPtr();
 
 public:
     TEvent<> addEvent;
@@ -165,6 +166,7 @@ public:
     virtual void updateMatrixWorld(bool force);
 
     virtual void updateWorldMatrix(bool updateParents, bool updateChildren);
+private:
 };
 Vector3 Object3D::DefaultUp(0, 1, 0);
 bool Object3D::DefaultMatrixAutoUpdate = true;

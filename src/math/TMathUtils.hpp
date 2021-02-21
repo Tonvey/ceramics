@@ -13,22 +13,29 @@ CERAMICS_NAMESPACE_BEGIN
 /* long _seed = 1234567; */
 #define PI (3.14159265358979323846264338327950288)
 template <class T>
-class TMathUtils {
+class TMathUtils
+{
 public:
     static T DEG2RAD;
     static T RAD2DEG;
     static T LN2;
 
-    static std::string generateUUID() {
+    static std::string generateUUID()
+    {
         std::ostringstream ss;
         static bool _lut_init = false;
         static std::string _lut[256];
-        if (!_lut_init) {
+        if (!_lut_init)
+        {
             _lut_init = true;
-            for (int i = 0; i < 256; ++i) {
-                if (i < 16) {
+            for (int i = 0; i < 256; ++i)
+            {
+                if (i < 16)
+                {
                     _lut[i] = "0";
-                } else {
+                }
+                else
+                {
                     ss << std::hex << i;
                     _lut[i] = ss.str();
                     ss.clear();
@@ -60,7 +67,8 @@ public:
         return uuid;
     }
 
-    static T clamp(T value, T min, T max) {
+    static T clamp(T value, T min, T max)
+    {
         return std::max(min, std::min(max, value));
     }
 
@@ -71,7 +79,8 @@ public:
 
     // Linear mapping from range <a1, a2> to range <b1, b2>
 
-    static T mapLinear(T x, T a1, T a2, T b1, T b2) {
+    static T mapLinear(T x, T a1, T a2, T b1, T b2)
+    {
         return b1 + (x - a1) * (b2 - b1) / (a2 - a1);
     }
 
@@ -81,7 +90,8 @@ public:
 
     // http://en.wikipedia.org/wiki/Smoothstep
 
-    static T smoothstep(T x, T min, T max) {
+    static T smoothstep(T x, T min, T max)
+    {
         if (x <= min) return 0;
         if (x >= max) return 1;
 
@@ -90,7 +100,8 @@ public:
         return x * x * (3 - 2 * x);
     }
 
-    static T smootherstep(T x, T min, T max) {
+    static T smootherstep(T x, T min, T max)
+    {
         if (x <= min) return 0;
         if (x >= max) return 1;
 
@@ -101,13 +112,15 @@ public:
 
     // Random integer from <low, high> interval
 
-    static T randInt(T low, T high) {
+    static T randInt(T low, T high)
+    {
         return low + std::floor(std::rand() * (high - low + 1));
     }
 
     // Random float from <low, high> interval
 
-    static T randFloat(T low, T high) {
+    static T randFloat(T low, T high)
+    {
         return low + std::rand() * (high - low);
     }
 
@@ -117,7 +130,8 @@ public:
 
     // Deterministic pseudo-random float in the interval [ 0, 1 ]
 
-    static int seededRandom(unsigned int s) {
+    static int seededRandom(unsigned int s)
+    {
         // if ( s !== undefined )
         int _seed = s % 2147483647;
         std::srand(_seed);
@@ -133,20 +147,24 @@ public:
 
     static T radToDeg(T radians) { return radians * RAD2DEG; }
 
-    static T isPowerOfTwo(T value) {
+    static T isPowerOfTwo(T value)
+    {
         return (value & (value - 1)) == 0 && value != 0;
     }
 
-    static T ceilPowerOfTwo(T value) {
+    static T ceilPowerOfTwo(T value)
+    {
         return std::pow(2, std::ceil(std::log(value) / LN2));
     }
 
-    static T floorPowerOfTwo(T value) {
+    static T floorPowerOfTwo(T value)
+    {
         return std::pow(2, std::floor(std::log(value) / LN2));
     }
 
     static void setQuaternionFromProperEuler(T q, T a, T b, T c,
-                                             RotationOrder order) {
+                                             RotationOrder order)
+    {
         // Intrinsic Proper Euler Angles - see
         // https://en.wikipedia.org/wiki/Euler_angles
 
@@ -166,36 +184,37 @@ public:
         const T c3_1 = std::cos((c - a) / 2);
         const T s3_1 = std::sin((c - a) / 2);
 
-        switch (order) {
-            case XYX:
-                q.set(c2 * s13, s2 * c1_3, s2 * s1_3, c2 * c13);
-                break;
+        switch (order)
+        {
+        case XYX:
+            q.set(c2 * s13, s2 * c1_3, s2 * s1_3, c2 * c13);
+            break;
 
-            case YZY:
-                q.set(s2 * s1_3, c2 * s13, s2 * c1_3, c2 * c13);
-                break;
+        case YZY:
+            q.set(s2 * s1_3, c2 * s13, s2 * c1_3, c2 * c13);
+            break;
 
-            case ZXZ:
-                q.set(s2 * c1_3, s2 * s1_3, c2 * s13, c2 * c13);
-                break;
+        case ZXZ:
+            q.set(s2 * c1_3, s2 * s1_3, c2 * s13, c2 * c13);
+            break;
 
-            case XZX:
-                q.set(c2 * s13, s2 * s3_1, s2 * c3_1, c2 * c13);
-                break;
+        case XZX:
+            q.set(c2 * s13, s2 * s3_1, s2 * c3_1, c2 * c13);
+            break;
 
-            case YXY:
-                q.set(s2 * c3_1, c2 * s13, s2 * s3_1, c2 * c13);
-                break;
+        case YXY:
+            q.set(s2 * c3_1, c2 * s13, s2 * s3_1, c2 * c13);
+            break;
 
-            case ZYZ:
-                q.set(s2 * s3_1, s2 * c3_1, c2 * s13, c2 * c13);
-                break;
+        case ZYZ:
+            q.set(s2 * s3_1, s2 * c3_1, c2 * s13, c2 * c13);
+            break;
 
-            default:
-                break;
-                // console.warn( 'CERAMICS.TMathUtils:
-                // .setQuaternionFromProperEuler() encountered an unknown order:
-                // ' + order );
+        default:
+            break;
+            // console.warn( 'CERAMICS.TMathUtils:
+            // .setQuaternionFromProperEuler() encountered an unknown order:
+            // ' + order );
         }
     }
 };

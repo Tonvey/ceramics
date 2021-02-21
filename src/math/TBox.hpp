@@ -20,8 +20,7 @@ template <class T>
 class TTriangle;
 
 template <class T, size_t dimension>
-class TBox {
-#define CERAMICS_DECLARE_BOX_COMMON_PART(dimension)                        \
+#define CERAMICS_DECLARE_BOX_COMMON_PART(dimension)                     \
     public:                                                             \
     typedef TVector<T, dimension> vec_t;                                \
     typedef TBox<T, dimension> type;                                    \
@@ -29,41 +28,52 @@ class TBox {
     typedef std::numeric_limits<T> limit_t;                             \
     vec_t min, max;                                                     \
     TBox(vec_t min = vec_t().setAll(limit_t::max()),                    \
-         vec_t max = vec_t().setAll(limit_t::min())) {                  \
+         vec_t max = vec_t().setAll(limit_t::min()))                    \
+    {                                                                   \
         this->min = min;                                                \
         this->max = max;                                                \
     }                                                                   \
-    type &set(const vec_t &min, const vec_t &max) {                     \
+    type &set(const vec_t &min, const vec_t &max)                       \
+    {                                                                   \
         this->min.copy(min);                                            \
         this->max.copy(max);                                            \
         return *this;                                                   \
     }                                                                   \
     template <class C>                                                  \
-    type &setFromPoints(const C &container) {                           \
+    type &setFromPoints(const C &container)                             \
+    {                                                                   \
         this->makeEmpty();                                              \
-        for (auto i = container.cbegin(); i != container.cend(); ++i) { \
+        for (auto i = container.cbegin(); i != container.cend(); ++i)   \
+        {                                                               \
             this->expandByPoint(*i);                                    \
         }                                                               \
         return *this;                                                   \
     }                                                                   \
-    type &setFromPoints(const vec_t points[], size_t length) {          \
+    type &setFromPoints(const vec_t points[], size_t length)            \
+    {                                                                   \
         this->makeEmpty();                                              \
-        for (size_t i = 0; i < length; ++i) {                           \
+        for (size_t i = 0; i < length; ++i)                             \
+        {                                                               \
             this->expandByPoint(points[i]);                             \
         }                                                               \
         return *this;                                                   \
     }                                                                   \
-    type &setFromArray(T *array, size_t length) {                       \
+    type &setFromArray(T *array, size_t length)                         \
+    {                                                                   \
         vec_t min;                                                      \
         vec_t max;                                                      \
         min.setAll(limit_t::max);                                       \
         min.setAll(limit_t::min);                                       \
-        for (size_t i = 0; i < length; i += dimension) {                \
-            for (size_t d = 0; d < dimension; ++d) {                    \
-                if (array[i + d] < min[d]) {                            \
+        for (size_t i = 0; i < length; i += dimension)                  \
+        {                                                               \
+            for (size_t d = 0; d < dimension; ++d)                      \
+            {                                                           \
+                if (array[i + d] < min[d])                              \
+                {                                                       \
                     min[d] = array[i + d];                              \
                 }                                                       \
-                if (array[i + d] > max[d]) {                            \
+                if (array[i + d] > max[d])                              \
+                {                                                       \
                     max[d] = array[i + d];                              \
                 }                                                       \
             }                                                           \
@@ -72,7 +82,8 @@ class TBox {
         this->max = max;                                                \
         return *this;                                                   \
     }                                                                   \
-    type &setFromCenterAndSize(const vec_t &center, const vec_t &size) { \
+    type &setFromCenterAndSize(const vec_t &center, const vec_t &size)  \
+    {                                                                   \
         TVector<T, 2> _vector;                                          \
         auto halfSize = _vector.copy(size).multiplyScalar(0.5);         \
         this->min.copy(center).sub(halfSize);                           \
@@ -81,121 +92,150 @@ class TBox {
     }                                                                   \
     type clone() { return *this; }                                      \
     type &operator=(const_type &box) { return this->copy(box); }        \
-    type &copy(const_type &box) {                                       \
+    type &copy(const_type &box)                                         \
+    {                                                                   \
         this->min.copy(box.min);                                        \
         this->max.copy(box.max);                                        \
         return *this;                                                   \
     }                                                                   \
-    type &makeEmpty() {                                                 \
+    type &makeEmpty()                                                   \
+    {                                                                   \
         this->min = vec_t().setAll(limit_t::max());                     \
         this->max = vec_t().setAll(limit_t::min());                     \
         return *this;                                                   \
     }                                                                   \
-    bool isEmpty() {                                                    \
-        for (int i = 0; i < dimension; ++i) {                           \
-            if (this->max[i] < this->min[i]) {                          \
+    bool isEmpty()                                                      \
+    {                                                                   \
+        for (int i = 0; i < dimension; ++i)                             \
+        {                                                               \
+            if (this->max[i] < this->min[i])                            \
+            {                                                           \
                 return true;                                            \
             }                                                           \
         }                                                               \
         return false;                                                   \
     }                                                                   \
-    vec_t getCenter() {                                                 \
+    vec_t getCenter()                                                   \
+    {                                                                   \
         vec_t ret;                                                      \
         this->getCenter(ret);                                           \
         return ret;                                                     \
     }                                                                   \
-    vec_t &getCenter(vec_t &target) {                                   \
+    vec_t &getCenter(vec_t &target)                                     \
+    {                                                                   \
         return this->isEmpty() ? target.setAll(T(0))                    \
             : target = (this->min+ this->max)                           \
             .multiplyScalar(0.5);                                       \
     }                                                                   \
-    vec_t &getSize() {                                                  \
+    vec_t &getSize()                                                    \
+    {                                                                   \
         vec_t ret;                                                      \
         this->getSize(ret);                                             \
         return ret;                                                     \
     }                                                                   \
-    vec_t &getSize(vec_t &target) {                                     \
+    vec_t &getSize(vec_t &target)                                       \
+    {                                                                   \
         return this->isEmpty() ? target.setAll(T(0))                    \
             : target.subVectors(this->max, this->min);                  \
     }                                                                   \
-    type &expandByPoint(const vec_t &point) {                           \
+    type &expandByPoint(const vec_t &point)                             \
+    {                                                                   \
         this->min.min(point);                                           \
         this->max.max(point);                                           \
         return *this;                                                   \
     }                                                                   \
-    type &expandByVector(const vec_t &vector) {                         \
+    type &expandByVector(const vec_t &vector)                           \
+    {                                                                   \
         this->min.sub(vector);                                          \
         this->max.add(vector);                                          \
         return *this;                                                   \
     }                                                                   \
-    type &expandByScalar(T scalar) {                                    \
+    type &expandByScalar(T scalar)                                      \
+    {                                                                   \
         this->min.addScalar(-scalar);                                   \
         this->max.addScalar(scalar);                                    \
         return *this;                                                   \
     }                                                                   \
-    bool containsPoint(const vec_t &point) {                            \
+    bool containsPoint(const vec_t &point)                              \
+    {                                                                   \
         return point.x < this->min.x || point.x > this->max.x ||        \
             point.y < this->min.y || point.y > this->max.y              \
             ? false                                                     \
             : true;                                                     \
     }                                                                   \
-    bool containsBox(const_type &box) {                                 \
-        for (size_t i = 0; i < dimension; ++i) {                        \
-            if (this->min[i] > box.min[i]) {                            \
+    bool containsBox(const_type &box)                                   \
+    {                                                                   \
+        for (size_t i = 0; i < dimension; ++i)                          \
+        {                                                               \
+            if (this->min[i] > box.min[i])                              \
+            {                                                           \
                 return false;                                           \
             }                                                           \
         }                                                               \
         return true;                                                    \
     }                                                                   \
-    type &getParameter(const vec_t &point, vec_t &target = vec_t::zero()) { \
-        for (size_t i = 0; i < dimension; ++i) {                        \
+    type &getParameter(const vec_t &point, vec_t &target = vec_t::zero()) \
+    {                                                                   \
+        for (size_t i = 0; i < dimension; ++i)                          \
+        {                                                               \
             target[i] =                                                 \
                 (point[i] - this->min[i]) / (this->max[i] - this->min.x); \
         }                                                               \
         return target;                                                  \
     }                                                                   \
-    bool intersectsBox(const_type &box) {                               \
-        for (size_t i = 0; i < dimension; ++i) {                        \
-            if (box.max[i] < this->min[i] || box.min[i] > this->max[i]) { \
+    bool intersectsBox(const_type &box)                                 \
+    {                                                                   \
+        for (size_t i = 0; i < dimension; ++i)                          \
+        {                                                               \
+            if (box.max[i] < this->min[i] || box.min[i] > this->max[i]) \
+            {                                                           \
                 return false;                                           \
             }                                                           \
         }                                                               \
         return true;                                                    \
     }                                                                   \
-    vec_t &clampPoint(const vec_t &point, vec_t &target) {              \
+    vec_t &clampPoint(const vec_t &point, vec_t &target)                \
+    {                                                                   \
         return target.copy(point).clamp(this->min, this->max);          \
     }                                                                   \
-    T distanceToPoint(const vec_t &point) {                             \
+    T distanceToPoint(const vec_t &point)                               \
+    {                                                                   \
         TVector<T, 2> _vector;                                          \
         auto clampedPoint = _vector.copy(point).clamp(this->min, this->max); \
         return clampedPoint.sub(point).length();                        \
     }                                                                   \
-    type &intersect(const_type &box) {                                  \
+    type &intersect(const_type &box)                                    \
+    {                                                                   \
         this->min.max(box.min);                                         \
         this->max.min(box.max);                                         \
         return *this;                                                   \
     }                                                                   \
-    type &Union(const_type &box) {                                      \
+    type &Union(const_type &box)                                        \
+    {                                                                   \
         this->min.min(box.min);                                         \
         this->max.max(box.max);                                         \
         return *this;                                                   \
     }                                                                   \
-    type &translate(const vec_t &offset) {                              \
+    type &translate(const vec_t &offset)                                \
+    {                                                                   \
         this->min.add(offset);                                          \
         this->max.add(offset);                                          \
         return *this;                                                   \
     }                                                                   \
-    bool equals(const_type &box) {                                      \
+    bool equals(const_type &box)                                        \
+    {                                                                   \
         return box.min.equals(this->min) && box.max.equals(this->max);  \
     }
-
-    CERAMICS_DECLARE_BOX_COMMON_PART(dimension)
+class TBox
+{
+    CERAMICS_DECLARE_BOX_COMMON_PART(dimension);
 };
 
 template <class T>
-class TBox<T, 3> {
-    CERAMICS_DECLARE_BOX_COMMON_PART(3)
-    public:
+class TBox<T, 3>
+{
+    CERAMICS_DECLARE_BOX_COMMON_PART(3);
+public:
     // setFromBufferAttribute( attribute )
     // setFromObject( object )
     // expandByObject( object ) {
@@ -203,7 +243,8 @@ class TBox<T, 3> {
     typedef TTriangle<T> triangle_t;
     typedef TMatrix<T, 4, 4> matrix_t;
     typedef TSphere<T> sphere_t;
-    bool intersectsSphere(const sphere_t &sphere) {
+    bool intersectsSphere(const sphere_t &sphere)
+    {
         vec_t _vector;
 
         // Find the point on the AABB closest to the sphere center.
@@ -213,36 +254,46 @@ class TBox<T, 3> {
         return _vector.distanceToSquared(sphere.center) <=
             (sphere.radius * sphere.radius);
     }
-    bool intersectsPlane(const plane_t &plane) {
+    bool intersectsPlane(const plane_t &plane)
+    {
         // We compute the minimum and maximum dot product values. If those
         // values are on the same side (back or front) of the plane, then there
         // is no intersection.
 
         T min, max;
 
-        if (plane.normal.x > 0) {
+        if (plane.normal.x > 0)
+        {
             min = plane.normal.x * this->min.x;
             max = plane.normal.x * this->max.x;
 
-        } else {
+        }
+        else
+        {
             min = plane.normal.x * this->max.x;
             max = plane.normal.x * this->min.x;
         }
 
-        if (plane.normal.y > 0) {
+        if (plane.normal.y > 0)
+        {
             min += plane.normal.y * this->min.y;
             max += plane.normal.y * this->max.y;
 
-        } else {
+        }
+        else
+        {
             min += plane.normal.y * this->max.y;
             max += plane.normal.y * this->min.y;
         }
 
-        if (plane.normal.z > 0) {
+        if (plane.normal.z > 0)
+        {
             min += plane.normal.z * this->min.z;
             max += plane.normal.z * this->max.z;
 
-        } else {
+        }
+        else
+        {
             min += plane.normal.z * this->max.z;
             max += plane.normal.z * this->min.z;
         }
@@ -250,8 +301,10 @@ class TBox<T, 3> {
         return (min <= -plane.constant && max >= -plane.constant);
     }
 
-    bool intersectsTriangle(const triangle_t &triangle) {
-        if (this->isEmpty()) {
+    bool intersectsTriangle(const triangle_t &triangle)
+    {
+        if (this->isEmpty())
+        {
             return false;
         }
 
@@ -277,17 +330,22 @@ class TBox<T, 3> {
         // of each of the 3 sides of the aabb against each of the 3 sides of the
         // triangle = 9 axis of separation axis_ij = u_i x f_j (u0, u1, u2 =
         // face normals of aabb = x,y,z axes vectors since aabb is axis aligned)
-        auto axes = {0,      -_f0.z, _f0.y, 0,      -_f1.z, _f1.y, 0,
-            -_f2.z, _f2.y,  _f0.z, 0,      -_f0.x, _f1.z, 0,
-            -_f1.x, _f2.z,  0,     -_f2.x, -_f0.y, _f0.x, 0,
-            -_f1.y, _f1.x,  0,     -_f2.y, _f2.x,  0};
-        if (!satForAxes(axes, _v0, _v1, _v2, _extents)) {
+        auto axes =
+            {
+                0,      -_f0.z, _f0.y, 0,      -_f1.z, _f1.y, 0,
+                -_f2.z, _f2.y,  _f0.z, 0,      -_f0.x, _f1.z, 0,
+                -_f1.x, _f2.z,  0,     -_f2.x, -_f0.y, _f0.x, 0,
+                -_f1.y, _f1.x,  0,     -_f2.y, _f2.x,  0
+            };
+        if (!satForAxes(axes, _v0, _v1, _v2, _extents))
+        {
             return false;
         }
 
         // test 3 face normals from the aabb
         axes = {1, 0, 0, 0, 1, 0, 0, 0, 1};
-        if (!satForAxes(axes, _v0, _v1, _v2, _extents)) {
+        if (!satForAxes(axes, _v0, _v1, _v2, _extents))
+        {
             return false;
         }
 
@@ -298,11 +356,13 @@ class TBox<T, 3> {
 
         return satForAxes(axes, _v0, _v1, _v2, _extents);
     }
-    sphere_t getBoundingSphere() {
+    sphere_t getBoundingSphere()
+    {
         sphere_t target;
         return getBoundingSphere(target);
     }
-    sphere_t &getBoundingSphere(sphere_t &target) {
+    sphere_t &getBoundingSphere(sphere_t &target)
+    {
 
         this->getCenter(target.center);
 
@@ -310,7 +370,8 @@ class TBox<T, 3> {
 
         return target;
     }
-    type &applyMatrix4(const matrix_t &matrix) {
+    type &applyMatrix4(const matrix_t &matrix)
+    {
         vec_t _points[8];
         // transform of empty box is an empty box.
         if (this->isEmpty()) return this;

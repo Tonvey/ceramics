@@ -26,19 +26,23 @@ using WeakPtr = std::weak_ptr<T...>;
 template <class... T>
 using EnableSharedFromThis = std::enable_shared_from_this<T...>;
 template <class T, class U>
-SharedPtr<T> StaticPointerCast(const SharedPtr<U>& r) {
+SharedPtr<T> StaticPointerCast(const SharedPtr<U>& r)
+{
     return std::static_pointer_cast<T>(r);
 }
 template <class T, class U>
-SharedPtr<T> DynamicPointerCast(const SharedPtr<U>& r) {
+SharedPtr<T> DynamicPointerCast(const SharedPtr<U>& r)
+{
     return std::dynamic_pointer_cast<T>(r);
 }
 template <class T, class U>
-SharedPtr<T> ConstPointerCast(const SharedPtr<U>& r) {
+SharedPtr<T> ConstPointerCast(const SharedPtr<U>& r)
+{
     return std::const_pointer_cast<T>(r);
 }
 class MultipleInheritableEnableSharedFromThis
-    : protected EnableSharedFromThis<MultipleInheritableEnableSharedFromThis> {
+    : protected EnableSharedFromThis<MultipleInheritableEnableSharedFromThis>
+{
 public:
     virtual ~MultipleInheritableEnableSharedFromThis() {}
 };

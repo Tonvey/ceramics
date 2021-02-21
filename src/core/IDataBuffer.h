@@ -1,7 +1,8 @@
 #pragma once
 #include "../CeramicsMacro.h"
 CERAMICS_NAMESPACE_BEGIN
-class IDataBuffer{
+class IDataBuffer
+{
 public:
     virtual ~IDataBuffer(){};
     virtual void *data()const = 0 ;

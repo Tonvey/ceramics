@@ -1,7 +1,8 @@
 #pragma once
 #include "../CeramicsMacro.h"
 CERAMICS_NAMESPACE_BEGIN
-typedef enum {
+typedef enum
+{
     XYZ,
     XZY,
     YXZ,
@@ -15,5 +16,5 @@ typedef enum {
     XZX,
     YXY,
     ZYZ,
-} RotationOrder;
+}RotationOrder;
 CERAMICS_NAMESPACE_END

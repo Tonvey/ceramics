@@ -3,7 +3,8 @@
 CERAMICS_NAMESPACE_USING
 
 ApplicationCoreProfile::ApplicationCoreProfile(int argc, char **argv)
-    :ApplicationBase(argc,argv) {
+    :ApplicationBase(argc,argv)
+{
     this->mGLMajorVersion=3;
     this->mGLMinorVersion=2;
 
@@ -15,13 +16,15 @@ ApplicationCoreProfile::ApplicationCoreProfile(int argc, char **argv)
     mMouseSpeed=0.005f;
 }
 
-void ApplicationCoreProfile::versionSelect() {
+void ApplicationCoreProfile::versionSelect()
+{
     ApplicationBase::versionSelect();
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); 
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); 
 }
 
-void ApplicationCoreProfile::computeMatrixesFromInput(double elapse) {
+void ApplicationCoreProfile::computeMatrixesFromInput(double elapse)
+{
     double xpos, ypos;
     glfwGetCursorPos(mWindow, &xpos, &ypos);
 
@@ -51,19 +54,23 @@ void ApplicationCoreProfile::computeMatrixesFromInput(double elapse) {
     Vector3 up = right.cross(direction );
 
     // Move forward
-    if (glfwGetKey( mWindow, GLFW_KEY_W ) == GLFW_PRESS){
+    if (glfwGetKey( mWindow, GLFW_KEY_W ) == GLFW_PRESS)
+    {
         mEyePos += direction * float(elapse) * mSpeed;
     }
     // Move backward
-    if (glfwGetKey( mWindow, GLFW_KEY_S ) == GLFW_PRESS){
+    if (glfwGetKey( mWindow, GLFW_KEY_S ) == GLFW_PRESS)
+    {
         mEyePos -= direction * float(elapse) * mSpeed;
     }
     // Strafe right
-    if (glfwGetKey( mWindow, GLFW_KEY_D ) == GLFW_PRESS){
+    if (glfwGetKey( mWindow, GLFW_KEY_D ) == GLFW_PRESS)
+    {
         mEyePos += right * float(elapse) * mSpeed;
     }
     // Strafe left
-    if (glfwGetKey( mWindow, GLFW_KEY_A ) == GLFW_PRESS){
+    if (glfwGetKey( mWindow, GLFW_KEY_A ) == GLFW_PRESS)
+    {
         mEyePos -= right * float(elapse) * mSpeed;
     }
 

@@ -22,113 +22,150 @@ struct TMatrix {
     typedef T value_type;                                               \
     typedef TMatrix<T, rowNum, colNum> type;                            \
     typedef TMatrix<T, colNum, rowNum> transpose_type;                  \
-    TMatrix(std::initializer_list<T> l) {                               \
+    TMatrix(std::initializer_list<T> l)                                 \
+    {                                                                   \
         size_t i = 0;                                                   \
         for (auto it = l.begin(); it != l.end() && i < rowNum * colNum; \
-             ++it, ++i) {                                               \
+             ++it, ++i)                                                 \
+        {                                                               \
             elements[i] = *it;                                          \
         }                                                               \
-        for (; i < rowNum * colNum; ++i) {                              \
+        for (; i < rowNum * colNum; ++i)                                \
+        {                                                               \
             elements[i] = T(0);                                         \
         }                                                               \
     }                                                                   \
-    TMatrix(const type &other) {                                        \
-        for (size_t r = 0; r < rowNum; ++r) {                           \
-            for (size_t c = 0; c < colNum; ++c) {                       \
+    TMatrix(const type &other)                                          \
+    {                                                                   \
+        for (size_t r = 0; r < rowNum; ++r)                             \
+        {                                                               \
+            for (size_t c = 0; c < colNum; ++c)                         \
+            {                                                           \
                 this->elements[r * colNum + c] =                        \
                     other.elements[r * colNum + c];                     \
             }                                                           \
         }                                                               \
     }                                                                   \
-    transpose_type transpose() const {                                  \
+    transpose_type transpose() const                                    \
+    {                                                                   \
         transpose_type ret;                                             \
-        for (size_t r = 0; r < rowNum; ++r) {                           \
-            for (size_t c = 0; c < colNum; ++c) {                       \
+        for (size_t r = 0; r < rowNum; ++r)                             \
+        {                                                               \
+            for (size_t c = 0; c < colNum; ++c)                         \
+            {                                                           \
                 ret[c * rowNum + r] = this->elements[r * colNum + c];   \
             }                                                           \
         }                                                               \
         return ret;                                                     \
     }                                                                   \
-    T &operator[](size_t idx) {                                         \
+    T &operator[](size_t idx)                                           \
+    {                                                                   \
         assert(idx < rowNum);                                           \
         return elements[idx];                                           \
     }                                                                   \
-    type operator+(T s) const {                                         \
+    type operator+(T s) const                                           \
+    {                                                                   \
         type ret;                                                       \
-        for (size_t r = 0; r < rowNum; ++r) {                           \
-            for (size_t c = 0; c < colNum; ++c) {                       \
+        for (size_t r = 0; r < rowNum; ++r)                             \
+        {                                                               \
+            for (size_t c = 0; c < colNum; ++c)                         \
+            {                                                           \
                 ret->elements[r * colNum + c] =                         \
                     this->elements[r * colNum + c] + s;                 \
             }                                                           \
         }                                                               \
         return ret;                                                     \
     }                                                                   \
-    type &operator+=(T s) {                                             \
-        for (size_t r = 0; r < rowNum; ++r) {                           \
-            for (size_t c = 0; c < colNum; ++c) {                       \
+    type &operator+=(T s)                                               \
+    {                                                                   \
+        for (size_t r = 0; r < rowNum; ++r)                             \
+        {                                                               \
+            for (size_t c = 0; c < colNum; ++c)                         \
+            {                                                           \
                 this->elements[r * colNum + c] += s;                    \
             }                                                           \
         }                                                               \
         return *this;                                                   \
     }                                                                   \
-    type operator-(T s) const {                                         \
+    type operator-(T s) const                                           \
+    {                                                                   \
         type ret;                                                       \
-        for (size_t r = 0; r < rowNum; ++r) {                           \
-            for (size_t c = 0; c < colNum; ++c) {                       \
+        for (size_t r = 0; r < rowNum; ++r)                             \
+        {                                                               \
+            for (size_t c = 0; c < colNum; ++c)                         \
+            {                                                           \
                 ret->elements[r * colNum + c] =                         \
                     this->elements[r * colNum + c] - s;                 \
             }                                                           \
         }                                                               \
         return ret;                                                     \
     }                                                                   \
-    type &operator-=(T s) {                                             \
-        for (size_t r = 0; r < rowNum; ++r) {                           \
-            for (size_t c = 0; c < colNum; ++c) {                       \
+    type &operator-=(T s)                                               \
+    {                                                                   \
+        for (size_t r = 0; r < rowNum; ++r)                             \
+        {                                                               \
+            for (size_t c = 0; c < colNum; ++c)                         \
+            {                                                           \
                 this->elements[r * colNum + c] -= s;                    \
             }                                                           \
         }                                                               \
         return *this;                                                   \
     }                                                                   \
-    type operator*(T s) const {                                         \
+    type operator*(T s) const                                           \
+    {                                                                   \
         type ret;                                                       \
-        for (size_t r = 0; r < rowNum; ++r) {                           \
-            for (size_t c = 0; c < colNum; ++c) {                       \
+        for (size_t r = 0; r < rowNum; ++r)                             \
+        {                                                               \
+            for (size_t c = 0; c < colNum; ++c)                         \
+            {                                                           \
                 ret->elements[r * colNum + c] =                         \
                     this->elements[r * colNum + c] * s;                 \
             }                                                           \
         }                                                               \
         return ret;                                                     \
     }                                                                   \
-    type &operator*=(T s) {                                             \
-        for (size_t r = 0; r < rowNum; ++r) {                           \
-            for (size_t c = 0; c < colNum; ++c) {                       \
+    type &operator*=(T s)                                               \
+    {                                                                   \
+        for (size_t r = 0; r < rowNum; ++r)                             \
+        {                                                               \
+            for (size_t c = 0; c < colNum; ++c)                         \
+            {                                                           \
                 this->elements[r * colNum + c] *= s;                    \
             }                                                           \
         }                                                               \
         return *this;                                                   \
     }                                                                   \
-    type operator/(T s) const {                                         \
+    type operator/(T s) const                                           \
+    {                                                                   \
         type ret;                                                       \
-        for (size_t r = 0; r < rowNum; ++r) {                           \
-            for (size_t c = 0; c < colNum; ++c) {                       \
+        for (size_t r = 0; r < rowNum; ++r)                             \
+        {                                                               \
+            for (size_t c = 0; c < colNum; ++c)                         \
+            {                                                           \
                 ret->elements[r * colNum + c] =                         \
                     this->elements[r * colNum + c] / s;                 \
             }                                                           \
         }                                                               \
         return ret;                                                     \
     }                                                                   \
-    type &operator/=(T s) {                                             \
-        for (size_t r = 0; r < rowNum; ++r) {                           \
-            for (size_t c = 0; c < colNum; ++c) {                       \
+    type &operator/=(T s)                                               \
+    {                                                                   \
+        for (size_t r = 0; r < rowNum; ++r)                             \
+        {                                                               \
+            for (size_t c = 0; c < colNum; ++c)                         \
+            {                                                           \
                 this->elements[r * colNum + c] /= s;                    \
             }                                                           \
         }                                                               \
         return *this;                                                   \
     }                                                                   \
-    type operator+(const type &other) const {                           \
+    type operator+(const type &other) const                             \
+    {                                                                   \
         type ret = *this;                                               \
-        for (size_t r = 0; r < rowNum; ++r) {                           \
-            for (size_t c = 0; c < colNum; ++c) {                       \
+        for (size_t r = 0; r < rowNum; ++r)                             \
+        {                                                               \
+            for (size_t c = 0; c < colNum; ++c)                         \
+            {                                                           \
                 ret->elements[r * colNum + c] =                         \
                     this->elements[r * colNum + c] +                    \
                     other.elements[r * colNum + c];                     \
@@ -136,19 +173,25 @@ struct TMatrix {
         }                                                               \
         return ret;                                                     \
     }                                                                   \
-    type &operator+=(const type &other) {                               \
-        for (size_t r = 0; r < rowNum; ++r) {                           \
-            for (size_t c = 0; c < colNum; ++c) {                       \
+    type &operator+=(const type &other)                                 \
+    {                                                                   \
+        for (size_t r = 0; r < rowNum; ++r)                             \
+        {                                                               \
+            for (size_t c = 0; c < colNum; ++c)                         \
+            {                                                           \
                 this->elements[r * colNum + c] +=                       \
                     other.elements[r * colNum + c];                     \
             }                                                           \
         }                                                               \
         return *this;                                                   \
     }                                                                   \
-    type operator-(const type &other) const {                           \
+    type operator-(const type &other) const                             \
+    {                                                                   \
         type ret = *this;                                               \
-        for (size_t r = 0; r < rowNum; ++r) {                           \
-            for (size_t c = 0; c < colNum; ++c) {                       \
+        for (size_t r = 0; r < rowNum; ++r)                             \
+        {                                                               \
+            for (size_t c = 0; c < colNum; ++c)                         \
+            {                                                           \
                 ret->elements[r * colNum + c] =                         \
                     this->elements[r * colNum + c] -                    \
                     other.elements[r * colNum + c];                     \
@@ -156,9 +199,12 @@ struct TMatrix {
         }                                                               \
         return ret;                                                     \
     }                                                                   \
-    type &operator-=(const type &other) {                               \
-        for (size_t r = 0; r < rowNum; ++r) {                           \
-            for (size_t c = 0; c < colNum; ++c) {                       \
+    type &operator-=(const type &other)                                 \
+    {                                                                   \
+        for (size_t r = 0; r < rowNum; ++r)                             \
+        {                                                               \
+            for (size_t c = 0; c < colNum; ++c)                         \
+            {                                                           \
                 this->elements[r * colNum + c] -=                       \
                     other.elements[r * colNum + c];                     \
             }                                                           \
@@ -167,13 +213,17 @@ struct TMatrix {
     }                                                                   \
     template <size_t colNum2>                                           \
     TMatrix<T, rowNum, colNum2> operator*(TMatrix<T, colNum, colNum2> &other) \
-        const {                                                         \
+        const                                                           \
+    {                                                                   \
         TMatrix<T, rowNum, colNum2> ret;                                \
         auto te = ret.elements;                                         \
-        for (size_t r = 0; r < rowNum; ++r) {                           \
-            for (size_t c = 0; c < colNum2; ++c) {                      \
+        for (size_t r = 0; r < rowNum; ++r)                             \
+        {                                                               \
+            for (size_t c = 0; c < colNum2; ++c)                        \
+            {                                                           \
                 T sum = T(0);                                           \
-                for (size_t i = 0; i < colNum; ++i) {                   \
+                for (size_t i = 0; i < colNum; ++i)                     \
+                {                                                       \
                     sum += this->elements[r * colNum + i] *             \
                         other[i * colNum2 + c];                         \
                 }                                                       \
@@ -182,37 +232,49 @@ struct TMatrix {
         }                                                               \
         return ret;                                                     \
     }                                                                   \
-    type operator/(const type &other) const {                           \
+    type operator/(const type &other) const                             \
+    {                                                                   \
         type ret = *this;                                               \
-        for (size_t r = 0; r < rowNum; ++r) {                           \
-            for (size_t c = 0; c < colNum; ++c) {                       \
+        for (size_t r = 0; r < rowNum; ++r)                             \
+        {                                                               \
+            for (size_t c = 0; c < colNum; ++c)                         \
+            {                                                           \
                 ret[r * colNum + c] = this->elements[r * colNum + c] /  \
                     other.elements[r * colNum + c];                     \
             }                                                           \
         }                                                               \
         return ret;                                                     \
     }                                                                   \
-    type &operator/=(const type &other) {                               \
-        for (size_t r = 0; r < rowNum; ++r) {                           \
-            for (size_t c = 0; c < colNum; ++c) {                       \
+    type &operator/=(const type &other)                                 \
+    {                                                                   \
+        for (size_t r = 0; r < rowNum; ++r)                             \
+        {                                                               \
+            for (size_t c = 0; c < colNum; ++c)                         \
+            {                                                           \
                 this->elements[r * colNum + c] /=                       \
                     other.elements[r * colNum + c];                     \
             }                                                           \
         }                                                               \
         return *this;                                                   \
     }                                                                   \
-    type &operator=(const type &other) {                                \
-        for (size_t r = 0; r < rowNum; ++r) {                           \
-            for (size_t c = 0; c < colNum; ++c) {                       \
+    type &operator=(const type &other)                                  \
+    {                                                                   \
+        for (size_t r = 0; r < rowNum; ++r)                             \
+        {                                                               \
+            for (size_t c = 0; c < colNum; ++c)                         \
+            {                                                           \
                 this->elements[r * colNum + c] =                        \
                     other.elements[r * colNum + c];                     \
             }                                                           \
         }                                                               \
         return *this;                                                   \
     }                                                                   \
-    bool operator==(const type &other) const {                          \
-        for (size_t r = 0; r < rowNum; ++r) {                           \
-            for (size_t c = 0; c < colNum; ++c) {                       \
+    bool operator==(const type &other) const                            \
+    {                                                                   \
+        for (size_t r = 0; r < rowNum; ++r)                             \
+        {                                                               \
+            for (size_t c = 0; c < colNum; ++c)                         \
+            {                                                           \
                 if (this->elements[r * colNum + c] !=                   \
                     other.elements[r * colNum + c])                     \
                     return false;                                       \
@@ -220,7 +282,8 @@ struct TMatrix {
         }                                                               \
         return true;                                                    \
     }                                                                   \
-    type &copy(const type &other) {                                     \
+    type &copy(const type &other)                                       \
+    {                                                                   \
         *this = other;                                                  \
         return *this;                                                   \
     }                                                                   \
@@ -232,9 +295,12 @@ struct TMatrix {
 
     CERAMICS_DECLARE_MATRIX_COMMON_PART(rowNum, colNum);
 
-    TMatrix() {
-        for (size_t r = 0; r < rowNum; ++r) {
-            for (size_t c = 0; c < colNum; ++c) {
+    TMatrix()
+    {
+        for (size_t r = 0; r < rowNum; ++r)
+        {
+            for (size_t c = 0; c < colNum; ++c)
+            {
                 elements[r * colNum + c] = T(0);
             }
         }
@@ -243,15 +309,20 @@ struct TMatrix {
 
 // Squard Matrx
 template <class T, size_t dimension>
-struct TMatrix<T, dimension, dimension> {
+struct TMatrix<T, dimension, dimension>
+{
     CERAMICS_DECLARE_MATRIX_COMMON_PART(dimension, dimension);
 #define CERAMICS_DECLARE_SQUARD_MATRIX_COMMON_PART(dimension)   \
-    TMatrix() {                                                 \
+    TMatrix()                                                   \
+    {                                                           \
         this->identity();                                       \
     }                                                           \
-    type &identity() {                                          \
-        for (size_t r = 0; r < dimension; ++r) {                \
-            for (size_t c = 0; c < dimension; ++c) {            \
+    type &identity()                                            \
+    {                                                           \
+        for (size_t r = 0; r < dimension; ++r)                  \
+        {                                                       \
+            for (size_t c = 0; c < dimension; ++c)              \
+            {                                                   \
                 if (r == c)                                     \
                     elements[r * dimension + c] = T(1);         \
                 else                                            \
@@ -260,13 +331,17 @@ struct TMatrix<T, dimension, dimension> {
         }                                                       \
         return *this;                                           \
     }                                                           \
-    type &operator*=(const type &other){                        \
+    type &operator*=(const type &other)                         \
+    {                                                           \
         type result;                                            \
         auto te = result.elements;                              \
-        for (size_t r = 0; r < dimension; ++r) {                \
-            for (size_t c = 0; c < dimension; ++c) {            \
+        for (size_t r = 0; r < dimension; ++r)                  \
+        {                                                       \
+            for (size_t c = 0; c < dimension; ++c)              \
+            {                                                   \
                 T sum = T(0);                                   \
-                for (size_t i = 0; i < dimension; ++i) {        \
+                for (size_t i = 0; i < dimension; ++i)          \
+                {                                               \
                     sum += this->elements[r * dimension + i] *  \
                         other[i * dimension + c];               \
                 }                                               \
@@ -281,18 +356,23 @@ struct TMatrix<T, dimension, dimension> {
 
     T determinant() const { return calculateDeterminant(elements, dimension); }
 
-    static T calculateDeterminant(const T *matrix, size_t n) {
+    static T calculateDeterminant(const T *matrix, size_t n)
+    {
         T det = T(0);
         if (n == 2)
             return ((matrix[0 * n + 0] * matrix[1 * n + 1]) -
                     (matrix[1 * n + 0] * matrix[0 * n + 1]));
-        else {
+        else
+        {
             T *submatrix = new T[n * n];
-            for (size_t x = 0; x < n; x++) {
+            for (size_t x = 0; x < n; x++)
+            {
                 size_t subi = 0;
-                for (size_t i = 1; i < n; i++) {
+                for (size_t i = 1; i < n; i++)
+                {
                     size_t subj = 0;
-                    for (size_t j = 0; j < n; j++) {
+                    for (size_t j = 0; j < n; j++)
+                    {
                         if (j == x) continue;
                         submatrix[subi * n + subj] = matrix[i * n + j];
                         subj++;
@@ -309,10 +389,12 @@ struct TMatrix<T, dimension, dimension> {
 };
 // Matrix3x3
 template <class T>
-struct TMatrix<T, 3, 3> {
+struct TMatrix<T, 3, 3>
+{
     CERAMICS_DECLARE_MATRIX_COMMON_PART(3, 3)
     CERAMICS_DECLARE_SQUARD_MATRIX_COMMON_PART(3)
-    type getInverse() const {
+    type getInverse() const
+    {
         auto me = this->elements;
         auto n11 = me[0], n21 = me[1], n31 = me[2], n12 = me[3], n22 = me[4],
             n32 = me[5], n13 = me[6], n23 = me[7], n33 = me[8],
@@ -342,7 +424,8 @@ struct TMatrix<T, 3, 3> {
 
         return ret;
     }
-    T determinant() const {
+    T determinant() const
+    {
         const auto te = this->elements;
 
         const auto a = te[0], b = te[1], c = te[2], d = te[3], e = te[4],
@@ -351,7 +434,8 @@ struct TMatrix<T, 3, 3> {
         return a * e * i - a * f * h - b * d * i + b * f * g + c * d * h -
             c * e * g;
     }
-    type &scale(T sx, T sy) {
+    type &scale(T sx, T sy)
+    {
         auto te = this->elements;
 
         te[0] *= sx;
@@ -363,7 +447,8 @@ struct TMatrix<T, 3, 3> {
 
         return this;
     }
-    type &rotate(T theta) {
+    type &rotate(T theta)
+    {
         const auto c = std::cos(theta);
         const auto s = std::sin(theta);
         const auto te = this->elements;
@@ -377,7 +462,8 @@ struct TMatrix<T, 3, 3> {
         te[7] = -s * a13 + c * a23;
         return *this;
     }
-    type &translate(T tx, T ty) {
+    type &translate(T tx, T ty)
+    {
         auto te = this->elements;
 
         te[0] += tx * te[2];
@@ -389,7 +475,8 @@ struct TMatrix<T, 3, 3> {
 
         return *this;
     }
-    type &setFromMatrix4(const TMatrix<T, 4, 4> &m) {
+    type &setFromMatrix4(const TMatrix<T, 4, 4> &m)
+    {
         auto me = m.elements;
 
         *this = {
@@ -401,15 +488,18 @@ struct TMatrix<T, 3, 3> {
 
         return *this;
     }
-    type getNormalMatrix(const TMatrix<T, 4, 4> &matrix4) {
+    type getNormalMatrix(const TMatrix<T, 4, 4> &matrix4)
+    {
         return this->setFromMatrix4(matrix4).getInverse().transpose();
     }
 };
 template <class T>
-struct TMatrix<T, 4, 4> {
+struct TMatrix<T, 4, 4>
+{
     CERAMICS_DECLARE_MATRIX_COMMON_PART(4, 4)
     CERAMICS_DECLARE_SQUARD_MATRIX_COMMON_PART(4)
-    type getInverse() const {
+    type getInverse() const
+    {
         auto me = this->elements;
         auto n11 = me[0], n21 = me[1], n31 = me[2], n41 = me[3], n12 = me[4],
             n22 = me[5], n32 = me[6], n42 = me[7], n13 = me[8], n23 = me[9],
@@ -480,7 +570,8 @@ struct TMatrix<T, 4, 4> {
 
         return ret;
     }
-    type &scale(const TVector<T, 3> v) {
+    type &scale(const TVector<T, 3> v)
+    {
         auto te = this->elements;
         auto x = v.x, y = v.y, z = v.z;
         te[0] *= x;
@@ -500,7 +591,8 @@ struct TMatrix<T, 4, 4> {
     }
 
     type &compose(const TVector<T, 3> position, const TQuaternion<T> quaternion,
-                  const TVector<T, 3> scale) {
+                  const TVector<T, 3> scale)
+    {
         auto te = this->elements;
 
         auto x = quaternion.x, y = quaternion.y, z = quaternion.z,
@@ -533,7 +625,8 @@ struct TMatrix<T, 4, 4> {
 
         return *this;
     }
-    T determinant() const {
+    T determinant() const
+    {
         auto te = this->elements;
         auto n11 = te[0], n12 = te[4], n13 = te[8], n14 = te[12];
         auto n21 = te[1], n22 = te[5], n23 = te[9], n24 = te[13];
@@ -558,7 +651,8 @@ struct TMatrix<T, 4, 4> {
     }
 
     type &decompose(TVector<T, 3> &position, TQuaternion<T> &quaternion,
-                    TVector<T, 3> &scale) {
+                    TVector<T, 3> &scale)
+    {
         auto te = this->elements;
 
         TVector<T, 3> _v1;
@@ -603,13 +697,16 @@ struct TMatrix<T, 4, 4> {
         return *this;
     }
     type &multiply(const type &m) { return this->multiplyMatrices(*this, m); }
-    type &multiply(const type &m, const type &n) {
+    type &multiply(const type &m, const type &n)
+    {
         return this->multiplyMatrices(m, n);
     }
-    type &premultiply(const type &m) {
+    type &premultiply(const type &m)
+    {
         return this->multiplyMatrices(m, *this);
     }
-    type &multiplyMatrices(const type &a, const type &b) {
+    type &multiplyMatrices(const type &a, const type &b)
+    {
         auto ae = a.elements;
         auto be = b.elements;
         auto te = this->elements;
@@ -647,12 +744,14 @@ struct TMatrix<T, 4, 4> {
         return *this;
     }
     type &lookAt(const TVector<T, 3> &eye, const TVector<T, 3> &target,
-                 const TVector<T, 3> &up) {
+                 const TVector<T, 3> &up)
+    {
         const auto te = this->elements;
         TVector<T, 3> _x, _y, _z;
         _z.subVectors(eye, target);
 
-        if (_z.lengthSq() == 0) {
+        if (_z.lengthSq() == 0)
+        {
             // eye and target are in the same position
 
             _z.z = 1;
@@ -661,13 +760,17 @@ struct TMatrix<T, 4, 4> {
         _z.normalize();
         _x.crossVectors(up, _z);
 
-        if (_x.lengthSq() == 0) {
+        if (_x.lengthSq() == 0)
+        {
             // up and z are parallel
 
-            if (std::abs(up.z) == 1) {
+            if (std::abs(up.z) == 1)
+            {
                 _z.x += 0.0001;
 
-            } else {
+            }
+            else
+            {
                 _z.z += 0.0001;
             }
 
@@ -689,7 +792,8 @@ struct TMatrix<T, 4, 4> {
         te[10] = _z.z;
         return *this;
     }
-    type &extractRotation(const type &m) {
+    type &extractRotation(const type &m)
+    {
         // this method does not support reflection matrices
 
         TVector<T, 3> _v1;
@@ -722,34 +826,40 @@ struct TMatrix<T, 4, 4> {
 
         return *this;
     }
-    static type makeTranslation(T x, T y, T z) {
-        return {
+    static type makeTranslation(T x, T y, T z)
+    {
+        return
+            {
 
-            1, 0, 0, x, 0, 1, 0, y, 0,
-            0, 1, z, 0, 0, 0, 1
+                1, 0, 0, x, 0, 1, 0, y, 0,
+                0, 1, z, 0, 0, 0, 1
 
-        };
+            };
     }
-    static type makeRotationX(T theta) {
+    static type makeRotationX(T theta)
+    {
         type ret;
         auto c = cos(theta), s = sin(theta);
         ret={1, 0, 0, 0, 0, c, -s, 0, 0, s, c, 0, 0, 0, 0, 1};
         return ret;
     }
 
-    static type makeRotationY(T theta) {
+    static type makeRotationY(T theta)
+    {
         type ret;
         auto c = cos(theta), s = sin(theta);
         ret={c, 0, s, 0, 0, 1, 0, 0, -s, 0, c, 0, 0, 0, 0, 1};
         return ret;
     }
-    static type makeRotationZ(T theta) {
+    static type makeRotationZ(T theta)
+    {
         type ret;
         auto c = cos(theta), s = sin(theta);
         ret={c, -s, 0, 0, s, c, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1};
         return ret;
     }
-    static type makeRotationAxis(TVector<T, 3> axis, T angle) {
+    static type makeRotationAxis(TVector<T, 3> axis, T angle)
+    {
         type ret;
         auto c = cos(angle);
         auto s = sin(angle);
@@ -761,14 +871,17 @@ struct TMatrix<T, 4, 4> {
             t * z * z + c, 0, 0, 0, 0, 1};
         return ret;
     }
-    static type makeScale(T x, T y, T z) {
+    static type makeScale(T x, T y, T z)
+    {
         return {x, 0, 0, 0, 0, y, 0, 0, 0, 0, z, 0, 0, 0, 0, 1};
     }
-    static type makeShear(T x, T y, T z) {
+    static type makeShear(T x, T y, T z)
+    {
         return {1, y, z, 0, x, 1, z, 0, x, y, 1, 0, 0, 0, 0, 1};
     }
     static type makePerspective(T left, T right, T top, T bottom, T near,
-                                T far) {
+                                T far)
+    {
         type ret;
         auto te = ret.elements;
         auto x = 2 * near / (right - left);
@@ -800,7 +913,8 @@ struct TMatrix<T, 4, 4> {
     }
 
     static type makeOrthographic(T left, T right, T top, T bottom, T near,
-                                 T far) {
+                                 T far)
+    {
         type ret;
         auto te = ret.elements;
         auto w = 1.0 / (right - left);
@@ -829,7 +943,8 @@ struct TMatrix<T, 4, 4> {
         te[15] = 1;
         return ret;
     }
-    static type makeRotationFromEuler(const TEuler<T> &euler) {
+    static type makeRotationFromEuler(const TEuler<T> &euler)
+    {
         type ret;
         auto te = ret.elements;
         auto x = euler.x, y = euler.y, z = euler.z;
@@ -837,7 +952,8 @@ struct TMatrix<T, 4, 4> {
         auto c = std::cos(y), d = std::sin(y);
         auto e = std::cos(z), f = std::sin(z);
 
-        if (euler.order == RotationOrder::XYZ) {
+        if (euler.order == RotationOrder::XYZ)
+        {
             auto ae = a * e, af = a * f, be = b * e, bf = b * f;
 
             te[0] = c * e;
@@ -852,7 +968,9 @@ struct TMatrix<T, 4, 4> {
             te[6] = be + af * d;
             te[10] = a * c;
 
-        } else if (euler.order == RotationOrder::YXZ) {
+        }
+        else if (euler.order == RotationOrder::YXZ)
+        {
             auto ce = c * e, cf = c * f, de = d * e, df = d * f;
 
             te[0] = ce + df * b;
@@ -867,7 +985,9 @@ struct TMatrix<T, 4, 4> {
             te[6] = df + ce * b;
             te[10] = a * c;
 
-        } else if (euler.order == RotationOrder::ZXY) {
+        }
+        else if (euler.order == RotationOrder::ZXY)
+        {
             auto ce = c * e, cf = c * f, de = d * e, df = d * f;
 
             te[0] = ce - df * b;
@@ -882,7 +1002,9 @@ struct TMatrix<T, 4, 4> {
             te[6] = b;
             te[10] = a * c;
 
-        } else if (euler.order == RotationOrder::ZYX) {
+        }
+        else if (euler.order == RotationOrder::ZYX)
+        {
             auto ae = a * e, af = a * f, be = b * e, bf = b * f;
 
             te[0] = c * e;
@@ -897,7 +1019,9 @@ struct TMatrix<T, 4, 4> {
             te[6] = b * c;
             te[10] = a * c;
 
-        } else if (euler.order == RotationOrder::YZX) {
+        }
+        else if (euler.order == RotationOrder::YZX)
+        {
             auto ac = a * c, ad = a * d, bc = b * c, bd = b * d;
 
             te[0] = c * e;
@@ -912,7 +1036,9 @@ struct TMatrix<T, 4, 4> {
             te[6] = ad * f + bc;
             te[10] = ac - bd * f;
 
-        } else if (euler.order == RotationOrder::XZY) {
+        }
+        else if (euler.order == RotationOrder::XZY)
+        {
             auto ac = a * c, ad = a * d, bc = b * c, bd = b * d;
 
             te[0] = c * e;
@@ -942,7 +1068,8 @@ struct TMatrix<T, 4, 4> {
         return ret;
     }
 
-    static type makeRotationFromQuaternion(const TQuaternion<T> q) {
+    static type makeRotationFromQuaternion(const TQuaternion<T> q)
+    {
         type ret;
         return ret.compose(TVector<T, 3>::zero(), q, TVector<T, 3>::one());
     }
