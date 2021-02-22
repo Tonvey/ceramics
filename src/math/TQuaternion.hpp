@@ -6,21 +6,11 @@
 #include <limits>
 #include <stdexcept>
 
-#include "../TProperty.hpp"
+#include "../utils/TProperty.hpp"
 #include "TMathUtils.hpp"
 #include "ERotationOrder.h"
-#include "../CeramicsMacro.h"
+#include "../CeramicsPrerequisites.h"
 CERAMICS_NAMESPACE_BEGIN
-
-template <class T>
-class TEuler;
-
-template <class T, size_t d1, size_t d2>
-class TMatrix;
-
-template <class T, size_t dimension>
-class TVector;
-
 template <class T>
 struct TQuaternion
 {

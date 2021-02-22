@@ -1,24 +1,12 @@
 #pragma once
 #include <stdexcept>
-#include "../CeramicsMacro.h"
+#include "../CeramicsPrerequisites.h"
 CERAMICS_NAMESPACE_BEGIN
-template <class T, size_t>
-class TVector;
-template <class T, size_t,size_t>
-class TMatrix;
-template <class T>
-class TSphere;
-template <class T, size_t>
-class TBox;
-template <class T, size_t>
-class TLine;
-
 template<class T>
-class TPlane
+struct TPlane
 {
-public:
+    typedef T value_type;
     typedef TPlane<T> type;
-    typedef const type ctype;
     typedef TVector<T, 3> vec3_t;
     typedef TSphere<T> sphere_t;
     typedef TBox<T,3> box3_t;
@@ -78,11 +66,11 @@ public:
 
     }
 
-    type &operator=(ctype &plane )
+    type &operator=(const type &plane )
     {
         return this->copy(plane);
     }
-    type &copy(ctype &plane )
+    type &copy(const type &plane )
     {
 
         this->normal.copy( plane.normal );
@@ -258,11 +246,11 @@ public:
 
     }
 
-    bool operator==(ctype &plane )
+    bool operator==(const type &plane )
     {
         return this->equals(plane);
     }
-    bool equals(ctype &plane )
+    bool equals(const type &plane )
     {
 
         return plane.normal.equals( this->normal ) && ( plane.constant == this->constant );

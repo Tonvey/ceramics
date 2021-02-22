@@ -1,30 +1,12 @@
 #pragma once
 #include <array>
 #include <limits>
-#include "../CeramicsMacro.h"
+#include "../CeramicsPrerequisites.h"
 CERAMICS_NAMESPACE_BEGIN
-
-template <class T, size_t dimension>
-class TVector;
-
-template <class T, size_t d1, size_t d2>
-class TMatrix;
-
-template <class T>
-class TSphere;
-
-template <class T>
-class TPlane;
-
-template <class T>
-class TTriangle;
-
-template <class T, size_t dimension>
 #define CERAMICS_DECLARE_BOX_COMMON_PART(dimension)                     \
-    public:                                                             \
+    typedef T value_type;                                               \
     typedef TVector<T, dimension> vec_t;                                \
     typedef TBox<T, dimension> type;                                    \
-    typedef const TBox<T, dimension> const_type;                        \
     typedef std::numeric_limits<T> limit_t;                             \
     vec_t min, max;                                                     \
     TBox(vec_t min = vec_t().setAll(limit_t::max()),                    \
@@ -91,8 +73,8 @@ template <class T, size_t dimension>
         return *this;                                                   \
     }                                                                   \
     type clone() { return *this; }                                      \
-    type &operator=(const_type &box) { return this->copy(box); }        \
-    type &copy(const_type &box)                                         \
+    type &operator=(const type &box) { return this->copy(box); }        \
+    type &copy(const type &box)                                         \
     {                                                                   \
         this->min.copy(box.min);                                        \
         this->max.copy(box.max);                                        \
@@ -163,7 +145,7 @@ template <class T, size_t dimension>
             ? false                                                     \
             : true;                                                     \
     }                                                                   \
-    bool containsBox(const_type &box)                                   \
+    bool containsBox(const type &box)                                   \
     {                                                                   \
         for (size_t i = 0; i < dimension; ++i)                          \
         {                                                               \
@@ -183,7 +165,7 @@ template <class T, size_t dimension>
         }                                                               \
         return target;                                                  \
     }                                                                   \
-    bool intersectsBox(const_type &box)                                 \
+    bool intersectsBox(const type &box)                                 \
     {                                                                   \
         for (size_t i = 0; i < dimension; ++i)                          \
         {                                                               \
@@ -204,13 +186,13 @@ template <class T, size_t dimension>
         auto clampedPoint = _vector.copy(point).clamp(this->min, this->max); \
         return clampedPoint.sub(point).length();                        \
     }                                                                   \
-    type &intersect(const_type &box)                                    \
+    type &intersect(const type &box)                                    \
     {                                                                   \
         this->min.max(box.min);                                         \
         this->max.min(box.max);                                         \
         return *this;                                                   \
     }                                                                   \
-    type &Union(const_type &box)                                        \
+    type &Union(const type &box)                                        \
     {                                                                   \
         this->min.min(box.min);                                         \
         this->max.max(box.max);                                         \
@@ -222,20 +204,20 @@ template <class T, size_t dimension>
         this->max.add(offset);                                          \
         return *this;                                                   \
     }                                                                   \
-    bool equals(const_type &box)                                        \
+    bool equals(const type &box)                                        \
     {                                                                   \
         return box.min.equals(this->min) && box.max.equals(this->max);  \
     }
-class TBox
+template <class T, size_t dimension>
+struct TBox
 {
     CERAMICS_DECLARE_BOX_COMMON_PART(dimension);
 };
 
 template <class T>
-class TBox<T, 3>
+struct TBox<T, 3>
 {
     CERAMICS_DECLARE_BOX_COMMON_PART(3);
-public:
     // setFromBufferAttribute( attribute )
     // setFromObject( object )
     // expandByObject( object ) {

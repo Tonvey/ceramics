@@ -16,9 +16,8 @@ struct THSL
     T l;
 };
 template <class T>
-class TColor
+struct TColor
 {
-public:
     typedef enum
         {
             aliceblue = 0xF0F8FF,
@@ -170,6 +169,7 @@ public:
             yellow = 0xFFFF00,
             yellowgreen = 0x9ACD32
         } ColorKeywords;
+    typedef T value_type;
     typedef TColor<T> type;
     typedef std::uint32_t hex_t;
     typedef std::uint8_t byte_t;
@@ -565,7 +565,6 @@ public:
     // 	}
     // 	return *this;
     // }
-private:
     static float hue2rgb(float p, float q, float t)
     {
         if (t < 0) t += 1;

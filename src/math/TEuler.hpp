@@ -4,66 +4,44 @@
 #include <cmath>
 #include <functional>
 #include <initializer_list>
-
-#include "../TProperty.hpp"
+#include "../utils/TProperty.hpp"
 #include "TMathUtils.hpp"
-
-#include "../CeramicsMacro.h"
+#include "../CeramicsPrerequisites.h"
 #include "ERotationOrder.h"
-
 CERAMICS_NAMESPACE_BEGIN
-
 template <class T>
-class TQuaternion;
-
-template <class T, size_t d1, size_t d2>
-class TMatrix;
-
-template <class T, size_t dimension>
-class TVector;
-
-template <class T>
-class TEuler
+struct TEuler
 {
-public:
+    typedef T value_type;
     typedef TEuler<T> type;
-    typedef const TEuler<T> const_type;
-    typedef std::function<void()> callback_type;
     static RotationOrder DefaultOrder;
-
-private:
-    RotationOrder mOrder = XYZ;
-    callback_type _onChangeCallback;
-
-public:
+    T x, y, z;
+    RotationOrder order = XYZ;
     TEuler(T x = 0, T y = 0, T z = 0, RotationOrder order = DefaultOrder)
     {
         this->x = x;
         this->y = y;
         this->z = z;
-        this->mOrder = order;
+        this->order = order;
     }
-    // TODO change callback
-    TProperty<T> x, y, z;
-    TProperty<RotationOrder> order;
 
     void set(T x, T y, T z, RotationOrder order)
     {
         this->x = x;
         this->y = y;
         this->z = z;
-        this->mOrder = order;
+        this->order = order;
 
         // TODO change callback
     }
 
-    type operator=(const_type other)
+    type &operator=(const type &other)
     {
-        this->set(other.x(), other.y(), other.z(), other.order());
+        this->set(other.x, other.y, other.z, other.order);
+        return *this;
     }
 
-    void setFromRotationMatrix(TMatrix<T, 4, 4> m, RotationOrder order = XYZ,
-                               bool update = true)
+    void setFromRotationMatrix(TMatrix<T, 4, 4> m, RotationOrder order = XYZ)
     {
         auto clamp = TMathUtils<T>::clamp;
 
@@ -193,16 +171,13 @@ public:
 
         this->order = order;
 
-        // TODO change callback
-        if (update) this->_onChangeCallback();
     }
 
-    void setFromQuaternion(TQuaternion<T> q, RotationOrder order = XYZ,
-                           bool update = true)
+    void setFromQuaternion(TQuaternion<T> q, RotationOrder order = XYZ)
     {
         auto matrix = TMatrix<T, 4, 4>::makeRotationFromQuaternion(q);
 
-        return this->setFromRotationMatrix(matrix, order, update);
+        return this->setFromRotationMatrix(matrix, order);
     }
 
     void setFromVector3(TVector<T, 3> v, RotationOrder order = XYZ)
@@ -220,10 +195,10 @@ public:
         return this->setFromQuaternion(_quaternion, newOrder);
     }
 
-    bool equals(const_type &euler)
+    bool equals(const type &euler)
     {
         return (euler->x == this->x) && (euler->y == this->y) &&
-            (euler->z == this->z) && (euler.mOrder == this->mOrder);
+            (euler->z == this->z) && (euler.order == this->order);
     }
 
     template <class array_t>
@@ -233,10 +208,7 @@ public:
         this->y = array[1];
         this->z = array[2];
         // if ( array[ 3 ] !== undefined )
-        this->mOrder = array[3];
-
-        // TODO  change callback
-        // this->_onChangeCallback();
+        this->order = array[3];
 
         return *this;
     }
@@ -250,7 +222,7 @@ public:
         array[offset] = this->x;
         array[offset + 1] = this->y;
         array[offset + 2] = this->z;
-        array[offset + 3] = this->mOrder;
+        array[offset + 3] = this->order;
 
         return array;
     }
@@ -260,12 +232,6 @@ public:
         return TVector<T, 3>(this->x, this->y, this->z);
     }
 
-    type &_onChange(callback_type callback)
-    {
-        this->_onChangeCallback = callback;
-
-        return *this;
-    }
 };
 template <class T>
 RotationOrder TEuler<T>::DefaultOrder = XYZ;

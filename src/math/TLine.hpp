@@ -1,18 +1,10 @@
 #pragma once
 #include "TMathUtils.hpp"
-#include "../CeramicsMacro.h"
+#include "../CeramicsPrerequisites.h"
 CERAMICS_NAMESPACE_BEGIN
-
-template <class T, size_t dimension>
-class TVector;
-
-template <class T, size_t d1, size_t d2>
-class TMatrix;
-
 #define CERAMICS_DECLARE_LINE_COMMON_PART(dimension)                    \
-    public:                                                             \
+    typedef T value_type;                                               \
     typedef TLine<T, dimension> type;                                   \
-    typedef const TLine<T, dimension> const_type;                       \
     typedef TVector<T, dimension> vec_t;                                \
     vec_t start;                                                        \
     vec_t end;                                                          \
@@ -25,8 +17,8 @@ class TMatrix;
         return *this;                                                   \
     }                                                                   \
     type clone() { return *this; }                                      \
-    type &operator=(const_type &line) { return this->copy(line); }      \
-    type &copy(const_type &line)                                        \
+    type &operator=(const type &line) { return this->copy(line); }      \
+    type &copy(const type &line)                                        \
     {                                                                   \
         this->start.copy(line.start);                                   \
         this->end.copy(line.end);                                       \
@@ -86,22 +78,21 @@ class TMatrix;
         auto t = this->closestPointToPointParameter(point, clampToLine); \
         return this->delta(target).multiplyScalar(t).add(this->start);  \
     }                                                                   \
-    bool operator==(const_type &line) { return this->equals(line); }    \
-    bool equals(const_type &line)                                       \
+    bool operator==(const type &line) { return this->equals(line); }    \
+    bool equals(const type &line)                                       \
     {                                                                   \
         return line.start.equals(this->start) && line.end.equals(this->end); \
     }
 template <class T, size_t dimension>
-class TLine
+struct TLine
 {
     CERAMICS_DECLARE_LINE_COMMON_PART(dimension);
 };
 
 template <class T>
-class TLine<T, 3>
+struct TLine<T, 3>
 {
     CERAMICS_DECLARE_LINE_COMMON_PART(3);
-public:
     typedef TMatrix<T, 4, 4> matrix4_t;
     type &applyMatrix4(const matrix4_t &matrix)
     {

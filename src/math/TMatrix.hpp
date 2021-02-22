@@ -3,19 +3,9 @@
 #include <cmath>
 #include <initializer_list>
 
-#include "../CeramicsMacro.h"
+#include "../CeramicsPrerequisites.h"
 #include "ERotationOrder.h"
 CERAMICS_NAMESPACE_BEGIN
-
-template <class T, size_t dimension>
-class TVector;
-
-template <class T>
-class TEuler;
-
-template <class T>
-class TQuaternion;
-
 template <class T, size_t rowNum, size_t colNum>
 struct TMatrix {
 #define CERAMICS_DECLARE_MATRIX_COMMON_PART(rowNum, colNum)             \

@@ -3,17 +3,8 @@
 #include <cassert>
 #include <cmath>
 #include <initializer_list>
-#include "../CeramicsMacro.h"
+#include "../CeramicsPrerequisites.h"
 CERAMICS_NAMESPACE_BEGIN
-template <class T>
-class TEuler;
-
-template <class T>
-class TQuaternion;
-
-template <class T, size_t d1, size_t d2>
-class TMatrix;
-
 template <class T, size_t d>
 static void TFuncArraySet(std::array<T, d> &arr, T val)
 {
@@ -182,6 +173,7 @@ static void TFuncArrayDivideScalar(T arr1[], T scalar, size_t size)
 
 // TVector CommonPart
 #define CERAMICS_DECLARE_VECTOR_COMMON_PART(dimension)                  \
+    typedef T value_type;                                               \
     typedef TVector<T, dimension> type;                                 \
     std::array<T,dimension> elements;                                   \
     TVector(std::initializer_list<T> l)                                 \

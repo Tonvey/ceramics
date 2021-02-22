@@ -2,13 +2,52 @@
 #include <algorithm>
 CERAMICS_NAMESPACE_BEGIN
 
-PerspectiveCamera::PerspectiveCamera(number_t fov,number_t aspect,number_t near,number_t far) {
+void PerspectiveCamera::setFov(Real fov)
+{
+    mFov = fov;
+    mProjectionMatrixNeedUpdate=true;
+}
+void PerspectiveCamera::setZoom(Real zoom)
+{
+    mZoom = zoom;
+    mProjectionMatrixNeedUpdate=true;
+}
+void PerspectiveCamera::setNear(Real near)
+{
+    mNear = near;
+    mProjectionMatrixNeedUpdate=true;
+}
+void PerspectiveCamera::setFar(Real far)
+{
+    mFar = far;
+    mProjectionMatrixNeedUpdate=true;
+}
+void PerspectiveCamera::setFocus(Real focus)
+{
+    mFocus = focus;
+    mProjectionMatrixNeedUpdate=true;
+}
+void PerspectiveCamera::setAspect(Real aspect)
+{
+    mAspect = aspect;
+    mProjectionMatrixNeedUpdate=true;
+}
+void PerspectiveCamera::setFilmGauge(Real filmGauge)
+{
+    mFilmGauge = filmGauge;
+    mProjectionMatrixNeedUpdate=true;
+}
+void PerspectiveCamera::setFilmOffset(Real filmOffset)
+{
+    mFilmOffset = filmOffset;
+    mProjectionMatrixNeedUpdate=true;
+}
+PerspectiveCamera::PerspectiveCamera(Real fov,Real aspect,Real near,Real far) {
 
-    this->fov = fov;
-    this->near = near;
-    this->far = far;
-
-    this->aspect = aspect;
+    this->mFov = fov;
+    this->mNear = near;
+    this->mFar = far;
+    this->mAspect = aspect;
 
     this->updateProjectionMatrix();
 }
@@ -41,12 +80,12 @@ PerspectiveCamera::PerspectiveCamera(number_t fov,number_t aspect,number_t near,
  *
  * Values for focal length and film gauge must have the same unit.
  */
-void PerspectiveCamera::setFocalLength(number_t focalLength ) {
+void PerspectiveCamera::setFocalLength(Real focalLength ) {
 
     /** see {@link http://www.bobatkins.com/photography/technical/field_of_view.html} */
     const auto vExtentSlope = 0.5 * this->getFilmHeight() / focalLength;
 
-    this->fov = MathUtils::RAD2DEG * 2 * std::atan( vExtentSlope );
+    this->mFov = MathUtils::RAD2DEG * 2 * std::atan( vExtentSlope );
     this->updateProjectionMatrix();
 
 }
@@ -54,32 +93,32 @@ void PerspectiveCamera::setFocalLength(number_t focalLength ) {
 /**
  * Calculates the focal length from the current .fov and .filmGauge.
  */
-number_t PerspectiveCamera::getFocalLength()const {
+Real PerspectiveCamera::getFocalLength()const {
 
-    const auto vExtentSlope = std::tan( MathUtils::DEG2RAD * 0.5 * this->fov );
+    const auto vExtentSlope = std::tan( MathUtils::DEG2RAD * 0.5 * this->mFov );
 
     return 0.5 * this->getFilmHeight() / vExtentSlope;
 
 }
 
-number_t PerspectiveCamera::getEffectiveFOV()const{
+Real PerspectiveCamera::getEffectiveFOV()const{
 
     return MathUtils::RAD2DEG * 2 * std::atan(
-                                              std::tan( MathUtils::DEG2RAD * 0.5 * this->fov ) / this->zoom );
+                                              std::tan( MathUtils::DEG2RAD * 0.5 * this->mFov ) / this->mZoom );
 
 }
 
-number_t PerspectiveCamera::getFilmWidth()const{
+Real PerspectiveCamera::getFilmWidth()const{
 
     // film not completely covered in portrait format (aspect < 1)
-    return this->filmGauge * std::min( this->aspect, 1.0f );
+    return this->mFilmGauge * std::min( this->mAspect, 1.0f );
 
 }
 
-number_t PerspectiveCamera::getFilmHeight()const {
+Real PerspectiveCamera::getFilmHeight()const {
 
     // film not completely covered in landscape format (aspect > 1)
-    return this->filmGauge / std::max( this->aspect, 1.0f );
+    return this->mFilmGauge / std::max( this->mAspect, 1.0f );
 
 }
 
@@ -120,7 +159,7 @@ number_t PerspectiveCamera::getFilmHeight()const {
  */
 void PerspectiveCamera::setViewOffset(int fullWidth,int fullHeight,int x,int y,int width,int height ) {
 
-    this->aspect = number_t(fullWidth) / number_t(fullHeight);
+    this->mAspect = Real(fullWidth) / Real(fullHeight);
     this->view.enabled = true;
     this->view.fullWidth = fullWidth;
     this->view.fullHeight = fullHeight;
@@ -143,10 +182,10 @@ void PerspectiveCamera::clearViewOffset() {
 
 void PerspectiveCamera::updateProjectionMatrix() {
 
-    const auto near = this->near;
-    auto top = near * std::tan( MathUtils::DEG2RAD * 0.5 * this->fov ) / this->zoom;
+    const auto near = this->mNear;
+    auto top = near * std::tan( MathUtils::DEG2RAD * 0.5 * this->mFov ) / this->mZoom;
     auto height = 2 * top;
-    auto width = this->aspect * height;
+    auto width = this->mAspect * height;
     auto left = - 0.5 * width;
     const auto view = this->view;
 
@@ -162,10 +201,10 @@ void PerspectiveCamera::updateProjectionMatrix() {
 
     }
 
-    const auto skew = this->filmOffset;
+    const auto skew = this->mFilmOffset;
     if ( skew != 0 ) left += near * skew / this->getFilmWidth();
 
-    this->projectionMatrix.makePerspective( left, left + width, top, top - height, near, this->far );
+    this->projectionMatrix.makePerspective( left, left + width, top, top - height, near, this->mFar );
 
     this->projectionMatrixInverse = this->projectionMatrix.getInverse();
 

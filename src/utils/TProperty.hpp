@@ -28,6 +28,7 @@ public:
         }
     }
     operator T() const { return this->_val; }
+    operator T&() { return this->_val; }
     type &operator=(const_type &other)
     {
         if (supportChangedCallback)

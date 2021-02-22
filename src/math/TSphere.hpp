@@ -2,24 +2,11 @@
 #include "TBox.hpp"
 #include "../CeramicsMacro.h"
 CERAMICS_NAMESPACE_BEGIN
-template <class T, size_t dimension>
-class TVector;
-
-template <class T, size_t d1, size_t d2>
-class TMatrix;
-
-template <class T, size_t dimension>
-class TBox;
-
-template<class T>
-class TPlane;
-
 template <class T>
-class TSphere
+struct TSphere
 {
-public:
+    typedef T value_type;
     typedef TSphere<T> type;
-    typedef const TSphere<T> const_type;
     typedef TBox<T, 3> box_t;
     typedef TVector<T, 3> vec_t;
     typedef TPlane<T> plane_t;
@@ -96,8 +83,8 @@ public:
 
     type clone() { return *this; }
 
-    type &operator=(const_type &sphere) { return this->copy(sphere); }
-    type &copy(const_type &sphere)
+    type &operator=(const type &sphere) { return this->copy(sphere); }
+    type &copy(const type &sphere)
     {
         this->center.copy(sphere.center);
         this->radius = sphere.radius;
@@ -126,7 +113,7 @@ public:
         return (point.distanceTo(this->center) - this->radius);
     }
 
-    bool intersectsSphere(const_type &sphere)
+    bool intersectsSphere(const type &sphere)
     {
         auto radiusSum = this->radius + sphere.radius;
 
@@ -186,8 +173,8 @@ public:
         return *this;
     }
 
-    bool operator==(const_type &sphere) { return this->equals(sphere); }
-    bool equals(const_type &sphere)
+    bool operator==(const type &sphere) { return this->equals(sphere); }
+    bool equals(const type &sphere)
     {
         return sphere.center.equals(this->center) &&
             (sphere->radius == this->radius);

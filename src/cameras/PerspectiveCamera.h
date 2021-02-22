@@ -14,16 +14,35 @@ public:
         int height= 1;
     }view;
 
-    number_t fov = 50;
-    number_t zoom = 1;
-    number_t near = 0.1;
-    number_t far = 2000;
-    number_t focus = 10;
-    number_t aspect;
-    number_t filmGauge = 35;	// width of the film (default in millimeters)
-    number_t filmOffset = 0;	// horizontal film offset (same unit as gauge)
+    Real getFov()const{return mFov;}
+    Real getZoom()const{return mZoom;}
+    Real getNear()const{return mNear;}
+    Real getFar()const{return mFar;}
+    Real getFocus()const{return mFocus;}
+    Real getAspect()const{return mAspect;}
+    Real getFilmGauge()const{return mFilmGauge;}
+    Real getFilmOffset()const{return mFilmOffset;}
+
+    void setFov(Real fov);
+    void setZoom(Real zoom);
+    void setNear(Real near);
+    void setFar(Real far);
+    void setFocus(Real focus);
+    void setAspect(Real aspect);
+    void setFilmGauge(Real filmGauge);
+    void setFilmOffset(Real filmOffset);
 protected:
-    PerspectiveCamera(number_t fov = 50,number_t aspect = 1,number_t near = 0.1,number_t far = 2000 );
+    PerspectiveCamera(Real fov = 50,Real aspect = 1,Real near = 0.1,Real far = 2000 );
+    Real mFov = 50;
+    Real mZoom = 1;
+    Real mNear = 0.1;
+    Real mFar = 2000;
+    Real mFocus = 10;
+    Real mAspect;
+    Real mFilmGauge = 35;	// width of the film (default in millimeters)
+    Real mFilmOffset = 0;	// horizontal film offset (same unit as gauge)
+private:
+    bool mProjectionMatrixNeedUpdate = true;
 public:
     /* copy: function ( source, recursive ) { */
 
@@ -54,15 +73,15 @@ public:
      *
      * Values for focal length and film gauge must have the same unit.
      */
-    void setFocalLength(number_t focalLength );
+    void setFocalLength(Real focalLength );
 
     /**
      * Calculates the focal length from the current .fov and .filmGauge.
      */
-    number_t getFocalLength()const ;
-    number_t getEffectiveFOV()const;
-    number_t getFilmWidth()const;
-    number_t getFilmHeight()const ;
+    Real getFocalLength()const ;
+    Real getEffectiveFOV()const;
+    Real getFilmWidth()const;
+    Real getFilmHeight()const ;
     /**
      * Sets an offset in a larger frustum. This is useful for multi-window or
      * multi-monitor/multi-machine setups.

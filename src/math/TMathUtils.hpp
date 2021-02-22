@@ -3,8 +3,6 @@
 #include <cctype>
 #include <cmath>
 #include <iomanip>
-#include <sstream>
-#include <string>
 
 #include "../CeramicsMacro.h"
 #include "ERotationOrder.h"
@@ -13,59 +11,12 @@ CERAMICS_NAMESPACE_BEGIN
 /* long _seed = 1234567; */
 #define PI (3.14159265358979323846264338327950288)
 template <class T>
-class TMathUtils
+struct TMathUtils
 {
-public:
+    typedef T value_type;
     static T DEG2RAD;
     static T RAD2DEG;
     static T LN2;
-
-    static std::string generateUUID()
-    {
-        std::ostringstream ss;
-        static bool _lut_init = false;
-        static std::string _lut[256];
-        if (!_lut_init)
-        {
-            _lut_init = true;
-            for (int i = 0; i < 256; ++i)
-            {
-                if (i < 16)
-                {
-                    _lut[i] = "0";
-                }
-                else
-                {
-                    ss << std::hex << i;
-                    _lut[i] = ss.str();
-                    ss.clear();
-                }
-            }
-        }
-
-        // http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript/21963136#21963136
-        // */
-
-        auto d0 = std::rand() * 0xffffffff | 0;
-        auto d1 = std::rand() * 0xffffffff | 0;
-        auto d2 = std::rand() * 0xffffffff | 0;
-        auto d3 = std::rand() * 0xffffffff | 0;
-        auto uuid = _lut[d0 & 0xff] + _lut[d0 >> 8 & 0xff] +
-            _lut[d0 >> 16 & 0xff] + _lut[d0 >> 24 & 0xff] + '-' +
-            _lut[d1 & 0xff] + _lut[d1 >> 8 & 0xff] + '-' +
-            // TODO ?添加了括号不确定算法对错
-            _lut[(d1 >> 16 & 0x0f) | 0x40] + _lut[d1 >> 24 & 0xff] + '-' +
-            _lut[(d2 & 0x3f) | 0x80] + _lut[d2 >> 8 & 0xff] + '-' +
-            _lut[d2 >> 16 & 0xff] + _lut[d2 >> 24 & 0xff] +
-            _lut[d3 & 0xff] + _lut[d3 >> 8 & 0xff] +
-            _lut[d3 >> 16 & 0xff] + _lut[d3 >> 24 & 0xff];
-
-        // .toUpperCase() here flattens concatenated strings to save heap memory
-        // space. */ return uuid.toUpperCase();
-        std::transform(uuid.begin(), uuid.end(),uuid.begin(),
-                       [](unsigned char c) { return std::toupper(c); });
-        return uuid;
-    }
 
     static T clamp(T value, T min, T max)
     {

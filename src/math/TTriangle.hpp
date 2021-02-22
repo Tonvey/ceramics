@@ -1,21 +1,11 @@
 #pragma once
-#include "../CeramicsMacro.h"
+#include "../CeramicsPrerequisites.h"
 CERAMICS_NAMESPACE_BEGIN
-template <class T, size_t dimension>
-class TVector;
-
-template<class T>
-class TPlane;
-
-template <class T, size_t dimension>
-class TBox;
-
 template <class T>
-class TTriangle
+struct TTriangle
 {
-public:
+    typedef T value_type;
     typedef TTriangle<T> type;
-    typedef const type ctype;
     typedef TVector<T, 3> vec_t;
     typedef TPlane<T> plane_t;
     typedef TBox<T, 3> box_t;
@@ -134,8 +124,8 @@ public:
         return *this;
     }
     type clone() { return *this; }
-    type& operator=(ctype& triangle) { return this->copy(triangle); }
-    type& copy(ctype& triangle)
+    type& operator=(const type& triangle) { return this->copy(triangle); }
+    type& copy(const type& triangle)
     {
         this->a.copy(triangle.a);
         this->b.copy(triangle.b);
@@ -285,8 +275,8 @@ public:
 
         return target.copy(a).addScaledVector(_vab, v).addScaledVector(_vac, w);
     }
-    bool operator==(ctype& triangle) { return this->equals(triangle); }
-    bool equals(ctype& triangle)
+    bool operator==(const type& triangle) { return this->equals(triangle); }
+    bool equals(const type& triangle)
     {
         return triangle.a.equals(this->a) && triangle.b.equals(this->b) &&
             triangle.c.equals(this->c);
