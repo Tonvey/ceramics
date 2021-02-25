@@ -50,7 +50,7 @@ struct TMatrix {
     }                                                                   \
     T &operator[](size_t idx)                                           \
     {                                                                   \
-        assert(idx < rowNum);                                           \
+        assert(idx < rowNum*colNum);                                    \
         return elements[idx];                                           \
     }                                                                   \
     type operator+(T s) const                                           \

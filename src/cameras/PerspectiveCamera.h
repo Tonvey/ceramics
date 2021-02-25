@@ -42,7 +42,7 @@ protected:
     Real mFilmGauge = 35;	// width of the film (default in millimeters)
     Real mFilmOffset = 0;	// horizontal film offset (same unit as gauge)
 private:
-    bool mProjectionMatrixNeedUpdate = true;
+    bool mProjectionMatrixNeedUpdate = false;
 public:
     /* copy: function ( source, recursive ) { */
 

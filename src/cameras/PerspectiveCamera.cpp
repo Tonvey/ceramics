@@ -48,6 +48,7 @@ PerspectiveCamera::PerspectiveCamera(Real fov,Real aspect,Real near,Real far) {
     this->mNear = near;
     this->mFar = far;
     this->mAspect = aspect;
+    this->mProjectionMatrixNeedUpdate = true;
 
     this->updateProjectionMatrix();
 }
@@ -80,12 +81,14 @@ PerspectiveCamera::PerspectiveCamera(Real fov,Real aspect,Real near,Real far) {
  *
  * Values for focal length and film gauge must have the same unit.
  */
-void PerspectiveCamera::setFocalLength(Real focalLength ) {
+void PerspectiveCamera::setFocalLength(Real focalLength )
+{
 
     /** see {@link http://www.bobatkins.com/photography/technical/field_of_view.html} */
     const auto vExtentSlope = 0.5 * this->getFilmHeight() / focalLength;
 
     this->mFov = MathUtils::RAD2DEG * 2 * std::atan( vExtentSlope );
+    this->mProjectionMatrixNeedUpdate = true;
     this->updateProjectionMatrix();
 
 }
@@ -93,7 +96,8 @@ void PerspectiveCamera::setFocalLength(Real focalLength ) {
 /**
  * Calculates the focal length from the current .fov and .filmGauge.
  */
-Real PerspectiveCamera::getFocalLength()const {
+Real PerspectiveCamera::getFocalLength()const
+{
 
     const auto vExtentSlope = std::tan( MathUtils::DEG2RAD * 0.5 * this->mFov );
 
@@ -101,21 +105,24 @@ Real PerspectiveCamera::getFocalLength()const {
 
 }
 
-Real PerspectiveCamera::getEffectiveFOV()const{
+Real PerspectiveCamera::getEffectiveFOV()const
+{
 
     return MathUtils::RAD2DEG * 2 * std::atan(
                                               std::tan( MathUtils::DEG2RAD * 0.5 * this->mFov ) / this->mZoom );
 
 }
 
-Real PerspectiveCamera::getFilmWidth()const{
+Real PerspectiveCamera::getFilmWidth()const
+{
 
     // film not completely covered in portrait format (aspect < 1)
     return this->mFilmGauge * std::min( this->mAspect, 1.0f );
 
 }
 
-Real PerspectiveCamera::getFilmHeight()const {
+Real PerspectiveCamera::getFilmHeight()const
+{
 
     // film not completely covered in landscape format (aspect > 1)
     return this->mFilmGauge / std::max( this->mAspect, 1.0f );
@@ -157,7 +164,8 @@ Real PerspectiveCamera::getFilmHeight()const {
  *
  *   Note there is no reason monitors have to be the same size or in a grid.
  */
-void PerspectiveCamera::setViewOffset(int fullWidth,int fullHeight,int x,int y,int width,int height ) {
+void PerspectiveCamera::setViewOffset(int fullWidth,int fullHeight,int x,int y,int width,int height )
+{
 
     this->mAspect = Real(fullWidth) / Real(fullHeight);
     this->view.enabled = true;
@@ -168,19 +176,28 @@ void PerspectiveCamera::setViewOffset(int fullWidth,int fullHeight,int x,int y,i
     this->view.width = width;
     this->view.height = height;
 
+    this->mProjectionMatrixNeedUpdate = true;
+
     this->updateProjectionMatrix();
 
 }
 
-void PerspectiveCamera::clearViewOffset() {
+void PerspectiveCamera::clearViewOffset()
+{
 
     this->view.enabled = false;
+    this->mProjectionMatrixNeedUpdate = true;
 
     this->updateProjectionMatrix();
 
 }
 
-void PerspectiveCamera::updateProjectionMatrix() {
+void PerspectiveCamera::updateProjectionMatrix()
+{
+
+    if(!this->mProjectionMatrixNeedUpdate)
+        return;
+    this->mProjectionMatrixNeedUpdate=false;
 
     const auto near = this->mNear;
     auto top = near * std::tan( MathUtils::DEG2RAD * 0.5 * this->mFov ) / this->mZoom;
@@ -189,7 +206,8 @@ void PerspectiveCamera::updateProjectionMatrix() {
     auto left = - 0.5 * width;
     const auto view = this->view;
 
-    if (this->view.enabled ) {
+    if (this->view.enabled )
+    {
 
         const auto fullWidth = view.fullWidth,
             fullHeight = view.fullHeight;
@@ -204,9 +222,9 @@ void PerspectiveCamera::updateProjectionMatrix() {
     const auto skew = this->mFilmOffset;
     if ( skew != 0 ) left += near * skew / this->getFilmWidth();
 
-    this->projectionMatrix.makePerspective( left, left + width, top, top - height, near, this->mFar );
+    this->mProjectionMatrix.makePerspective( left, left + width, top, top - height, near, this->mFar );
 
-    this->projectionMatrixInverse = this->projectionMatrix.getInverse();
+    this->mProjectionMatrixInverse = this->mProjectionMatrix.getInverse();
 
 }
 CERAMICS_NAMESPACE_END
