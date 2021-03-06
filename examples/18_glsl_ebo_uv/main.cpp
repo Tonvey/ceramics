@@ -7,7 +7,9 @@
 #include "../../src/utils/ApplicationCoreProfile.h"
 #include "../../src/utils/FileUtil.h"
 #include "../../src/utils/Texture.h"
+#include "../../src/cameras/PerspectiveCamera.h"
 using namespace std;
+CERAMICS_NAMESPACE_USING
 #define VERTEX_FILE_NAME "shader.vert"
 #define FRAG_FILE_NAME "shader.frag"
 
@@ -26,9 +28,26 @@ const GLfloat uvBufferData[]={
 };
 const GLuint vertex_indices_data[]={
     // 起始于0!
-    0, 1, 3, // 第一个三角形
-    1, 2, 3  // 第二个三角形
+    0, 3, 1, // 第一个三角形
+    1, 3, 2  // 第二个三角形
 };
+template<class T>
+void printMatrix(T mat){
+    for(size_t r = 0 ; r < mat.row(); ++r){
+        cout<<'|';
+        for(size_t c = 0 ; c < mat.col(); ++c){
+            cout << mat[c * mat.row() + r];
+            if(c!=mat.col()-1){
+                cout<<",\t";
+            }
+        }
+        cout<<'|'<<endl;
+    }
+    cout<<endl;
+}
+void printMatrix4(const Matrix4 &mat){
+    printMatrix(mat);
+}
 
 class Application: public ApplicationCoreProfile
 {
@@ -43,6 +62,7 @@ private:
     GLuint textureId;
     Texture texture;
     GLuint idMVP;
+    SharedPtr<PerspectiveCamera> camera = PerspectiveCamera::create();
 public:
 
     Application(int argc , char **argv)
@@ -76,7 +96,13 @@ public:
     void init()override
     {
         ApplicationCoreProfile::init();
+
+        camera->setPosition(Vector3(0,0,10));
+
+        camera->lookAt(Vector3(0,0,0));
+
         glEnable(GL_DEPTH_TEST);
+
         // Accept fragment if it closer to the camera than the former one
         glDepthFunc(GL_LESS); 
         //加载shader
@@ -86,8 +112,7 @@ public:
 
         //加载纹理图片
         glEnable(GL_TEXTURE_2D);
-        texture = move(Texture(
-                               FileUtil::getFileDirName(__FILE__) + FileUtil::pathChar + ".."  + FileUtil::pathChar + "textures" + FileUtil::pathChar +"panda.bmp"));
+        texture = Texture(FileUtil::getFileDirName(__FILE__) + FileUtil::pathChar + ".."  + FileUtil::pathChar + "textures" + FileUtil::pathChar +"panda.bmp");
 
         textureId =
             program.getAttr("myTextureSampler");
@@ -147,7 +172,23 @@ public:
     {
         this->computeMatrixesFromInput(elapse);
         Matrix4 matModel;
-        Matrix4 mvp = this->mMatProjection * this->mMatView * matModel;
+        // Matrix4 projectionMatrix;
+        //matModel = Matrix4::makeTranslation(2,2,0);
+        // Matrix4 projectionMatrix = this->mMatProjection;
+        // Matrix4 viewMatrix = this->mMatView;
+        // Matrix4 mvp = this->mMatProjection * camera->getMatrixWorldInverse() * matModel;
+        Matrix4 projectionMatrix = camera->getProjectionMatrix();
+        Matrix4 viewMatrix = camera->getMatrixWorldInverse();
+
+        cout<<"modelMatrix:"<<endl;
+        printMatrix(matModel);
+        cout<<"projectionMatrix:"<<endl;
+        printMatrix(projectionMatrix);
+        cout<<"viewMatrix:"<<endl;
+        printMatrix(viewMatrix);
+        Matrix4 mvp = projectionMatrix * viewMatrix * matModel;
+        cout<<"mvp:"<<endl;
+        printMatrix(mvp);
         glUniformMatrix4fv(this->idMVP,1,GL_FALSE,&mvp[0]);
 
         glClearColor(0,0,0.4,1.0);

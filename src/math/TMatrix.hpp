@@ -101,30 +101,6 @@ struct TMatrix {
         }                                                               \
         return *this;                                                   \
     }                                                                   \
-    type operator*(T s) const                                           \
-    {                                                                   \
-        type ret;                                                       \
-        for (size_t r = 0; r < rowNum; ++r)                             \
-        {                                                               \
-            for (size_t c = 0; c < colNum; ++c)                         \
-            {                                                           \
-                ret->elements[r * colNum + c] =                         \
-                    this->elements[r * colNum + c] * s;                 \
-            }                                                           \
-        }                                                               \
-        return ret;                                                     \
-    }                                                                   \
-    type &operator*=(T s)                                               \
-    {                                                                   \
-        for (size_t r = 0; r < rowNum; ++r)                             \
-        {                                                               \
-            for (size_t c = 0; c < colNum; ++c)                         \
-            {                                                           \
-                this->elements[r * colNum + c] *= s;                    \
-            }                                                           \
-        }                                                               \
-        return *this;                                                   \
-    }                                                                   \
     type operator/(T s) const                                           \
     {                                                                   \
         type ret;                                                       \
@@ -202,22 +178,23 @@ struct TMatrix {
         return *this;                                                   \
     }                                                                   \
     template <size_t colNum2>                                           \
-    TMatrix<T, rowNum, colNum2> operator*(TMatrix<T, colNum, colNum2> &other) \
+    TMatrix<T, rowNum, colNum2> operator*(TMatrix<T, colNum, colNum2> other) \
         const                                                           \
     {                                                                   \
         TMatrix<T, rowNum, colNum2> ret;                                \
         auto te = ret.elements;                                         \
         for (size_t r = 0; r < rowNum; ++r)                             \
         {                                                               \
-            for (size_t c = 0; c < colNum2; ++c)                        \
+            for (size_t c2 = 0; c2 < colNum2; ++c2)                     \
             {                                                           \
                 T sum = T(0);                                           \
-                for (size_t i = 0; i < colNum; ++i)                     \
+                size_t destIdx = c2*rowNum + r;                         \
+                for (size_t c1 = 0; c1 < colNum; ++c1)                  \
                 {                                                       \
-                    sum += this->elements[r * colNum + i] *             \
-                        other[i * colNum2 + c];                         \
+                    sum += this->elements[c1 * rowNum + r] *            \
+                        other[c2 * colNum + c1];                        \
                 }                                                       \
-                te[r * colNum + c] = sum;                               \
+                te[destIdx] = sum;                                      \
             }                                                           \
         }                                                               \
         return ret;                                                     \
@@ -281,7 +258,7 @@ struct TMatrix {
     size_t col() const { return colNum; }                               \
     bool operator!=(const type &other) const { return !(*this == other); } \
     static type makeZero() { return {0}; }                              \
-    T elements[rowNum * colNum];                                        \
+    T *elements = new T[rowNum * colNum];                               \
 
     CERAMICS_DECLARE_MATRIX_COMMON_PART(rowNum, colNum);
 
@@ -294,6 +271,10 @@ struct TMatrix {
                 elements[r * colNum + c] = T(0);
             }
         }
+    }
+    ~TMatrix()
+    {
+        delete [] elements;
     }
 };
 
@@ -491,11 +472,12 @@ struct TMatrix<T, 4, 4>
     type getInverse() const
     {
         auto me = this->elements;
-        auto n11 = me[0], n21 = me[1], n31 = me[2], n41 = me[3], n12 = me[4],
-            n22 = me[5], n32 = me[6], n42 = me[7], n13 = me[8], n23 = me[9],
-            n33 = me[10], n43 = me[11], n14 = me[12], n24 = me[13],
-            n34 = me[14], n44 = me[15],
+        auto n11=me[0],n21=me[1],n31=me[2],n41=me[3],
+            n12=me[4],n22=me[5],n32=me[6],n42=me[7],
+            n13=me[8],n23=me[9],n33=me[10],n43=me[11],
+            n14=me[12],n24=me[13],n34 =me[14],n44=me[15];
 
+        auto
             t11 = n23 * n34 * n42 - n24 * n33 * n42 + n24 * n32 * n43 -
             n22 * n34 * n43 - n23 * n32 * n44 + n22 * n33 * n44,
             t12 = n14 * n33 * n42 - n13 * n34 * n42 - n14 * n32 * n43 +
@@ -819,12 +801,12 @@ struct TMatrix<T, 4, 4>
     static type makeTranslation(T x, T y, T z)
     {
         return
-            {
-
-                1, 0, 0, x, 0, 1, 0, y, 0,
-                0, 1, z, 0, 0, 0, 1
-
-            };
+        {
+                1, 0, 0, 0,
+                0, 1, 0, 0,
+                0, 0, 1, 0,
+                x, y, z, 1
+        };
     }
     static type makeRotationX(T theta)
     {

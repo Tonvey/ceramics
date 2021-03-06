@@ -3,6 +3,7 @@
 #define VEC3_AXIS_Y (Vector3(0, 1, 0))
 #define VEC3_AXIS_Z (Vector3(0, 0, 1))
 CERAMICS_NAMESPACE_BEGIN
+Vector3 Node3D::DefaultUp(0, 1, 0);
 Node3D::Node3D()
 {
     this->mUp = Node3D::DefaultUp;
@@ -123,10 +124,10 @@ void Node3D::lookAt(const Vector3 &target)
 
     // TODO rewrite in subclass
     // if (this->isCamera || this->isLight) {
-    //     m.lookAt(_position, _target, this->mUp);
+        m.lookAt(position, target, this->mUp);
 
     // } else {
-    m.lookAt(target, position, this->mUp);
+    // m.lookAt(target, position, this->mUp);
     // }
 
     this->mQuaternion.setFromRotationMatrix(m);

@@ -137,15 +137,13 @@ protected:
     Vector3 mPosition;
     Euler mEuler;
     Quaternion mQuaternion;
-    Vector3 mScale;
+    Vector3 mScale = Vector3(1,1,1);
     Vector3 mUp = DefaultUp;
     weak_ptr_t mParent;
     children_t mChildren;
-private:
     bool mMatrixLocalNeedUpdate = false;
     bool mMatrixWorldNeedUpdate = false;
 
 };
-Vector3 Node3D::DefaultUp(0, 1, 0);
 // bool Node3D::DefaultMatrixAutoUpdate = true;
 CERAMICS_NAMESPACE_END

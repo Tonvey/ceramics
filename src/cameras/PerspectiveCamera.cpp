@@ -49,8 +49,6 @@ PerspectiveCamera::PerspectiveCamera(Real fov,Real aspect,Real near,Real far) {
     this->mFar = far;
     this->mAspect = aspect;
     this->mProjectionMatrixNeedUpdate = true;
-
-    this->updateProjectionMatrix();
 }
 /* copy: function ( source, recursive ) { */
 
@@ -199,7 +197,8 @@ void PerspectiveCamera::updateProjectionMatrix()
         return;
     this->mProjectionMatrixNeedUpdate=false;
 
-    const auto near = this->mNear;
+    auto near = this->mNear;
+    auto far = this->mFar;
     auto top = near * std::tan( MathUtils::DEG2RAD * 0.5 * this->mFov ) / this->mZoom;
     auto height = 2 * top;
     auto width = this->mAspect * height;
@@ -222,7 +221,7 @@ void PerspectiveCamera::updateProjectionMatrix()
     const auto skew = this->mFilmOffset;
     if ( skew != 0 ) left += near * skew / this->getFilmWidth();
 
-    this->mProjectionMatrix.makePerspective( left, left + width, top, top - height, near, this->mFar );
+    this->mProjectionMatrix = Matrix4::makePerspective( left, left + width, top, top - height, near, far );
 
     this->mProjectionMatrixInverse = this->mProjectionMatrix.getInverse();
 

@@ -36,13 +36,13 @@ protected:
     Real mFov = 50;
     Real mZoom = 1;
     Real mNear = 0.1;
-    Real mFar = 2000;
+    Real mFar = 200;
     Real mFocus = 10;
     Real mAspect;
     Real mFilmGauge = 35;	// width of the film (default in millimeters)
     Real mFilmOffset = 0;	// horizontal film offset (same unit as gauge)
 private:
-    bool mProjectionMatrixNeedUpdate = false;
+    bool mProjectionMatrixNeedUpdate = true;
 public:
     /* copy: function ( source, recursive ) { */
 
