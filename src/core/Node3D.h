@@ -4,21 +4,19 @@
 #include <memory>
 #include <vector>
 #include "../CeramicsType.h"
+#include "Object.h"
 #include "TEvent.hpp"
 CERAMICS_NAMESPACE_BEGIN
-class Node3D : public MultipleInheritableEnableSharedFromThis
+class Node3D : public Object
 {
-    CERAMICS_FORCE_CLASS_SHARED_CREATE_DECLARE(Node3D);
 public:
     typedef Node3D type;
-    // typedef SharedPtr<type> shared_ptr_t;
-    // typedef WeakPtr<type> weak_ptr_t;
-    typedef std::vector<shared_ptr_t> children_t;
+    typedef std::vector<type*> children_t;
 
+    Node3D();
     virtual ~Node3D(){};
     static Vector3 DefaultUp;
     static bool DefaultMatrixAutoUpdate;
-
 
 public:
     TEvent<> addEvent;
@@ -65,13 +63,13 @@ public:
     virtual void lookAt(const Vector3 &target);
 
     // TODO 改为 不定参数模板?
-    type& add(shared_ptr_t &object);
+    type& add(type *object);
 
-    type& remove(shared_ptr_t &object);
+    type& remove(type *object);
 
     type& clear();
 
-    type& attach(shared_ptr_t &object);
+    type& attach(type *object);
 
     // getObjectById: function ( id ) {
 
@@ -116,21 +114,22 @@ public:
 
     virtual void raycast();
 
-    virtual void traverse(std::function<void(shared_ptr_t)> &callback);
+    virtual void traverse(std::function<void(type*)> &callback);
 
-    virtual void traverseVisible(std::function<void(shared_ptr_t)> &callback);
+    virtual void traverseVisible(std::function<void(type*)> &callback);
 
-    virtual void traverseAncestors(std::function<void(shared_ptr_t)> &callback);
+    virtual void traverseAncestors(std::function<void(type*)> &callback);
 
     virtual void updateMatrixLocal();
 
     virtual void updateMatrixWorld();
+
+    void setParent(type *parent);
     // virtual void updateMatrixWorld(bool force);
 
     // virtual void updateWorldMatrix(bool updateParents, bool updateChildren);
 
 protected:
-    Node3D();
     void setMatrixWorldNeedUpdate();
     Matrix4 mMatrixLocal;
     Matrix4 mMatrixWorld;
@@ -139,7 +138,7 @@ protected:
     Quaternion mQuaternion;
     Vector3 mScale = Vector3(1,1,1);
     Vector3 mUp = DefaultUp;
-    weak_ptr_t mParent;
+    type *mParent = nullptr;
     children_t mChildren;
     bool mMatrixLocalNeedUpdate = false;
     bool mMatrixWorldNeedUpdate = false;

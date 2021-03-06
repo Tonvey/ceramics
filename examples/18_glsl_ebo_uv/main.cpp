@@ -62,7 +62,7 @@ private:
     GLuint textureId;
     Texture texture;
     GLuint idMVP;
-    SharedPtr<PerspectiveCamera> camera = PerspectiveCamera::create();
+    PerspectiveCamera *camera;
 public:
 
     Application(int argc , char **argv)
@@ -71,6 +71,7 @@ public:
     }
     ~Application()
     {
+        camera->release();
         if(glIsBuffer(ebo)==GL_TRUE)
         {
             cout<<"Delete ebo buffer"<<endl;
@@ -96,6 +97,8 @@ public:
     void init()override
     {
         ApplicationCoreProfile::init();
+
+        camera = CreateObject<PerspectiveCamera>();
 
         camera->setPosition(Vector3(0,0,10));
 

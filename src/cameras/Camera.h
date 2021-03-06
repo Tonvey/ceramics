@@ -4,6 +4,7 @@ CERAMICS_NAMESPACE_BEGIN
 class Camera : public Node3D {
 public:
     typedef Camera type;
+    Camera(){}
     virtual ~Camera(){};
     // virtual void updateMatrixWorld(bool force) override;
     virtual void updateMatrixWorld() override;
@@ -15,7 +16,6 @@ public:
     // virtual void lookAt(const Vector3 &target)override;
 
 protected:
-    Camera(){}
     Matrix4 mProjectionMatrix;
     Matrix4 mProjectionMatrixInverse;
     Matrix4 mMatrixWorldInverse;

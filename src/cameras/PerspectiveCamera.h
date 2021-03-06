@@ -2,7 +2,6 @@
 CERAMICS_NAMESPACE_BEGIN
 
 class PerspectiveCamera : public Camera{
-    CERAMICS_FORCE_CLASS_SHARED_CREATE_DECLARE(PerspectiveCamera)
 public:
     struct View{
         bool enabled= false;
@@ -13,6 +12,7 @@ public:
         int width= 1;
         int height= 1;
     }view;
+    PerspectiveCamera(Real fov = 50,Real aspect = 1,Real near = 0.1,Real far = 2000 );
 
     Real getFov()const{return mFov;}
     Real getZoom()const{return mZoom;}
@@ -32,7 +32,6 @@ public:
     void setFilmGauge(Real filmGauge);
     void setFilmOffset(Real filmOffset);
 protected:
-    PerspectiveCamera(Real fov = 50,Real aspect = 1,Real near = 0.1,Real far = 2000 );
     Real mFov = 50;
     Real mZoom = 1;
     Real mNear = 0.1;

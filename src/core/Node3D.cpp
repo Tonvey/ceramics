@@ -132,10 +132,9 @@ void Node3D::lookAt(const Vector3 &target)
 
     this->mQuaternion.setFromRotationMatrix(m);
 
-    auto originParent = mParent.lock();
-    if (originParent != nullptr)
+    if (mParent != nullptr)
     {
-        m.extractRotation(originParent->mMatrixWorld);
+        m.extractRotation(mParent->mMatrixWorld);
         q.setFromRotationMatrix(m);
         this->mQuaternion.premultiply(q.inverse());
     }
@@ -143,19 +142,22 @@ void Node3D::lookAt(const Vector3 &target)
     mMatrixLocalNeedUpdate = true;
 }
 
-Node3D::type& Node3D::add(shared_ptr_t &object)
+void Node3D::setParent(type *parent)
 {
-    if (object.get() != this)
+    //TODO
+    mParent = parent;
+}
+Node3D::type& Node3D::add(type *object)
+{
+    if(object != this)
     {
-        auto originParent = object->mParent.lock();
-        if (originParent != nullptr)
+        if (mParent != nullptr)
         {
-            originParent->remove(object);
+            mParent->remove(object);
         }
 
-        shared_ptr_t ptr;
-        this->getSharedPtr(ptr);
-        object->mParent = ptr;
+        object->setParent(this);
+        object->retain();
         this->mChildren.push_back(object);
 
         object->addEvent();
@@ -165,16 +167,17 @@ Node3D::type& Node3D::add(shared_ptr_t &object)
     return *this;
 }
 
-Node3D::type& Node3D::remove(shared_ptr_t &object)
+Node3D::type& Node3D::remove(type *object)
 {
     auto it = std::find(mChildren.begin(), mChildren.end(), object);
 
     if (it != mChildren.end())
     {
-        object->mParent.reset();
+        object->setParent(nullptr);
         mChildren.erase(it);
 
         object->removeEvent();
+        object->release();
     }
 
     return *this;
@@ -184,17 +187,19 @@ Node3D::type& Node3D::clear()
 {
     for (auto it = mChildren.begin(); it < mChildren.end();)
     {
-        (*it)->mParent.reset();
+        (*it)->setParent(nullptr);
 
         it = mChildren.erase(it);
 
         (*it)->removeEvent();
+
+        (*it)->release();
     }
 
     return *this;
 }
 
-Node3D::type& Node3D::attach(shared_ptr_t &object)
+Node3D::type& Node3D::attach(type *object)
 {
     // adds object as a child of this, while maintaining the object's world
     // transform
@@ -206,12 +211,11 @@ Node3D::type& Node3D::attach(shared_ptr_t &object)
 
     m = this->mMatrixWorld.getInverse();
 
-    auto originParent = object->mParent.lock();
-    if (originParent != nullptr)
+    if (mParent != nullptr)
     {
         // originParent->updateWorldMatrix(true, false);
-
-        m.multiply(originParent->mMatrixWorld);
+        //TODO
+        m.multiply(mParent->mMatrixWorld);
     }
 
     object->applyMatrix4(m);
@@ -294,45 +298,36 @@ Vector3 &Node3D::getWorldDirection()
 
 void Node3D::raycast() {}
 
-void Node3D::traverse(std::function<void(shared_ptr_t)> &callback)
+void Node3D::traverse(std::function<void(type*)> &callback)
 {
-    shared_ptr_t ptr;
-    this->getSharedPtr(ptr);
-    callback(ptr);
-
-    const auto &c = this->mChildren;
-
-    for (auto &i : c)
+    callback(this);
+    for (auto &i : mChildren)
     {
         i->traverse(callback);
     }
 }
 
-void Node3D::traverseVisible(std::function<void(shared_ptr_t)> &callback)
+void Node3D::traverseVisible(std::function<void(type*)> &callback)
 {
     if (this->visible == false) return;
-    shared_ptr_t ptr;
-    this->getSharedPtr(ptr);
-    callback(ptr);
 
-    const auto c = this->mChildren;
+    callback(this);
 
-    for (auto &i : c)
+    for (auto &i : mChildren)
     {
         i->traverseVisible(callback);
     }
 }
 
 void Node3D::traverseAncestors(
-                               std::function<void(shared_ptr_t)> &callback)
+                               std::function<void(type*)> &callback)
 {
-    auto p = this->mParent.lock();
 
-    if (p != nullptr)
+    if (mParent != nullptr)
     {
-        callback(p);
+        callback(mParent);
 
-        p->traverseAncestors(callback);
+        mParent->traverseAncestors(callback);
     }
 }
 void Node3D::updateMatrixLocal()
@@ -357,18 +352,16 @@ void Node3D::updateMatrixWorld()
 {
     this->updateMatrixLocal();
 
-    auto originParent = this->mParent.lock();
-
-    if (originParent == nullptr)
+    if (mParent == nullptr)
     {
         this->mMatrixWorld = this->mMatrixLocal;
     }
     else
     {
-        originParent->updateMatrixWorld();
+        mParent->updateMatrixWorld();
         if (this->mMatrixWorldNeedUpdate)
         {
-            this->mMatrixWorld.multiplyMatrices(originParent->mMatrixWorld,
+            this->mMatrixWorld.multiplyMatrices(mParent->mMatrixWorld,
                                                 this->mMatrixLocal);
         }
     }

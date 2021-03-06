@@ -11,4 +11,3 @@
 #include "math/TSphere.hpp"
 #include "math/TTriangle.hpp"
 #include "math/TVector.hpp"
-#include "utils/Memory.hpp"
