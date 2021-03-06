@@ -761,7 +761,7 @@ struct TMatrix<T, 4, 4>
     static type makeRotationX(T theta)
     {
         type ret;
-        auto c = cos(theta), s = sin(theta);
+        auto c = std::cos(theta), s = std::sin(theta);
         return
         {
             1, 0, 0, 0,
@@ -774,7 +774,7 @@ struct TMatrix<T, 4, 4>
     static type makeRotationY(T theta)
     {
         type ret;
-        auto c = cos(theta), s = sin(theta);
+        auto c = std::cos(theta), s = std::sin(theta);
         return
         {
             c, 0, s, 0,
@@ -786,7 +786,7 @@ struct TMatrix<T, 4, 4>
     static type makeRotationZ(T theta)
     {
         type ret;
-        auto c = cos(theta), s = sin(theta);
+        auto c = std::cos(theta), s = std::sin(theta);
         return
         {
             c, -s, 0, 0,
@@ -798,8 +798,8 @@ struct TMatrix<T, 4, 4>
     static type makeRotationAxis(TVector<T, 3> axis, T angle)
     {
         type ret;
-        auto c = cos(angle);
-        auto s = sin(angle);
+        auto c = std::cos(angle);
+        auto s = std::sin(angle);
         auto t = 1 - c;
         auto x = axis.x, y = axis.y, z = axis.z;
         auto tx = t * x, ty = t * y;
