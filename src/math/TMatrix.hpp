@@ -117,27 +117,6 @@ struct TMatrix {
             this->elements[i] -= other.elements[i];                     \
         return *this;                                                   \
     }                                                                   \
-    template <size_t colNum2>                                           \
-    TMatrix<T, rowNum, colNum2> operator*(TMatrix<T, colNum, colNum2> other) \
-        const                                                           \
-    {                                                                   \
-        TMatrix<T, rowNum, colNum2> ret;                                \
-        auto &te = ret.elements;                                        \
-        for (size_t r = 0; r < rowNum; ++r)                             \
-        {                                                               \
-            for (size_t c2 = 0; c2 < colNum2; ++c2)                     \
-            {                                                           \
-                T sum = T(0);                                           \
-                for (size_t c1 = 0; c1 < colNum; ++c1)                  \
-                {                                                       \
-                    sum += this->elements[r * colNum + c1] *            \
-                        other[c1 * rowNum + c2];                        \
-                }                                                       \
-                te[r*colNum2 + c2] = sum;                               \
-            }                                                           \
-        }                                                               \
-        return ret;                                                     \
-    }                                                                   \
     type operator/(const type &other) const                             \
     {                                                                   \
         type ret = *this;                                               \
@@ -168,7 +147,7 @@ struct TMatrix {
     size_t numOfCols() const { return colNum; }                         \
     bool operator!=(const type &other) const { return !(*this == other); } \
     static type makeZero() { return {0}; }                              \
-    T *elements = new T[rowNum * colNum];                               \
+    T elements[rowNum * colNum];                                        \
 
     CERAMICS_DECLARE_MATRIX_COMMON_PART(rowNum, colNum);
 
@@ -179,7 +158,28 @@ struct TMatrix {
     }
     ~TMatrix()
     {
-        delete [] elements;
+    }
+    //Common operator*
+    template <size_t colNum2>
+    TMatrix<T, rowNum, colNum2> operator*(TMatrix<T, colNum, colNum2> other)
+        const
+    {
+        TMatrix<T, rowNum, colNum2> ret;
+        auto &te = ret.elements;
+        for (size_t r = 0; r < rowNum; ++r)
+        {
+            for (size_t c2 = 0; c2 < colNum2; ++c2)
+            {
+                T sum = T(0);
+                for (size_t c1 = 0; c1 < colNum; ++c1)
+                {
+                    sum += this->elements[r * colNum + c1] *
+                        other[c1 * rowNum + c2];
+                }
+                te[r*colNum2 + c2] = sum;
+            }
+        }
+        return ret;
     }
 };
 
@@ -209,29 +209,38 @@ struct TMatrix<T, dimension, dimension>
     }                                                           \
     type &operator*=(const type &other)                         \
     {                                                           \
-        type result;                                            \
-        auto &te = result.elements;                             \
-        for (size_t r = 0; r < dimension; ++r)                  \
-        {                                                       \
-            for (size_t c = 0; c < dimension; ++c)              \
-            {                                                   \
-                T sum = T(0);                                   \
-                for (size_t i = 0; i < dimension; ++i)          \
-                {                                               \
-                    sum += this->elements[r * dimension + i] *  \
-                        other[i * dimension + c];               \
-                }                                               \
-                te[r * dimension + c] = sum;                    \
-            }                                                   \
-        }                                                       \
-        copy(result);                                           \
+        type result = *this * other;                            \
+        *this = result;                                         \
         return *this;                                           \
-    }                                                           \
+    }                                                           
 
     CERAMICS_DECLARE_SQUARD_MATRIX_COMMON_PART(dimension)
 
+    //Common operator*
+    TMatrix<T, dimension, dimension> operator*(TMatrix<T, dimension, dimension> other)
+        const
+    {
+        TMatrix<T, dimension, dimension> ret;
+        auto &te = ret.elements;
+        for (size_t r = 0; r < dimension; ++r)
+        {
+            for (size_t c2 = 0; c2 < dimension; ++c2)
+            {
+                T sum = T(0);
+                for (size_t c1 = 0; c1 < dimension; ++c1)
+                {
+                    sum += this->elements[r * dimension + c1] *
+                        other[c1 * dimension + c2];
+                }
+                te[r*dimension + c2] = sum;
+            }
+        }
+        return ret;
+    }
+
     T determinant() const { return calculateDeterminant(elements, dimension); }
 
+    //TODO
     static T calculateDeterminant(const T *matrix, size_t n)
     {
         T det = T(0);
@@ -263,19 +272,52 @@ struct TMatrix<T, dimension, dimension>
         return det;
     }
 };
+
 // Matrix3x3
 template <class T>
 struct TMatrix<T, 3, 3>
 {
     CERAMICS_DECLARE_MATRIX_COMMON_PART(3, 3)
     CERAMICS_DECLARE_SQUARD_MATRIX_COMMON_PART(3)
+    // inline operator *
+    TMatrix<T, 3, 3> operator*(const TMatrix<T, 3, 3> &other)
+        const                                                           
+    {
+        TMatrix<T, 3, 3> ret;
+        auto &te = ret.elements;
+        const auto &ae = this->elements;
+		const auto &be = other.elements;
+
+		const auto &a11 = ae[ 0 ], &a12 = ae[ 1 ], &a13 = ae[ 2 ];
+		const auto &a21 = ae[ 3 ], &a22 = ae[ 4 ], &a23 = ae[ 5 ];
+		const auto &a31 = ae[ 6 ], &a32 = ae[ 7 ], &a33 = ae[ 8 ];
+
+		const auto &b11 = be[ 0 ], &b12 = be[ 1 ], &b13 = be[ 2 ];
+		const auto &b21 = be[ 3 ], &b22 = be[ 4 ], &b23 = be[ 5 ];
+		const auto &b31 = be[ 6 ], &b32 = be[ 7 ], &b33 = be[ 8 ];
+
+		te[ 0 ] = a11 * b11 + a12 * b21 + a13 * b31;
+		te[ 1 ] = a11 * b12 + a12 * b22 + a13 * b32;
+		te[ 2 ] = a11 * b13 + a12 * b23 + a13 * b33;
+
+		te[ 3 ] = a21 * b11 + a22 * b21 + a23 * b31;
+		te[ 4 ] = a21 * b12 + a22 * b22 + a23 * b32;
+		te[ 5 ] = a21 * b13 + a22 * b23 + a23 * b33;
+
+		te[ 6 ] = a31 * b11 + a32 * b21 + a33 * b31;
+		te[ 7 ] = a31 * b12 + a32 * b22 + a33 * b32;
+		te[ 8 ] = a31 * b13 + a32 * b23 + a33 * b33;
+
+        return ret;
+    }
+
     type getInverse() const
     {
         auto &me = this->elements;
         auto
-            n11 = me[0], n12 = me[1], n13 = me[2],
-            n21 = me[3], n22 = me[4], n23 = me[5],
-            n31 = me[6], n32 = me[7], n33 = me[8];
+            &n11 = me[0], &n12 = me[1], &n13 = me[2],
+            &n21 = me[3], &n22 = me[4], &n23 = me[5],
+            &n31 = me[6], &n32 = me[7], &n33 = me[8];
         auto
             t11 = n33 * n22 - n32 * n23,
             t12 = n32 * n13 - n33 * n12,
@@ -303,17 +345,19 @@ struct TMatrix<T, 3, 3>
 
         return ret;
     }
+
     T determinant() const
     {
         const auto &te = this->elements;
 
         const auto
-            n11 = te[0], n12 = te[1], n13 = te[2],
-            n21 = te[3], n22 = te[4], n23 = te[5],
-            n31 = te[6], n32 = te[7], n33 = te[8];
+            &n11 = te[0], &n12 = te[1], &n13 = te[2],
+            &n21 = te[3], &n22 = te[4], &n23 = te[5],
+            &n31 = te[6], &n32 = te[7], &n33 = te[8];
 
         return n11 * n22 * n33 - n11 * n23 * n32 - n12 * n21 * n33 + n12 * n23 * n31 + n13 * n21 * n32 - n13 * n22 * n31;
     }
+
     type &scale(T sx, T sy)
     {
         auto &te = this->elements;
@@ -332,8 +376,8 @@ struct TMatrix<T, 3, 3>
         const auto c = std::cos(theta);
         const auto s = std::sin(theta);
         auto &te = this->elements;
-        const auto a11 = te[0], a12 = te[1], a13 = te[2];
-        const auto a21 = te[3], a22 = te[4], a23 = te[5];
+        const auto &a11 = te[0], &a12 = te[1], &a13 = te[2];
+        const auto &a21 = te[3], &a22 = te[4], &a23 = te[5];
         te[0] = c * a11 + s * a21;
         te[1] = c * a12 + s * a22;
         te[2] = c * a13 + s * a23;
@@ -379,14 +423,56 @@ struct TMatrix<T, 4, 4>
 {
     CERAMICS_DECLARE_MATRIX_COMMON_PART(4, 4)
     CERAMICS_DECLARE_SQUARD_MATRIX_COMMON_PART(4)
+    // inline operator *
+    TMatrix<T, 4, 4> operator*(const TMatrix<T, 4, 4> &other) 
+        const
+    {
+        TMatrix<T, 4, 4> ret;
+        auto &te = ret.elements;
+		const auto &ae = this->elements;
+		const auto &be = other.elements;
+
+		const auto &a11 = ae[ 0 ], &a12 = ae[ 1 ], &a13 = ae[ 2 ], &a14 = ae[ 3 ];
+		const auto &a21 = ae[ 4 ], &a22 = ae[ 5 ], &a23 = ae[ 6 ], &a24 = ae[ 7 ];
+		const auto &a31 = ae[ 8 ], &a32 = ae[ 9 ], &a33 = ae[ 10 ], &a34 = ae[ 11 ];
+		const auto &a41 = ae[ 12 ], &a42 = ae[ 13 ], &a43 = ae[ 14 ], &a44 = ae[ 15 ];
+
+		const auto &b11 = be[ 0 ], &b12 = be[ 1 ], &b13 = be[ 2 ], &b14 = be[ 3 ];
+		const auto &b21 = be[ 4 ], &b22 = be[ 5 ], &b23 = be[ 6 ], &b24 = be[ 7 ];
+		const auto &b31 = be[ 8 ], &b32 = be[ 9 ], &b33 = be[ 10 ], &b34 = be[ 11 ];
+		const auto &b41 = be[ 12 ], &b42 = be[ 13 ], &b43 = be[ 14 ], &b44 = be[ 15 ];
+
+		te[ 0 ] = a11 * b11 + a12 * b21 + a13 * b31 + a14 * b41;
+		te[ 1 ] = a11 * b12 + a12 * b22 + a13 * b32 + a14 * b42;
+		te[ 2 ] = a11 * b13 + a12 * b23 + a13 * b33 + a14 * b43;
+		te[ 3 ] = a11 * b14 + a12 * b24 + a13 * b34 + a14 * b44;
+
+		te[ 4 ] = a21 * b11 + a22 * b21 + a23 * b31 + a24 * b41;
+		te[ 5 ] = a21 * b12 + a22 * b22 + a23 * b32 + a24 * b42;
+		te[ 6 ] = a21 * b13 + a22 * b23 + a23 * b33 + a24 * b43;
+		te[ 7 ] = a21 * b14 + a22 * b24 + a23 * b34 + a24 * b44;
+
+		te[ 8 ] = a31 * b11 + a32 * b21 + a33 * b31 + a34 * b41;
+		te[ 9 ] = a31 * b12 + a32 * b22 + a33 * b32 + a34 * b42;
+		te[ 10 ] = a31 * b13 + a32 * b23 + a33 * b33 + a34 * b43;
+		te[ 11 ] = a31 * b14 + a32 * b24 + a33 * b34 + a34 * b44;
+
+		te[ 12 ] = a41 * b11 + a42 * b21 + a43 * b31 + a44 * b41;
+		te[ 13 ] = a41 * b12 + a42 * b22 + a43 * b32 + a44 * b42;
+		te[ 14 ] = a41 * b13 + a42 * b23 + a43 * b33 + a44 * b43;
+		te[ 15 ] = a41 * b14 + a42 * b24 + a43 * b34 + a44 * b44;
+
+        return ret;
+    }
+
     type getInverse() const
     {
         const auto &me = this->elements;
         auto
-            n11=me[0], n12=me[1], n13=me[2], n14=me[3],
-            n21=me[4], n22=me[5], n23=me[6], n24=me[7],
-            n31=me[8], n32=me[9], n33=me[10], n34 =me[11],
-            n41=me[12], n42=me[13], n43=me[14], n44=me[15];
+            &n11=me[0], &n12=me[1], &n13=me[2], &n14=me[3],
+            &n21=me[4], &n22=me[5], &n23=me[6], &n24=me[7],
+            &n31=me[8], &n32=me[9], &n33=me[10], &n34 =me[11],
+            &n41=me[12], &n42=me[13], &n43=me[14], &n44=me[15];
 
         auto
             t11 = n23 * n34 * n42 - n24 * n33 * n42 + n24 * n32 * n43 -
@@ -513,10 +599,10 @@ struct TMatrix<T, 4, 4>
     T determinant() const
     {
         auto &te = this->elements;
-        auto n11 = te[0], n12 = te[1], n13 = te[2], n14 = te[3];
-        auto n21 = te[4], n22 = te[5], n23 = te[6], n24 = te[7];
-        auto n31 = te[8], n32 = te[9], n33 = te[10], n34 = te[11];
-        auto n41 = te[12], n42 = te[13], n43 = te[14], n44 = te[15];
+        auto &n11 = te[0], &n12 = te[1], &n13 = te[2], &n14 = te[3];
+        auto &n21 = te[4], &n22 = te[5], &n23 = te[6], &n24 = te[7];
+        auto &n31 = te[8], &n32 = te[9], &n33 = te[10], &n34 = te[11];
+        auto &n41 = te[12], &n42 = te[13], &n43 = te[14], &n44 = te[15];
 
         // TODO: make this more efficient
         //( based on
@@ -576,53 +662,6 @@ struct TMatrix<T, 4, 4>
         scale.x = sx;
         scale.y = sy;
         scale.z = sz;
-
-        return *this;
-    }
-    type &multiply(const type &m) { return this->multiplyMatrices(*this, m); }
-    type &multiply(const type &m, const type &n)
-    {
-        return this->multiplyMatrices(m, n);
-    }
-    type &premultiply(const type &m)
-    {
-        return this->multiplyMatrices(m, *this);
-    }
-    type &multiplyMatrices(const type &a, const type &b)
-    {
-        auto &ae = a.elements;
-        auto &be = b.elements;
-        auto &te = this->elements;
-
-        auto a11 = ae[0], a12 = ae[1], a13 = ae[2], a14 = ae[3];
-        auto a21 = ae[4], a22 = ae[5], a23 = ae[6], a24 = ae[7];
-        auto a31 = ae[8], a32 = ae[9], a33 = ae[10], a34 = ae[11];
-        auto a41 = ae[12], a42 = ae[13], a43 = ae[14], a44 = ae[15];
-
-        auto b11 = be[0], b12 = be[1], b13 = be[2], b14 = be[3];
-        auto b21 = be[4], b22 = be[5], b23 = be[6], b24 = be[7];
-        auto b31 = be[8], b32 = be[9], b33 = be[10], b34 = be[11];
-        auto b41 = be[12], b42 = be[13], b43 = be[14], b44 = be[15];
-
-        te[0] = a11 * b11 + a12 * b21 + a13 * b31 + a14 * b41;
-        te[1] = a11 * b12 + a12 * b22 + a13 * b32 + a14 * b42;
-        te[2] = a11 * b13 + a12 * b23 + a13 * b33 + a14 * b43;
-        te[3] = a11 * b14 + a12 * b24 + a13 * b34 + a14 * b44;
-
-        te[4] = a21 * b11 + a22 * b21 + a23 * b31 + a24 * b41;
-        te[5] = a21 * b12 + a22 * b22 + a23 * b32 + a24 * b42;
-        te[6] = a21 * b13 + a22 * b23 + a23 * b33 + a24 * b43;
-        te[7] = a21 * b14 + a22 * b24 + a23 * b34 + a24 * b44;
-
-        te[8] = a31 * b11 + a32 * b21 + a33 * b31 + a34 * b41;
-        te[9] = a31 * b12 + a32 * b22 + a33 * b32 + a34 * b42;
-        te[10] = a31 * b13 + a32 * b23 + a33 * b33 + a34 * b43;
-        te[11] = a31 * b14 + a32 * b24 + a33 * b34 + a34 * b44;
-
-        te[12] = a41 * b11 + a42 * b21 + a43 * b31 + a44 * b41;
-        te[13] = a41 * b12 + a42 * b22 + a43 * b32 + a44 * b42;
-        te[14] = a41 * b13 + a42 * b23 + a43 * b33 + a44 * b43;
-        te[15] = a41 * b14 + a42 * b24 + a43 * b34 + a44 * b44;
 
         return *this;
     }

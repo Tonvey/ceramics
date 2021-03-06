@@ -67,7 +67,7 @@ Matrix4 Node3D::getMatrixWorld()
 void Node3D::applyMatrix4(const Matrix4 &matrix)
 {
     this->updateMatrixLocal();
-    this->mMatrixLocal.premultiply(matrix);
+    this->mMatrixLocal = matrix * this->mMatrixLocal;
     this->mMatrixLocal.decompose(this->mPosition, this->mQuaternion, this->mScale);
 }
 
@@ -156,11 +156,11 @@ Node3D::type& Node3D::add(type *object)
             mParent->remove(object);
         }
 
-        object->setParent(this);
         object->retain();
+        object->setParent(this);
         this->mChildren.push_back(object);
-
         object->addEvent();
+
         object->setMatrixWorldNeedUpdate();
     }
 
@@ -173,10 +173,9 @@ Node3D::type& Node3D::remove(type *object)
 
     if (it != mChildren.end())
     {
-        object->setParent(nullptr);
         mChildren.erase(it);
-
         object->removeEvent();
+        object->setParent(nullptr);
         object->release();
     }
 
@@ -187,15 +186,11 @@ Node3D::type& Node3D::clear()
 {
     for (auto it = mChildren.begin(); it < mChildren.end();)
     {
-        (*it)->setParent(nullptr);
-
-        it = mChildren.erase(it);
-
         (*it)->removeEvent();
-
+        (*it)->setParent(nullptr);
         (*it)->release();
+        it = mChildren.erase(it);
     }
-
     return *this;
 }
 
@@ -215,7 +210,7 @@ Node3D::type& Node3D::attach(type *object)
     {
         // originParent->updateWorldMatrix(true, false);
         //TODO
-        m.multiply(mParent->mMatrixWorld);
+        m *= mParent->mMatrixWorld;
     }
 
     object->applyMatrix4(m);
@@ -361,8 +356,7 @@ void Node3D::updateMatrixWorld()
         mParent->updateMatrixWorld();
         if (this->mMatrixWorldNeedUpdate)
         {
-            this->mMatrixWorld.multiplyMatrices(mParent->mMatrixWorld,
-                                                this->mMatrixLocal);
+            this->mMatrixWorld = mParent->mMatrixWorld* this->mMatrixLocal;
         }
     }
     this->mMatrixWorldNeedUpdate = false;

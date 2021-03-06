@@ -22,28 +22,34 @@ void printMatrix(T mat){
     }
     cout<<endl;
 }
-void testMatUnQuard(){
-    cout<<"=============================================="<<endl;
-    cout<<"testMatUnQuard"<<endl;
-    TMatrix<float,2,3> mat1 = {
-                               1,2,3,
-                               4,5,6
-    };
-    TMatrix<float,3,2> mat2 = {
-                               1,2,
-                               3,4,
-                               5,6
-    };
-    printMatrix(mat1);
-    printMatrix(mat2);
-    printMatrix(mat1*mat2);
-    TMatrix<float,2,2> result = {
-        1+6+15,2+8+18,
-        4+15+30,8+20+36,
-    };
-    printMatrix(result);
-    cout<<bool(result == (mat1*mat2)) <<endl;
-    cout<<"=============================================="<<endl;
+bool testMatUnQuard(){
+    bool ret = true;
+    do
+    {
+        cout<<"=============================================="<<endl;
+        cout<<"testMatUnQuard"<<endl;
+        TMatrix<float,2,3> mat1 = {
+            1,2,3,
+            4,5,6
+        };
+        TMatrix<float,3,2> mat2 = {
+            1,2,
+            3,4,
+            5,6
+        };
+        printMatrix(mat1);
+        printMatrix(mat2);
+        printMatrix(mat1*mat2);
+        TMatrix<float,2,2> result = {
+            1+6+15,2+8+18,
+            4+15+30,8+20+36,
+        };
+        printMatrix(result);
+        ret = bool(result == (mat1*mat2));
+        cout<< ret <<endl;
+        cout<<"=============================================="<<endl;
+    }while(0);
+    return ret;
 }
 void testMat2x2(){
     cout<<"=============================================="<<endl;
