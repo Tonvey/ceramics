@@ -7,8 +7,6 @@ if (${CMAKE_SYSTEM_NAME} STREQUAL "Emscripten")
     #set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE BOTH)
 endif()
 
-add_definitions(-g)
-
 find_package(PkgConfig REQUIRED)
 
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)

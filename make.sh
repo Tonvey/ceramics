@@ -1,5 +1,18 @@
 #!/bin/bash
 curPath=$(cd `dirname $BASH_SOURCE`;pwd)
+# getopt
+
+function usage
+{
+    cat >&2 <<EOF
+usage : $0 [options]
+      -p <emspcripten|local> specify plantform.
+      -t <debug|release> specify build type.
+      -c clean build directory.
+      -h Show this usage.
+EOF
+}
+
 function cout
 {
     echo $*
@@ -41,27 +54,50 @@ function checkCmds
     done
     return $flag
 }
+
 function main
 {
     local localPlatform=0
     local emscripten=0
     local emscriptenBuildDir="${curPath}/emBuild"
+    local buildType="Release"
+    local clean="Release"
     local localBuildDir="${curPath}/localBuild"
-    if [[ "$1" =~ ^ems(scripten)? ]]
-    then
-        echo "em"
-        emscripten=1
-    elif [ "$1" = "local" ]
-    then
-        localPlatform=1
-    elif [ "$1" = 'clean' ]
+    while getopts p:t:c opt
+    do
+        case "$opt" in 
+            p)
+                if [ "$OPTARG" = "local" ] 
+                then
+                    localPlatform=1
+                fi
+                if [[ "$1" =~ ^ems(scripten)? ]]
+                then
+                    emscripten=1
+                fi
+                ;;
+            t)
+                buildType="$OPTARG"
+                ;;
+            c)
+                clean=1
+                ;;
+            *)
+                usage
+                exit -1
+                ;;
+        esac
+    done || exit -1
+    if [ "$clean" = 1 ]
     then
         rm -rvf "$emscriptenBuildDir"
         rm -rvf "$localBuildDir"
-    else
-        echo "all"
-        emscripten=1
+    fi
+
+    if [ "$localPlatform" = 0 -a "$emscripten" = 0 ]
+    then
         localPlatform=1
+        emscripten=1
     fi
 
     if [ "$emscripten"  = "1" ]
@@ -79,7 +115,7 @@ function main
         checkCmds cmake make || return -1
         createDirectoryIfNotExists "$localBuildDir"
         pushd "$localBuildDir"
-        cmake .. || return -1
+        cmake -DCMAKE_BUILD_TYPE=Debug .. || return -1
         make  || return -1
         popd
     fi
