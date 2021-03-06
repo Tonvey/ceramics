@@ -112,7 +112,7 @@ public:
 
     Vector3 &getWorldScale(Vector3 &target);
 
-    Vector3 &getWorldDirection(Vector3 &target);
+    Vector3 &getWorldDirection();
 
     virtual void raycast();
 

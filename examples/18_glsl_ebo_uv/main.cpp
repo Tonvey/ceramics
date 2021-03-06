@@ -33,11 +33,11 @@ const GLuint vertex_indices_data[]={
 };
 template<class T>
 void printMatrix(T mat){
-    for(size_t r = 0 ; r < mat.row(); ++r){
+    for(size_t r = 0 ; r < mat.numOfRows(); ++r){
         cout<<'|';
-        for(size_t c = 0 ; c < mat.col(); ++c){
-            cout << mat[c * mat.row() + r];
-            if(c!=mat.col()-1){
+        for(size_t c = 0 ; c < mat.numOfCols(); ++c){
+            cout << mat[r * mat.numOfCols() + c];
+            if(c!=mat.numOfCols()-1){
                 cout<<",\t";
             }
         }

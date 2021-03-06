@@ -453,8 +453,8 @@ struct TVector<T, 2>
         const auto x = this->x;
         const auto y = this->y;
         const auto &e = m.elements;
-        this->x = e[ 0 ] * x + e[ 3 ] * y + e[ 6 ];
-        this->y = e[ 1 ] * x + e[ 4 ] * y + e[ 7 ];
+        this->x = e[ 0 ] * x + e[ 1 ] * y + e[ 2 ];
+        this->y = e[ 3 ] * x + e[ 4 ] * y + e[ 5 ];
         return *this;
     }
 };
@@ -504,11 +504,11 @@ struct TVector<T, 3>
     {
 
         auto x = this->x, y = this->y, z = this->z;
-        auto e = m.elements;
+        auto &e = m.elements;
 
-        this->x = e[ 0 ] * x + e[ 3 ] * y + e[ 6 ] * z;
-        this->y = e[ 1 ] * x + e[ 4 ] * y + e[ 7 ] * z;
-        this->z = e[ 2 ] * x + e[ 5 ] * y + e[ 8 ] * z;
+        this->x = e[ 0 ] * x + e[ 1 ] * y + e[ 2 ] * z;
+        this->y = e[ 3 ] * x + e[ 4 ] * y + e[ 5 ] * z;
+        this->z = e[ 6 ] * x + e[ 7 ] * y + e[ 8 ] * z;
 
         return *this;
 
@@ -516,13 +516,13 @@ struct TVector<T, 3>
     type &applyMatrix4(const TMatrix<T, 4, 4> &m)
     {
         auto x = this->x, y = this->y, z = this->z;
-        auto e = m.elements;
+        auto &e = m.elements;
 
         auto w = 1 / (e[3] * x + e[7] * y + e[11] * z + e[15]);
 
-        this->x = (e[0] * x + e[4] * y + e[8] * z + e[12]) * w;
-        this->y = (e[1] * x + e[5] * y + e[9] * z + e[13]) * w;
-        this->z = (e[2] * x + e[6] * y + e[10] * z + e[14]) * w;
+        this->x = (e[0] * x + e[1] * y + e[2] * z + e[3]) * w;
+        this->y = (e[4] * x + e[5] * y + e[6] * z + e[7]) * w;
+        this->z = (e[8] * x + e[9] * y + e[10] * z + e[11]) * w;
 
         return *this;
     }
@@ -557,20 +557,20 @@ struct TVector<T, 3>
         const auto x = this->x, y = this->y, z = this->z;
         const auto &e = m->elements;
 
-        this->x = e[ 0 ] * x + e[ 4 ] * y + e[ 8 ] * z;
-        this->y = e[ 1 ] * x + e[ 5 ] * y + e[ 9 ] * z;
-        this->z = e[ 2 ] * x + e[ 6 ] * y + e[ 10 ] * z;
+        this->x = e[ 0 ] * x + e[ 1 ] * y + e[ 2 ] * z;
+        this->y = e[ 4 ] * x + e[ 5 ] * y + e[ 6 ] * z;
+        this->z = e[ 8 ] * x + e[ 9 ] * y + e[ 10 ] * z;
 
         return this->normalize();
 
     }
     type &setFromMatrixPosition(const TMatrix<T, 4, 4> &m)
     {
-        const auto e = m.elements;
+        const auto &e = m.elements;
 
-        this->x = e[12];
-        this->y = e[13];
-        this->z = e[14];
+        this->x = e[3];
+        this->y = e[7];
+        this->z = e[11];
 
         return *this;
     }

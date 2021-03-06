@@ -274,8 +274,9 @@ Vector3 &Node3D::getWorldScale(Vector3 &target)
     return target;
 }
 
-Vector3 &Node3D::getWorldDirection(Vector3 &target)
+Vector3 &Node3D::getWorldDirection()
 {
+    Vector3 ret;
     // if ( target === undefined ) {
 
     // 	console.warn( 'THREE.Node3D: .getWorldDirection() target is now
@@ -288,7 +289,7 @@ Vector3 &Node3D::getWorldDirection(Vector3 &target)
 
     auto &e = this->mMatrixWorld.elements;
 
-    return target.set(e[8], e[9], e[10]).normalize();
+    return ret.set(e[2], e[6], e[10]).normalize();
 }
 
 void Node3D::raycast() {}

@@ -5,7 +5,6 @@ class Camera : public Node3D {
 public:
     typedef Camera type;
     virtual ~Camera(){};
-    virtual Vector3 getWorldDirection();
     // virtual void updateMatrixWorld(bool force) override;
     virtual void updateMatrixWorld() override;
     // virtual void updateWorldMatrix(bool updateParents,bool updateChildren) override;

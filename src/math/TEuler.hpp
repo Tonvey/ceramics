@@ -46,10 +46,10 @@ struct TEuler
         auto clamp = TMathUtils<T>::clamp;
 
         // assumes the upper 3x3 of m is a pure rotation matrix (i.e, unscaled)
-        auto te = m.elements;
-        auto m11 = te[0], m12 = te[4], m13 = te[8];
-        auto m21 = te[1], m22 = te[5], m23 = te[9];
-        auto m31 = te[2], m32 = te[6], m33 = te[10];
+        auto &te = m.elements;
+        auto m11 = te[0], m12 = te[1], m13 = te[2];
+        auto m21 = te[4], m22 = te[5], m23 = te[6];
+        auto m31 = te[8], m32 = te[9], m33 = te[10];
 
         switch (order)
         {
