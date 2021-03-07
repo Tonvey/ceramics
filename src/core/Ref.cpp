@@ -2,23 +2,24 @@
 #include <cassert>
 CERAMICS_NAMESPACE_BEGIN
 Ref::Ref()
-    :mRefCount(0)
+    :mRefCount(1)
 {
 }
 Ref::~Ref()
 {
-    assert(mRefCount==0);
 }
 void Ref::release()
 {
     assert(mRefCount>0);
-    if(--mRefCount==0)
+    --mRefCount;
+    if(mRefCount==0)
     {
         delete this;
     }
 }
 void Ref::retain()
 {
+    assert(mRefCount>0);
     ++mRefCount;
 }
 CERAMICS_NAMESPACE_END

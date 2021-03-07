@@ -15,6 +15,7 @@ template <class T> struct TSphere;
 template <class T> struct TPlane;
 template <class T> struct TTriangle;
 template <class T> struct TColor;
+template <class T> struct TFrustum;
 template <class T, size_t dimension> struct TVector;
 template <class T, size_t dimension> struct TBox;
 template <class T, size_t dimension> struct TLine;
@@ -42,4 +43,5 @@ typedef TTriangle<Real> Triangle;
 typedef TPlane<Real> Plane;
 
 typedef TColor<Real> Color;
+typedef TFrustum<Real> Frustum;
 CERAMICS_NAMESPACE_END

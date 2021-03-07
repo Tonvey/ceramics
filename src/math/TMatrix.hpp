@@ -27,11 +27,7 @@ struct TMatrix {
     }                                                                   \
     TMatrix(const type &other)                                          \
     {                                                                   \
-        for (size_t i = 0; i < rowNum*colNum; ++i)                      \
-        {                                                               \
-            this->elements[i] =                                         \
-                other.elements[i];                                      \
-        }                                                               \
+        copy(other);                                                    \
     }                                                                   \
     transpose_type transpose() const                                    \
     {                                                                   \
@@ -131,6 +127,10 @@ struct TMatrix {
         return *this;                                                   \
     }                                                                   \
     type &operator=(const type &other)                                  \
+    {                                                                   \
+        return copy(other);                                             \
+    }                                                                   \
+    type &copy(const type &other)                                       \
     {                                                                   \
         for (size_t i = 0; i < rowNum*colNum; ++i)                      \
             this->elements[i] = other.elements[i];                      \

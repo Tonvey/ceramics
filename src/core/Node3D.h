@@ -14,7 +14,7 @@ public:
     typedef std::vector<type*> children_t;
 
     Node3D();
-    virtual ~Node3D(){};
+    virtual ~Node3D();
     static Vector3 DefaultUp;
     static bool DefaultMatrixAutoUpdate;
 

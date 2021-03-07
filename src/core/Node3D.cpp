@@ -9,6 +9,15 @@ Node3D::Node3D()
     this->mUp = Node3D::DefaultUp;
     init();
 }
+Node3D::~Node3D()
+{
+    clear();
+    // TODO remove from parent
+    // if(mParent!=nullptr)
+    // {
+    //     mParent->remove(this);
+    // }
+}
 void Node3D::init()
 {
     // rotation._onChange(
