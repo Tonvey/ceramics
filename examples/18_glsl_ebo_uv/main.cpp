@@ -174,12 +174,11 @@ public:
     void render(double elapse) override
     {
         this->computeMatrixesFromInput(elapse);
+        if(mInput->getKeyDown(KeyCode::W))
+        {
+            camera->setPosition(camera->getPosition()+Vector3(elapse,0,0));
+        }
         Matrix4 matModel;
-        // Matrix4 projectionMatrix;
-        //matModel = Matrix4::makeTranslation(2,2,0);
-        // Matrix4 projectionMatrix = this->mMatProjection;
-        // Matrix4 viewMatrix = this->mMatView;
-        // Matrix4 mvp = this->mMatProjection * camera->getMatrixWorldInverse() * matModel;
         Matrix4 projectionMatrix = camera->getProjectionMatrix();
         Matrix4 viewMatrix = camera->getMatrixWorldInverse();
 
@@ -192,7 +191,7 @@ public:
         Matrix4 mvp = projectionMatrix * viewMatrix * matModel;
         cout<<"mvp:"<<endl;
         printMatrix(mvp);
-        glUniformMatrix4fv(this->idMVP,1,GL_FALSE,&mvp[0]);
+        glUniformMatrix4fv(this->idMVP,1,GL_TRUE,&mvp[0]);
 
         glClearColor(0,0,0.4,1.0);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

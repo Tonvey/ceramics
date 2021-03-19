@@ -5,7 +5,7 @@
 #include <vector>
 #include "../CeramicsType.h"
 #include "Object.h"
-#include "TEvent.hpp"
+#include "TEventDispatcher.hpp"
 CERAMICS_NAMESPACE_BEGIN
 class Node3D : public Object
 {
@@ -19,8 +19,8 @@ public:
     static bool DefaultMatrixAutoUpdate;
 
 public:
-    TEvent<> addEvent;
-    TEvent<> removeEvent;
+    TEventDispatcher<> addEvent;
+    TEventDispatcher<> removeEvent;
     // callback_type onBeforeRender;
     // callback_type onAfterRender;
 

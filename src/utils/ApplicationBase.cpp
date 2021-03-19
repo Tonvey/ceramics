@@ -7,6 +7,19 @@
 #include "FileUtil.h"
 using namespace std;
 
+ApplicationBase::~ApplicationBase()
+{
+    if(mInput!=nullptr)
+    {
+        mInput->release();
+        mInput = nullptr;
+    }
+    if(mWindow!=nullptr)
+    {
+        glfwDestroyWindow(mWindow);
+        mWindow = nullptr;
+    }
+}
 void ApplicationBase::printOpenGLInfo()
 {
     CERAMICS_LOG_DEBUG("OpenGL version: %s\n", glGetString(GL_VERSION));
@@ -60,6 +73,8 @@ void ApplicationBase::init()
         exit(EXIT_FAILURE);
     }
 
+    mInput = new InputGLFW(mWindow);
+
     //绘制对象
     glfwMakeContextCurrent(this->mWindow);
 
@@ -71,9 +86,6 @@ void ApplicationBase::init()
         exit(EXIT_FAILURE);
     }
 
-    glfwSetInputMode(mWindow,GLFW_STICKY_KEYS,GL_TRUE);
-    glfwSetInputMode(mWindow,GLFW_CURSOR,GLFW_CURSOR_DISABLED);
-    glfwPollEvents();
     int width,height;
     glfwGetWindowSize (mWindow, &width, &height);
     glfwSetCursorPos(mWindow, width/2, height/2);
@@ -88,6 +100,7 @@ void ApplicationBase::init()
 }
 void ApplicationBase::render(double elapse)
 {
+    mInput->update();
 }
 
 void ApplicationBase::openGLErrorCallBack(int error, const char *description)
@@ -102,13 +115,13 @@ int ApplicationBase::run()
     clock_t last_time = clock();
     while (!glfwWindowShouldClose(this->mWindow))
     {
+        mInput->update();
         //计算与上一帧时间差（秒）
         clock_t this_time=clock();
         double elapse = (double)(this_time-last_time)/CLOCKS_PER_SEC;
         last_time=this_time;
         //绘制窗口
         this->render(elapse);
-        glfwPollEvents();
     }
     return 0;
 }

@@ -54,24 +54,42 @@ void ApplicationCoreProfile::computeMatrixesFromInput(double elapse)
     Vector3 up = right.cross(direction );
 
     // Move forward
-    if (glfwGetKey( mWindow, GLFW_KEY_W ) == GLFW_PRESS)
+    // if (glfwGetKey( mWindow, GLFW_KEY_W ) == GLFW_PRESS)
+    // {
+    //     mEyePos += direction * float(elapse) * mSpeed;
+    // }
+    // // Move backward
+    // if (glfwGetKey( mWindow, GLFW_KEY_S ) == GLFW_PRESS)
+    // {
+    //     mEyePos -= direction * float(elapse) * mSpeed;
+    // }
+    // // Strafe right
+    // if (glfwGetKey( mWindow, GLFW_KEY_D ) == GLFW_PRESS)
+    // {
+    //     mEyePos += right * float(elapse) * mSpeed;
+    // }
+    // // Strafe left
+    // if (glfwGetKey( mWindow, GLFW_KEY_A ) == GLFW_PRESS)
+    // {
+    //     mEyePos -= right * float(elapse) * mSpeed;
+    // }
+
+    if(mInput->getKey(KeyCode::W))
     {
-        mEyePos += direction * float(elapse) * mSpeed;
+    //     mEyePos += direction * float(elapse) * mSpeed;
+        //camera->position.setPosition(Vector3());
     }
-    // Move backward
-    if (glfwGetKey( mWindow, GLFW_KEY_S ) == GLFW_PRESS)
+    if(mInput->getKey(KeyCode::S))
     {
-        mEyePos -= direction * float(elapse) * mSpeed;
+    //     mEyePos -= direction * float(elapse) * mSpeed;
     }
-    // Strafe right
-    if (glfwGetKey( mWindow, GLFW_KEY_D ) == GLFW_PRESS)
+    if(mInput->getKey(KeyCode::A))
     {
-        mEyePos += right * float(elapse) * mSpeed;
+    //     mEyePos -= right * float(elapse) * mSpeed;
     }
-    // Strafe left
-    if (glfwGetKey( mWindow, GLFW_KEY_A ) == GLFW_PRESS)
+    if(mInput->getKey(KeyCode::A))
     {
-        mEyePos -= right * float(elapse) * mSpeed;
+    //     mEyePos += right * float(elapse) * mSpeed;
     }
 
     float FoV = mInitialFoV;// - 5 * glfwGetMouseWheel(); // Now GLFW 3 requires setting up a callback for this. It's a bit too complicated for this beginner's tutorial, so it's disabled instead.
