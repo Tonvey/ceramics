@@ -16,7 +16,7 @@ struct THSL
     T l;
 };
 template <class T>
-struct TColor
+struct CERAMICS_EXPORT TColor
 {
     typedef enum
         {

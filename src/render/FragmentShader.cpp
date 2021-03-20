@@ -1,10 +1,11 @@
 #include "FragmentShader.h"
 #include <memory>
 using namespace std;
+CERAMICS_NAMESPACE_BEGIN
 FragmentShader::FragmentShader()
 {
 }
-bool FragmentShader::resetByContent(const std::string &content)
+bool FragmentShader::resetByString(const std::string &content)
 {
     GLuint fragShaderId = glCreateShader(GL_FRAGMENT_SHADER);
     //编译frag shader
@@ -33,3 +34,4 @@ bool FragmentShader::resetByContent(const std::string &content)
     mShaderId = fragShaderId;
     return true;
 }
+CERAMICS_NAMESPACE_END

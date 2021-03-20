@@ -1,10 +1,11 @@
 #include "VertexShader.h"
 #include <memory>
 using namespace std;
+CERAMICS_NAMESPACE_BEGIN
 VertexShader::VertexShader()
 {
 }
-bool VertexShader::resetByContent(const std::string &content)
+bool VertexShader::resetByString(const std::string &content)
 {
     GLuint vertexShaderId = glCreateShader(GL_VERTEX_SHADER);
     //编译vertex shader
@@ -33,3 +34,4 @@ bool VertexShader::resetByContent(const std::string &content)
     mShaderId = vertexShaderId;
     return true;
 }
+CERAMICS_NAMESPACE_END

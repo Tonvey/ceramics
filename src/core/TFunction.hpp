@@ -1,9 +1,9 @@
 #pragma once
-#include "Ref.h"
+#include "Object.h"
 #include <functional>
 CERAMICS_NAMESPACE_BEGIN
 template<class T>
-class TFunction : public std::function<T> , public Ref
+class TFunction : public std::function<T> , public Object
 {
 public:
     typedef TFunction<T> type;

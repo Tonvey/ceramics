@@ -129,7 +129,8 @@ InputGLFW::InputGLFW(GLFWwindow *window)
 {
     assert(window!=nullptr);
     mWindow = window;
-    glfwSetInputMode(mWindow, GLFW_STICKY_KEYS, GLFW_TRUE);
+    //STICKEY mode will be GLFW_PRESS state until glfwGetKey called
+    //glfwSetInputMode(mWindow, GLFW_STICKY_KEYS, GLFW_TRUE);
     glfwSetInputMode(mWindow,GLFW_CURSOR,GLFW_CURSOR_DISABLED);
     glfwPollEvents();
 }
@@ -144,6 +145,7 @@ bool InputGLFW::anyKey()
 }
 bool InputGLFW::getKey(KeyCode code)
 {
+    //TODO invalid
     bool ret = false;
     switch(code)
     {

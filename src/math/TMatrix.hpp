@@ -7,7 +7,7 @@
 #include "ERotationOrder.h"
 CERAMICS_NAMESPACE_BEGIN
 template <class T, size_t rowNum, size_t colNum>
-struct TMatrix {
+struct CERAMICS_EXPORT TMatrix {
 #define CERAMICS_DECLARE_MATRIX_COMMON_PART(rowNum, colNum)             \
     typedef T value_type;                                               \
     typedef TMatrix<T, rowNum, colNum> type;                            \
@@ -185,7 +185,7 @@ struct TMatrix {
 
 // Squard Matrx
 template <class T, size_t dimension>
-struct TMatrix<T, dimension, dimension>
+struct CERAMICS_EXPORT TMatrix<T, dimension, dimension>
 {
     CERAMICS_DECLARE_MATRIX_COMMON_PART(dimension, dimension);
 #define CERAMICS_DECLARE_SQUARD_MATRIX_COMMON_PART(dimension)   \
@@ -275,7 +275,7 @@ struct TMatrix<T, dimension, dimension>
 
 // Matrix3x3
 template <class T>
-struct TMatrix<T, 3, 3>
+struct CERAMICS_EXPORT TMatrix<T, 3, 3>
 {
     CERAMICS_DECLARE_MATRIX_COMMON_PART(3, 3)
     CERAMICS_DECLARE_SQUARD_MATRIX_COMMON_PART(3)
@@ -419,7 +419,7 @@ struct TMatrix<T, 3, 3>
     }
 };
 template <class T>
-struct TMatrix<T, 4, 4>
+struct CERAMICS_EXPORT TMatrix<T, 4, 4>
 {
     CERAMICS_DECLARE_MATRIX_COMMON_PART(4, 4)
     CERAMICS_DECLARE_SQUARD_MATRIX_COMMON_PART(4)

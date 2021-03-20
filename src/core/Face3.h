@@ -5,7 +5,7 @@
 #include "../CeramicsType.h"
 #include "../utils/Memory.hpp"
 CERAMICS_NAMESPACE_BEGIN
-class Face3
+class CERAMICS_EXPORT Face3
 {
 public:
     typedef std::vector<Vector3> normal_array_t;

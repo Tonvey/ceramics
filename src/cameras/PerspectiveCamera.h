@@ -1,7 +1,6 @@
 #include "Camera.h"
 CERAMICS_NAMESPACE_BEGIN
-
-class PerspectiveCamera : public Camera{
+class CERAMICS_EXPORT PerspectiveCamera : public Camera{
 public:
     struct View{
         bool enabled= false;

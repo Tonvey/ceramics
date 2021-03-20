@@ -2,7 +2,7 @@
 #include "../CeramicsPrerequisites.h"
 CERAMICS_NAMESPACE_BEGIN
 template <class T>
-struct TTriangle
+struct CERAMICS_EXPORT TTriangle
 {
     typedef T value_type;
     typedef TTriangle<T> type;

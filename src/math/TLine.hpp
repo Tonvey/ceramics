@@ -84,13 +84,13 @@ CERAMICS_NAMESPACE_BEGIN
         return line.start.equals(this->start) && line.end.equals(this->end); \
     }
 template <class T, size_t dimension>
-struct TLine
+struct CERAMICS_EXPORT TLine
 {
     CERAMICS_DECLARE_LINE_COMMON_PART(dimension);
 };
 
 template <class T>
-struct TLine<T, 3>
+struct CERAMICS_EXPORT TLine<T, 3>
 {
     CERAMICS_DECLARE_LINE_COMMON_PART(3);
     typedef TMatrix<T, 4, 4> matrix4_t;

@@ -1,5 +1,6 @@
-#include "Ref.h"
 #include <cassert>
+#include "Ref.h"
+#include "AutoReleasePool.h"
 CERAMICS_NAMESPACE_BEGIN
 Ref::Ref()
     :mRefCount(1)
@@ -21,5 +22,10 @@ void Ref::retain()
 {
     assert(mRefCount>0);
     ++mRefCount;
+}
+Ref *Ref::autoRelease()
+{
+    PoolManager::getInstance()->getCurrentPool()->addObject(this);
+    return this;
 }
 CERAMICS_NAMESPACE_END

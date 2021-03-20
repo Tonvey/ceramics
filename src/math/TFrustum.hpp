@@ -2,7 +2,7 @@
 #include "../CeramicsPrerequisites.h"
 CERAMICS_NAMESPACE_BEGIN
 template<class T>
-struct TFrustum
+struct CERAMICS_EXPORT TFrustum
 {
     typedef T value_type;
     typedef TFrustum<T> type;

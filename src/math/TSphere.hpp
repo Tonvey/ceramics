@@ -3,7 +3,7 @@
 #include "../CeramicsMacro.h"
 CERAMICS_NAMESPACE_BEGIN
 template <class T>
-struct TSphere
+struct CERAMICS_EXPORT TSphere
 {
     typedef T value_type;
     typedef TSphere<T> type;

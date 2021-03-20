@@ -1,13 +1,14 @@
-#include "ShaderBase.h"
-#include "FileUtil.h"
-ShaderBase::ShaderBase()
+#include "Shader.h"
+#include "../utils/FileUtil.h"
+CERAMICS_NAMESPACE_BEGIN
+Shader::Shader()
 {
 }
-ShaderBase::~ShaderBase()
+Shader::~Shader()
 {
     clear();
 }
-void ShaderBase::clear()
+void Shader::clear()
 {
     if(mShaderId>0)
     {
@@ -15,7 +16,7 @@ void ShaderBase::clear()
         mShaderId = 0;
     }
 }
-bool ShaderBase::isValid()const
+bool Shader::isValid()const
 {
     if(mShaderId>0)
     {
@@ -24,7 +25,7 @@ bool ShaderBase::isValid()const
     return false;
 }
 
-bool ShaderBase::resetByFileName(std::string fileName)
+bool Shader::resetByFile(std::string fileName)
 {
     clear();
     std::string content;
@@ -33,5 +34,6 @@ bool ShaderBase::resetByFileName(std::string fileName)
         CERAMICS_LOG_ERROR("Get file content error : %s",fileName.c_str());
         return false;
     }
-    return resetByContent(content);
+    return resetByString(content);
 }
+CERAMICS_NAMESPACE_END

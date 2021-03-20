@@ -1,9 +1,8 @@
-#include "ShaderPrograme.h"
+#include "ShaderProgram.h"
 #include "VertexShader.h"
 #include "FragmentShader.h"
 using namespace std;
-
-
+CERAMICS_NAMESPACE_BEGIN
 ShaderProgram::ShaderProgram()
 {
 }
@@ -43,23 +42,22 @@ bool ShaderProgram::isValid()const
     }
     return false;
 }
-bool ShaderProgram::reset(std::string vertFile, std::string fragFile)
+bool ShaderProgram::linkProgram(Shader *vert,Shader *frag,Shader *tess,Shader *geom)
 {
+    assert(vert&&frag);
     clear();
-    VertexShader vert;
-    FragmentShader frag;
-    if(!vert.resetByFileName(vertFile))
-    {
-        exit(-1);
-    }
-    if(!frag.resetByFileName(fragFile))
-    {
-        exit(-1);
-    }
     //创建程序连接两个shader，得到程序id
     GLuint programId = glCreateProgram();
-    glAttachShader(programId, vert.getShaderID());
-    glAttachShader(programId, frag.getShaderID());
+    glAttachShader(programId, vert->getShaderID());
+    glAttachShader(programId, frag->getShaderID());
+    if(tess!=nullptr)
+    {
+        glAttachShader(programId, tess->getShaderID());
+    }
+    if(geom!=nullptr)
+    {
+        glAttachShader(programId, geom->getShaderID());
+    }
     glLinkProgram(programId);
 
     //检查结果
@@ -81,12 +79,33 @@ bool ShaderProgram::reset(std::string vertFile, std::string fragFile)
     }
 
     mProgramId = programId;
-    //删除两个shader
-    glDetachShader(programId,vert.getShaderID());
-    glDetachShader(programId,frag.getShaderID());
-    vert.clear();
-    frag.clear();
+    //取消shader附属
+    glDetachShader(programId,vert->getShaderID());
+    glDetachShader(programId,frag->getShaderID());
+    if(tess!=nullptr)
+    {
+        glDetachShader(programId,tess->getShaderID());
+    }
+    if(geom!=nullptr)
+    {
+        glDetachShader(programId,geom->getShaderID());
+    }
     return true;
+}
+bool ShaderProgram::reset(std::string vertFile, std::string fragFile)
+{
+    RefUniquePtr<VertexShader> vert(new VertexShader);
+    RefUniquePtr<FragmentShader> frag(new FragmentShader);
+    if(!vert->resetByFile(vertFile))
+    {
+        exit(-1);
+    }
+    if(!frag->resetByFile(fragFile))
+    {
+        exit(-1);
+    }
+    
+    return linkProgram(vert.get(),frag.get());
 }
 
 void ShaderProgram::use()
@@ -96,7 +115,6 @@ void ShaderProgram::use()
         glUseProgram(mProgramId);
     }
 }
-
 GLint ShaderProgram::getAttr(const std::string &attrName)
 {
     return glGetAttribLocation(mProgramId,attrName.c_str());
@@ -106,3 +124,4 @@ GLint ShaderProgram::getUniform(const std::string &uniName)
 {
     return glGetUniformLocation(mProgramId,uniName.c_str());
 }
+CERAMICS_NAMESPACE_END

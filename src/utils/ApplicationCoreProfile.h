@@ -14,9 +14,9 @@ protected:
     Matrix4 mMatView;
     Matrix4 mMatProjection;
     Vector3 mEyePos;
-    float mEyeHorizontalAngle;
-    float mEyeVerticalAngle;
-    float mInitialFoV;
-    float mSpeed;
-    float mMouseSpeed;
+    // float mEyeHorizontalAngle;
+    // float mEyeVerticalAngle;
+    // float mInitialFoV;
+    // float mSpeed;
+    // float mMouseSpeed;
 };

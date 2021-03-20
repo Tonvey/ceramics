@@ -4,7 +4,7 @@
 #include <type_traits>
 #include <cassert>
 CERAMICS_NAMESPACE_BEGIN
-class Object : public Ref
+class CERAMICS_EXPORT Object : public Ref
 {
 public:
     Object();
@@ -15,7 +15,7 @@ static T *CreateObject(Args ...args)
 {
     static_assert(std::is_base_of<Object,T>::value,"Error: Not inherit from Object.");
     auto ret = new T(args...);
-    ret->retain();
+    ret->autoRelease();
     return ret;
 }
 CERAMICS_NAMESPACE_END

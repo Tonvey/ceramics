@@ -8,10 +8,33 @@
 #include "../../src/utils/FileUtil.h"
 #include "../../src/utils/Texture.h"
 #include "../../src/cameras/PerspectiveCamera.h"
+#include "../../src/render/VertexShader.h"
+#include "../../src/render/FragmentShader.h"
 using namespace std;
 CERAMICS_NAMESPACE_USING
 #define VERTEX_FILE_NAME "shader.vert"
 #define FRAG_FILE_NAME "shader.frag"
+string shader_vert = R"(
+#version 330
+layout(location=0) in vec3 vertexPosition;
+layout(location=1) in vec2 uv;
+uniform mat4x4 mvp;
+out vec2 uvCoord;
+void main()
+{
+    uvCoord = uv;
+    gl_Position = mvp*vec4 (vertexPosition,1.0);
+})";
+
+string shader_frag = R"(
+#version 330
+out vec4 color;
+in vec2 uvCoord;
+uniform sampler2D myTextureSampler;
+void main()
+{
+    color = texture(myTextureSampler,uvCoord).rgba;
+})";
 
 const GLfloat vertex_buffer_data[]={
     0.5f, 0.5f, 0.0f,   // 右上角
@@ -52,7 +75,7 @@ void printMatrix4(const Matrix4 &mat){
 class Application: public ApplicationCoreProfile
 {
 private:
-    ShaderProgram program;
+    ShaderProgram *program= nullptr;
     GLuint vertexPosition;
     GLuint vbo;
     GLuint vao;
@@ -72,6 +95,10 @@ public:
     ~Application()
     {
         camera->release();
+        if(program!=nullptr)
+        {
+            program->release();
+        }
         if(glIsBuffer(ebo)==GL_TRUE)
         {
             cout<<"Delete ebo buffer"<<endl;
@@ -109,22 +136,25 @@ public:
         // Accept fragment if it closer to the camera than the former one
         glDepthFunc(GL_LESS); 
         //加载shader
-        program = loadShader(
-                             FileUtil::getFileDirName(__FILE__) + FileUtil::pathChar + VERTEX_FILE_NAME,
-                             FileUtil::getFileDirName(__FILE__) + FileUtil::pathChar + FRAG_FILE_NAME);
+        program = new ShaderProgram;
+        RefUniquePtr<VertexShader> vert(new VertexShader);
+        RefUniquePtr<FragmentShader> frag(new FragmentShader);
+        vert->resetByString(shader_vert);
+        frag->resetByString(shader_frag);
+        program->linkProgram(vert.get(),frag.get());
 
         //加载纹理图片
         glEnable(GL_TEXTURE_2D);
         texture = Texture(FileUtil::getFileDirName(__FILE__) + FileUtil::pathChar + ".."  + FileUtil::pathChar + "textures" + FileUtil::pathChar +"panda.bmp");
 
         textureId =
-            program.getAttr("myTextureSampler");
+            program->getAttr("myTextureSampler");
 
         vertexPosition=
-            program.getAttr("vertexPosition");
+            program->getAttr("vertexPosition");
 
         uvId=
-            program.getAttr("uv");
+            program->getAttr("uv");
 
         //在显卡中申请内存，内存句柄是vertexbuffer
         //VAO创建
@@ -168,7 +198,7 @@ public:
         //习惯性的解绑
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
 
-        this->idMVP = program.getUniform("mvp");
+        this->idMVP = program->getUniform("mvp");
     }
 
     void render(double elapse) override
@@ -196,7 +226,7 @@ public:
         glClearColor(0,0,0.4,1.0);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        program.use();
+        program->use();
         glEnableVertexAttribArray(vertexPosition);
         glEnableVertexAttribArray(uvId);
 

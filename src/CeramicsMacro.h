@@ -8,6 +8,9 @@
 #define CERAMICS_NAMESPACE_BEGIN namespace CERAMICS_NAMESPACE{
 #define CERAMICS_NAMESPACE_END }
 #define CERAMICS_NAMESPACE_USING using namespace CERAMICS_NAMESPACE;
+#ifndef CERAMICS_EXPORT
+#   define CERAMICS_EXPORT
+#endif
 
 #ifdef __APPLE__
 #   include <GLUT/glut.h>

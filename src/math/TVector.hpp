@@ -411,7 +411,7 @@ static void TFuncArrayDivideScalar(T arr1[], T scalar, size_t size)
 
 // TVectorBase
 template <class T, size_t dimension>
-struct TVector
+struct CERAMICS_EXPORT TVector
 {
 
     TVector()
@@ -435,7 +435,7 @@ struct TVector
 //TODO use inline
 // TVector2
 template <class T>
-struct TVector<T, 2>
+struct CERAMICS_EXPORT TVector<T, 2>
 {
     CERAMICS_DECLARE_VECTOR_COMMON_PART(2)
     TVector(const T x = T(0), const T y = T(0)) { this->set(x, y); }
@@ -461,7 +461,7 @@ struct TVector<T, 2>
 
 // TVector3
 template <class T>
-struct TVector<T, 3>
+struct CERAMICS_EXPORT TVector<T, 3>
 {
     CERAMICS_DECLARE_VECTOR_COMMON_PART(3)
     TVector(const T x = T(0), const T y = T(0), const T z = T(0))
@@ -615,7 +615,7 @@ struct TVector<T, 3>
 
 // TVector4
 template <class T>
-struct TVector<T, 4>
+struct CERAMICS_EXPORT TVector<T, 4>
 {
     CERAMICS_DECLARE_VECTOR_COMMON_PART(4)
     TVector(const T x = T(0), const T y = T(0), const T z = T(0),

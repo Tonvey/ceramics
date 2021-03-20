@@ -1,11 +1,10 @@
 #pragma once
-#include "AInput.h"
-#include "Ref.h"
+#include "IInput.h"
 #include <map>
 #include <vector>
 //#include "TEvent.hpp"
 CERAMICS_NAMESPACE_BEGIN
-class InputGLFW: public AInput , public Ref
+class CERAMICS_EXPORT InputGLFW: public IInput
 {
 public:
     struct aaa

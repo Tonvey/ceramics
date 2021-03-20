@@ -7,7 +7,7 @@
 #include "Object.h"
 #include "TEventDispatcher.hpp"
 CERAMICS_NAMESPACE_BEGIN
-class Node3D : public Object
+class CERAMICS_EXPORT Node3D : public Object
 {
 public:
     typedef Node3D type;

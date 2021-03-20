@@ -3,7 +3,7 @@
 #include "../CeramicsPrerequisites.h"
 CERAMICS_NAMESPACE_BEGIN
 template<class T>
-struct TPlane
+struct CERAMICS_EXPORT TPlane
 {
     typedef T value_type;
     typedef TPlane<T> type;

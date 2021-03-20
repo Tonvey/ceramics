@@ -1,8 +1,9 @@
 #pragma once
 #include "../CeramicsType.h"
 #include "EKeyCode.h"
+#include "Object.h"
 CERAMICS_NAMESPACE_BEGIN
-class AInput
+class IInput : public Object
 {
 public:
     virtual void update()=0;

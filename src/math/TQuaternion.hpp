@@ -12,7 +12,7 @@
 #include "../CeramicsPrerequisites.h"
 CERAMICS_NAMESPACE_BEGIN
 template <class T>
-struct TQuaternion
+struct CERAMICS_EXPORT TQuaternion
 {
     typedef T value_type;
     typedef TQuaternion<T> type;

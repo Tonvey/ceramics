@@ -209,13 +209,13 @@ CERAMICS_NAMESPACE_BEGIN
         return box.min.equals(this->min) && box.max.equals(this->max);  \
     }
 template <class T, size_t dimension>
-struct TBox
+struct CERAMICS_EXPORT TBox
 {
     CERAMICS_DECLARE_BOX_COMMON_PART(dimension);
 };
 
 template <class T>
-struct TBox<T, 3>
+struct CERAMICS_EXPORT TBox<T, 3>
 {
     CERAMICS_DECLARE_BOX_COMMON_PART(3);
     // setFromBufferAttribute( attribute )

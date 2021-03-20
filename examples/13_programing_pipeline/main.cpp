@@ -13,13 +13,20 @@ using namespace std;
 
 class Application: public ApplicationBase {
 private:
-    ShaderProgram program;
+    ShaderProgram *program;
     GLuint vertexPosition_modelspaceID;
     GLuint vertexbuffer;
 public:
 
     Application(int argc , char **argv)
         :ApplicationBase(argc,argv) {
+    }
+    ~Application()
+    {
+        if(program!=nullptr)
+        {
+            program->release();
+        }
     }
     void init()override {
         ApplicationBase::init();
@@ -29,7 +36,7 @@ public:
                              FileUtil::getFileDirName(__FILE__) + FileUtil::pathChar + FRAG_FILE_NAME
                              );
 
-        vertexPosition_modelspaceID = program.getAttr("vertexPosition_modelspace");
+        vertexPosition_modelspaceID = program->getAttr("vertexPosition_modelspace");
 
         const GLfloat g_vertex_buffer_data[]={
             -1.0f,-1.0f,0.0f,
@@ -53,7 +60,7 @@ public:
         glClear(GL_COLOR_BUFFER_BIT);
 
         //使用shader程序
-        program.use();
+        program->use();
         //启用顶点属性
         glEnableVertexAttribArray(vertexPosition_modelspaceID);
         //指定渲染时候，怎么对属性进行设置
