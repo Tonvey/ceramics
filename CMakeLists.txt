@@ -46,7 +46,8 @@ ELSE(EMSCRIPTEN)
 
 ENDIF(EMSCRIPTEN)
 
-file(GLOB CERAMICS_LIB_SRCS src/**/*.cpp)
+file(GLOB_RECURSE CERAMICS_LIB_SRCS src/*.cpp)
+message(${CERAMICS_LIB_SRCS})
 add_library(${PROJECT_NAME} STATIC ${CERAMICS_LIB_SRCS})
 target_link_libraries(${PROJECT_NAME} ${EXTRA_LIBS})
 

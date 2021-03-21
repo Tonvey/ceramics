@@ -4,17 +4,12 @@
 #include <cstring>
 #include <iostream>
 #include <memory>
-#include "../../src/utils/ApplicationCoreProfile.h"
-#include "../../src/utils/FileUtil.h"
-#include "../../src/utils/Texture.h"
-#include "../../src/cameras/PerspectiveCamera.h"
-#include "../../src/render/VertexShader.h"
-#include "../../src/render/FragmentShader.h"
+#include "../../src/Ceramics.h"
 using namespace std;
 CERAMICS_NAMESPACE_USING
 #define VERTEX_FILE_NAME "shader.vert"
 #define FRAG_FILE_NAME "shader.frag"
-string shader_vert = R"(
+string shader_vert = R"EOF(
 #version 330
 layout(location=0) in vec3 vertexPosition;
 layout(location=1) in vec2 uv;
@@ -24,9 +19,9 @@ void main()
 {
     uvCoord = uv;
     gl_Position = mvp*vec4 (vertexPosition,1.0);
-})";
+})EOF";
 
-string shader_frag = R"(
+string shader_frag = R"EOF(
 #version 330
 out vec4 color;
 in vec2 uvCoord;
@@ -34,7 +29,7 @@ uniform sampler2D myTextureSampler;
 void main()
 {
     color = texture(myTextureSampler,uvCoord).rgba;
-})";
+})EOF";
 
 const GLfloat vertex_buffer_data[]={
     0.5f, 0.5f, 0.0f,   // 右上角
@@ -75,7 +70,7 @@ void printMatrix4(const Matrix4 &mat){
 class Application: public ApplicationCoreProfile
 {
 private:
-    ShaderProgram *program= nullptr;
+    OpenGLShaderProgram *program= nullptr;
     GLuint vertexPosition;
     GLuint vbo;
     GLuint vao;
@@ -136,7 +131,7 @@ public:
         // Accept fragment if it closer to the camera than the former one
         glDepthFunc(GL_LESS); 
         //加载shader
-        program = new ShaderProgram;
+        program = new OpenGLShaderProgram;
         RefUniquePtr<VertexShader> vert(new VertexShader);
         RefUniquePtr<FragmentShader> frag(new FragmentShader);
         vert->resetByString(shader_vert);

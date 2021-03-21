@@ -13,7 +13,7 @@ using namespace std;
 
 class Application: public ApplicationBase {
 private:
-    ShaderProgram *program;
+    OpenGLShaderProgram *program;
     GLuint vertexPosition_modelspaceID;
     GLuint vertexbuffer;
 public:
