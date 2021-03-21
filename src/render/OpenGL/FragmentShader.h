@@ -1,7 +1,7 @@
 #pragma once
-#include "Shader.h"
+#include "OpenGLShader.h"
 CERAMICS_NAMESPACE_BEGIN
-class CERAMICS_EXPORT FragmentShader : public Shader
+class CERAMICS_EXPORT FragmentShader : public OpenGLShader
 {
 public:
     FragmentShader();

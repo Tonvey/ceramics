@@ -1,7 +1,7 @@
 #pragma once
-#include "Shader.h"
+#include "OpenGLShader.h"
 CERAMICS_NAMESPACE_BEGIN
-class CERAMICS_EXPORT VertexShader : public Shader
+class CERAMICS_EXPORT VertexShader : public OpenGLShader
 {
 public:
     VertexShader();

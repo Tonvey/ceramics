@@ -1,7 +1,7 @@
 #pragma once
 
-#include "ApplicationBase.h"
 #include "../CeramicsType.h"
+#include "ApplicationBase.h"
 CERAMICS_NAMESPACE_USING
 
 class ApplicationCoreProfile : public ApplicationBase

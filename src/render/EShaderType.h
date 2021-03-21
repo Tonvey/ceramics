@@ -1,3 +1,4 @@
+#pragma once
 #include "../CeramicsMacro.h"
 CERAMICS_NAMESPACE_BEGIN
 enum EShaderType {

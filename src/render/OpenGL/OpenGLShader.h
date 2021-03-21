@@ -1,14 +1,13 @@
 #pragma once
-
 #include <string>
-#include "../CeramicsMacro.h"
-#include "../core/Object.h"
-#include "EShaderType.h"
+#include "../../CeramicsMacro.h"
+#include "../../core/Object.h"
+#include "../EShaderType.h"
 CERAMICS_NAMESPACE_BEGIN
-class CERAMICS_EXPORT Shader: public Object{
+class CERAMICS_EXPORT OpenGLShader: public Object{
 public:
-    Shader();
-    virtual ~Shader();
+    OpenGLShader();
+    virtual ~OpenGLShader();
     void clear();
     bool isValid()const;
     virtual EShaderType getShaderType()const = 0;

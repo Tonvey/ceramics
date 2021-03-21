@@ -1,32 +1,32 @@
-#include "ShaderProgram.h"
+#include "OpenGLShaderProgram.h"
 #include "VertexShader.h"
 #include "FragmentShader.h"
 using namespace std;
 CERAMICS_NAMESPACE_BEGIN
-ShaderProgram::ShaderProgram()
+OpenGLShaderProgram::OpenGLShaderProgram()
 {
 }
-ShaderProgram::~ShaderProgram()
+OpenGLShaderProgram::~OpenGLShaderProgram()
 {
     clear();
 }
-ShaderProgram::ShaderProgram(ShaderProgram &&other)
+OpenGLShaderProgram::OpenGLShaderProgram(OpenGLShaderProgram &&other)
 {
     swap(other);
 }
-ShaderProgram &ShaderProgram::operator=(ShaderProgram &&other)
+OpenGLShaderProgram &OpenGLShaderProgram::operator=(OpenGLShaderProgram &&other)
 {
     clear();
     swap(other);
     return *this;
 }
-void ShaderProgram::swap(ShaderProgram &other)
+void OpenGLShaderProgram::swap(OpenGLShaderProgram &other)
 {
     GLuint id = mProgramId;
     mProgramId = other.mProgramId;
     other.mProgramId = id;
 }
-void ShaderProgram::clear()
+void OpenGLShaderProgram::clear()
 {
     if(mProgramId!=0)
     {
@@ -34,7 +34,7 @@ void ShaderProgram::clear()
         mProgramId = 0;
     }
 }
-bool ShaderProgram::isValid()const
+bool OpenGLShaderProgram::isValid()const
 {
     if(mProgramId!=0)
     {
@@ -42,11 +42,10 @@ bool ShaderProgram::isValid()const
     }
     return false;
 }
-bool ShaderProgram::linkProgram(Shader *vert,Shader *frag,Shader *tess,Shader *geom)
+bool OpenGLShaderProgram::linkProgram(OpenGLShader *vert,OpenGLShader *frag,OpenGLShader *tess,OpenGLShader *geom)
 {
     assert(vert&&frag);
     clear();
-    //创建程序连接两个shader，得到程序id
     GLuint programId = glCreateProgram();
     glAttachShader(programId, vert->getShaderID());
     glAttachShader(programId, frag->getShaderID());
@@ -60,7 +59,6 @@ bool ShaderProgram::linkProgram(Shader *vert,Shader *frag,Shader *tess,Shader *g
     }
     glLinkProgram(programId);
 
-    //检查结果
     GLint result = GL_FALSE;
     glGetProgramiv(programId,GL_LINK_STATUS,&result);
     if(result!=GL_TRUE)//编译出错
@@ -92,7 +90,7 @@ bool ShaderProgram::linkProgram(Shader *vert,Shader *frag,Shader *tess,Shader *g
     }
     return true;
 }
-bool ShaderProgram::reset(std::string vertFile, std::string fragFile)
+bool OpenGLShaderProgram::reset(std::string vertFile, std::string fragFile)
 {
     RefUniquePtr<VertexShader> vert(new VertexShader);
     RefUniquePtr<FragmentShader> frag(new FragmentShader);
@@ -108,19 +106,19 @@ bool ShaderProgram::reset(std::string vertFile, std::string fragFile)
     return linkProgram(vert.get(),frag.get());
 }
 
-void ShaderProgram::use()
+void OpenGLShaderProgram::use()
 {
     if(isValid())
     {
         glUseProgram(mProgramId);
     }
 }
-GLint ShaderProgram::getAttr(const std::string &attrName)
+GLint OpenGLShaderProgram::getAttr(const std::string &attrName)
 {
     return glGetAttribLocation(mProgramId,attrName.c_str());
 }
 
-GLint ShaderProgram::getUniform(const std::string &uniName)
+GLint OpenGLShaderProgram::getUniform(const std::string &uniName)
 {
     return glGetUniformLocation(mProgramId,uniName.c_str());
 }

@@ -198,9 +198,9 @@ bool ApplicationBase::createFragmentShader(const std::string fileName,GLuint &id
     id = fragShaderId;
     return true;
 }
-ShaderProgram *ApplicationBase::loadShader(string vertShaderFile,string fragShaderFile)
+OpenGLShaderProgram *ApplicationBase::loadShader(string vertShaderFile,string fragShaderFile)
 {
-    ShaderProgram *prog = new ShaderProgram;
+    OpenGLShaderProgram *prog = new OpenGLShaderProgram;
     prog->reset(vertShaderFile,fragShaderFile);
     return prog;
 }

@@ -1,14 +1,14 @@
-#include "Shader.h"
-#include "../utils/FileUtil.h"
+#include "OpenGLShader.h"
+#include "../../utils/FileUtil.h"
 CERAMICS_NAMESPACE_BEGIN
-Shader::Shader()
+OpenGLShader::OpenGLShader()
 {
 }
-Shader::~Shader()
+OpenGLShader::~OpenGLShader()
 {
     clear();
 }
-void Shader::clear()
+void OpenGLShader::clear()
 {
     if(mShaderId>0)
     {
@@ -16,7 +16,7 @@ void Shader::clear()
         mShaderId = 0;
     }
 }
-bool Shader::isValid()const
+bool OpenGLShader::isValid()const
 {
     if(mShaderId>0)
     {
@@ -25,7 +25,7 @@ bool Shader::isValid()const
     return false;
 }
 
-bool Shader::resetByFile(std::string fileName)
+bool OpenGLShader::resetByFile(std::string fileName)
 {
     clear();
     std::string content;
