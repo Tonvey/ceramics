@@ -14,3 +14,5 @@
 #include "render/OpenGL/VertexShader.h"
 #include "render/OpenGL/FragmentShader.h"
 #include "render/OpenGL/OpenGLShaderProgram.h"
+#include "render/OpenGL/OpenGLBuffer.h"
+#include "render/OpenGL/OpenGLVertexArrayObject.h"

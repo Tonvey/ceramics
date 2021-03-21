@@ -72,10 +72,10 @@ class Application: public ApplicationCoreProfile
 private:
     OpenGLShaderProgram *program= nullptr;
     GLuint vertexPosition;
-    GLuint vbo;
-    GLuint vao;
-    GLuint ebo;
-    GLuint uvbo;
+    OpenGLVertexArrayObject *vao;
+    OpenGLBuffer *vbo;
+    OpenGLBuffer *ebo;
+    OpenGLBuffer *uvbo;
     GLuint uvId;
     GLuint textureId;
     Texture texture;
@@ -94,25 +94,21 @@ public:
         {
             program->release();
         }
-        if(glIsBuffer(ebo)==GL_TRUE)
+        if(ebo!=nullptr)
         {
-            cout<<"Delete ebo buffer"<<endl;
-            glDeleteBuffers(1,&ebo);
+            ebo->release();
         }
-        if(glIsBuffer(vbo)==GL_TRUE)
+        if(vbo!=nullptr)
         {
-            cout<<"Delete vbo buffer"<<endl;
-            glDeleteBuffers(1,&vbo);
+            vbo->release();
         }
-        if(glIsBuffer(uvbo)==GL_TRUE)
+        if(uvbo!=nullptr)
         {
-            cout<<"Delete uvbo buffer"<<endl;
-            glDeleteBuffers(1,&uvbo);
+            uvbo->release();
         }
-        if(glIsVertexArray(vao)==GL_TRUE)
+        if(vao!=nullptr)
         {
-            cout<<"Delete vao buffer"<<endl;
-            glDeleteVertexArrays(1,&vao);
+            vao->release();
         }
     }
 
@@ -153,45 +149,25 @@ public:
 
         //在显卡中申请内存，内存句柄是vertexbuffer
         //VAO创建
-        glGenVertexArrays(1,&vao);
+        vao = new OpenGLVertexArrayObject;
 
         //VBO创建
-        glGenBuffers(1, &vbo);
-        //此时的绑定只是为了传入数据，没有其他太多的作用
-        glBindBuffer(GL_ARRAY_BUFFER, vbo);
-        glBufferData(
-            GL_ARRAY_BUFFER,
-            sizeof(vertex_buffer_data),
-            vertex_buffer_data,
-            GL_STATIC_DRAW);
-        //解绑
-        glBindBuffer(GL_ARRAY_BUFFER,0);
+        vbo = new OpenGLBuffer();
+        vbo->setTarget(EOpenGLBufferTarget::ArrayBuffer);
+        vbo->setUsagePattern(EOpenGLBufferUsagePattern::StaticDraw);
+        vbo->write(vertex_buffer_data,sizeof(vertex_buffer_data));
 
         //EBO创建
-        glGenBuffers(1, &ebo);
-        //此时的绑定只是为了传入数据，没有其他太多的作用
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-        //解绑
-        glBufferData(
-                     GL_ELEMENT_ARRAY_BUFFER,
-                     sizeof(vertex_indices_data),
-                     vertex_indices_data,
-                     GL_STATIC_DRAW);
+        ebo = new OpenGLBuffer();
+        ebo->setTarget(EOpenGLBufferTarget::ElementArrayBuffer);
+        ebo->setUsagePattern(EOpenGLBufferUsagePattern::StaticDraw);
+        ebo->write(vertex_indices_data,sizeof(vertex_indices_data));
 
         //UVBO创建
-        glGenBuffers(1,&uvbo);
-        glBindBuffer(GL_ARRAY_BUFFER,uvbo);
-        glBufferData(
-                     GL_ARRAY_BUFFER,
-                     sizeof(uvBufferData),
-                     uvBufferData,
-                     GL_STATIC_DRAW
-                     );
-        glBindBuffer(GL_ARRAY_BUFFER,0);
-
-
-        //习惯性的解绑
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
+        uvbo = new OpenGLBuffer();
+        uvbo->setTarget(EOpenGLBufferTarget::ArrayBuffer);
+        uvbo->setUsagePattern(EOpenGLBufferUsagePattern::StaticDraw);
+        uvbo->write(uvBufferData,sizeof(uvBufferData));
 
         this->idMVP = program->getUniform("mvp");
     }
@@ -227,8 +203,8 @@ public:
 
 
         //在draw之前一定要绑定好vao以及GL_ARRAY_BUFFER和GL_ELEMENT_ARRAY_BUFFER
-        glBindVertexArray(vao);
-        glBindBuffer(GL_ARRAY_BUFFER,this->vbo);
+        vao->bind();
+        vbo->bind();
         glVertexAttribPointer(
                                vertexPosition,
                                3,
@@ -238,7 +214,7 @@ public:
                                (void*)0
                                );
 
-        glBindBuffer(GL_ARRAY_BUFFER,this->uvbo);
+        uvbo->bind();
         glVertexAttribPointer(
                               uvId,
                               2,
@@ -247,7 +223,7 @@ public:
                               0,
                               (void*)0
                               );
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,this->ebo);
+        ebo->bind();
         //最后通过glDrawElements的方式来绘制
         glDrawElements(
                        GL_TRIANGLES,
