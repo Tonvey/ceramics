@@ -5,6 +5,7 @@
 #include <iostream>
 #include <memory>
 #include "../../src/Ceramics.h"
+#include "../../src/render/OpenGL/OpenGLUtils.h"
 using namespace std;
 CERAMICS_NAMESPACE_USING
 #define VERTEX_FILE_NAME "shader.vert"
@@ -123,9 +124,12 @@ public:
         camera->lookAt(Vector3(0,0,0));
 
         glEnable(GL_DEPTH_TEST);
+        //OpenGLUtils::printWhenError("glEnable");
+        OPENGL_UTILS_PRINT_ERROR("glEnable");
 
         // Accept fragment if it closer to the camera than the former one
         glDepthFunc(GL_LESS); 
+        OPENGL_UTILS_PRINT_ERROR("glDepthFunc");
         //加载shader
         program = new OpenGLShaderProgram;
         RefUniquePtr<VertexShader> vert(new VertexShader);
@@ -134,18 +138,17 @@ public:
         frag->resetByString(shader_frag);
         program->linkProgram(vert.get(),frag.get());
 
-        //加载纹理图片
-        glEnable(GL_TEXTURE_2D);
         texture = Texture(FileUtil::getFileDirName(__FILE__) + FileUtil::pathChar + ".."  + FileUtil::pathChar + "textures" + FileUtil::pathChar +"panda.bmp");
 
         textureId =
-            program->getAttr("myTextureSampler");
+            program->getAttributeLocation("myTextureSampler");
+        OPENGL_UTILS_PRINT_ERROR("test");
 
         vertexPosition=
-            program->getAttr("vertexPosition");
+            program->getAttributeLocation("vertexPosition");
 
         uvId=
-            program->getAttr("uv");
+            program->getAttributeLocation("uv");
 
         //在显卡中申请内存，内存句柄是vertexbuffer
         //VAO创建
@@ -192,19 +195,23 @@ public:
         Matrix4 mvp = projectionMatrix * viewMatrix * matModel;
         cout<<"mvp:"<<endl;
         printMatrix(mvp);
-        glUniformMatrix4fv(this->idMVP,1,GL_TRUE,&mvp[0]);
+        //glUniformMatrix4fv(this->idMVP,1,GL_TRUE,&(mvp[0]));
+        program->use();
+        glUniformMatrix4fv(this->idMVP,1,GL_TRUE,mvp.elements);
+        OPENGL_UTILS_PRINT_ERROR("test");
 
         glClearColor(0,0,0.4,1.0);
+        OPENGL_UTILS_PRINT_ERROR("test");
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        program->use();
-        glEnableVertexAttribArray(vertexPosition);
-        glEnableVertexAttribArray(uvId);
-
+        OPENGL_UTILS_PRINT_ERROR("test");
 
         //在draw之前一定要绑定好vao以及GL_ARRAY_BUFFER和GL_ELEMENT_ARRAY_BUFFER
         vao->bind();
         vbo->bind();
+        glEnableVertexAttribArray(vertexPosition);
+        OPENGL_UTILS_PRINT_ERROR("test");
+        glEnableVertexAttribArray(uvId);
+        OPENGL_UTILS_PRINT_ERROR("test");
         glVertexAttribPointer(
                                vertexPosition,
                                3,

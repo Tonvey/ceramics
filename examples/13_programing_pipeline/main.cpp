@@ -36,7 +36,7 @@ public:
                              FileUtil::getFileDirName(__FILE__) + FileUtil::pathChar + FRAG_FILE_NAME
                              );
 
-        vertexPosition_modelspaceID = program->getAttr("vertexPosition_modelspace");
+        vertexPosition_modelspaceID = program->getAttributeLocation("vertexPosition_modelspace");
 
         const GLfloat g_vertex_buffer_data[]={
             -1.0f,-1.0f,0.0f,

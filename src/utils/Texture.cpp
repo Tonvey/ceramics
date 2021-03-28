@@ -2,6 +2,8 @@
 #include <stb_image.h>
 #include <stdexcept>
 #include <memory>
+#include "../render/OpenGL/OpenGLUtils.h"
+using namespace CERAMICS;
 using namespace std;
 
 Texture::Texture(string fileName)
@@ -31,14 +33,18 @@ void Texture::load(string fileName)
     }
     stbi_image_free(data);
     glGenTextures(1,&this->mId);
+    OPENGL_UTILS_PRINT_ERROR("glGenTextures");
     glBindTexture(GL_TEXTURE_2D,this->mId);
+    OPENGL_UTILS_PRINT_ERROR("glBindTexture");
 
     // 纹理设置
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+    OPENGL_UTILS_PRINT_ERROR("glTexParameteri");
+    // glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+    // OPENGL_UTILS_PRINT_ERROR("glTexEnvf");
 
     // 把内存中的图像信息，发送给显卡
     glTexImage2D(
@@ -51,12 +57,14 @@ void Texture::load(string fileName)
                  this->mode(),
                  GL_UNSIGNED_BYTE,
                  tData);
+    OPENGL_UTILS_PRINT_ERROR("glTexImage2D");
 }
 void Texture::unload()
 {
     if(this->mId&&glIsTexture(this->mId)==GL_TRUE)
     {
         glDeleteTextures(1,&this->mId);
+        OPENGL_UTILS_PRINT_ERROR("glDeleteTextures");
     }
 }
 Texture::Texture(Texture &&other)

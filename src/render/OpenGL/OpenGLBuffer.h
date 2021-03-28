@@ -1,5 +1,4 @@
 #pragma once
-#include "../../CeramicsMacro.h"
 #include "../../core/Object.h"
 CERAMICS_NAMESPACE_BEGIN
 enum EOpenGLBufferTarget {

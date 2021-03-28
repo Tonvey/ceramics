@@ -17,11 +17,14 @@ public:
     void clear();
     bool isValid()const;
     GLuint getProgramId()const{return mProgramId;}
-    GLint getAttr(const std::string &attrName);
+    GLint getAttributeLocation(const std::string &attrName);
+    void enableVertexAttributeArray(const std::string &attrName);
+    void enableVertexAttributeArray(GLint location);
     GLint getUniform(const std::string &uniName);
     void use();
     bool linkProgram(OpenGLShader *vert,OpenGLShader *frag,OpenGLShader *tess = nullptr,OpenGLShader *Geometry=nullptr);
 private:
+    // valid program id is non-zero
     GLuint mProgramId = 0;
 };
 CERAMICS_NAMESPACE_END
