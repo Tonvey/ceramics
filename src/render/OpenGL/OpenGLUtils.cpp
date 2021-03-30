@@ -1,13 +1,12 @@
 #include "OpenGLUtils.h"
 CERAMICS_NAMESPACE_BEGIN
-void OpenGLUtils::printWhenError(std::string tag , bool needExit /*= true*/)
+void OpenGLUtils::checkError(std::string tag)
 {
     auto err = glGetError();
     if(err!=GL_NO_ERROR)
     {
         CERAMICS_LOG_ERROR("OpenGL Error %s %d:%s\n",tag.c_str(),err,OpenGLUtils::getErrorString(err).c_str());
-        if(needExit)
-            exit(-1);
+        exit(-1);
     }
 }
 std::string OpenGLUtils::getErrorString(GLenum err)

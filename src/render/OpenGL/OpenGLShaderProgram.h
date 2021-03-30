@@ -20,6 +20,8 @@ public:
     GLint getAttributeLocation(const std::string &attrName);
     void enableVertexAttributeArray(const std::string &attrName);
     void enableVertexAttributeArray(GLint location);
+    void disableVertexAttributeArray(const std::string &attrName);
+    void disableVertexAttributeArray(GLint location);
     GLint getUniform(const std::string &uniName);
     void use();
     bool linkProgram(OpenGLShader *vert,OpenGLShader *frag,OpenGLShader *tess = nullptr,OpenGLShader *Geometry=nullptr);

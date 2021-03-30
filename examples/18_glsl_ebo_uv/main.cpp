@@ -125,11 +125,11 @@ public:
 
         glEnable(GL_DEPTH_TEST);
         //OpenGLUtils::printWhenError("glEnable");
-        OPENGL_UTILS_PRINT_ERROR("glEnable");
+        CERAMICS_OPENGL_CHECK_ERROR("glEnable");
 
         // Accept fragment if it closer to the camera than the former one
         glDepthFunc(GL_LESS); 
-        OPENGL_UTILS_PRINT_ERROR("glDepthFunc");
+        CERAMICS_OPENGL_CHECK_ERROR("glDepthFunc");
         //加载shader
         program = new OpenGLShaderProgram;
         RefUniquePtr<VertexShader> vert(new VertexShader);
@@ -142,7 +142,7 @@ public:
 
         textureId =
             program->getAttributeLocation("myTextureSampler");
-        OPENGL_UTILS_PRINT_ERROR("test");
+        CERAMICS_OPENGL_CHECK_ERROR("test");
 
         vertexPosition=
             program->getAttributeLocation("vertexPosition");
@@ -195,23 +195,22 @@ public:
         Matrix4 mvp = projectionMatrix * viewMatrix * matModel;
         cout<<"mvp:"<<endl;
         printMatrix(mvp);
-        //glUniformMatrix4fv(this->idMVP,1,GL_TRUE,&(mvp[0]));
         program->use();
         glUniformMatrix4fv(this->idMVP,1,GL_TRUE,mvp.elements);
-        OPENGL_UTILS_PRINT_ERROR("test");
+        CERAMICS_OPENGL_CHECK_ERROR("test");
 
         glClearColor(0,0,0.4,1.0);
-        OPENGL_UTILS_PRINT_ERROR("test");
+        CERAMICS_OPENGL_CHECK_ERROR("test");
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        OPENGL_UTILS_PRINT_ERROR("test");
+        CERAMICS_OPENGL_CHECK_ERROR("test");
 
         //在draw之前一定要绑定好vao以及GL_ARRAY_BUFFER和GL_ELEMENT_ARRAY_BUFFER
         vao->bind();
         vbo->bind();
-        glEnableVertexAttribArray(vertexPosition);
-        OPENGL_UTILS_PRINT_ERROR("test");
-        glEnableVertexAttribArray(uvId);
-        OPENGL_UTILS_PRINT_ERROR("test");
+        program->enableVertexAttributeArray(vertexPosition);
+        CERAMICS_OPENGL_CHECK_ERROR("test");
+        program->enableVertexAttributeArray(uvId);
+        CERAMICS_OPENGL_CHECK_ERROR("test");
         glVertexAttribPointer(
                                vertexPosition,
                                3,
@@ -237,7 +236,7 @@ public:
                        sizeof(vertex_indices_data)/sizeof(vertex_indices_data[0]),
                        GL_UNSIGNED_INT,
                        (void*)0);
-        glDisableVertexAttribArray(vertexPosition);
+        program->disableVertexAttributeArray(vertexPosition);
         glfwSwapBuffers(this->mWindow);
     }
 };

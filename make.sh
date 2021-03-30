@@ -105,7 +105,7 @@ function main
         checkCmds emcmake emmake emcc || return -1
         createDirectoryIfNotExists "$emscriptenBuildDir"
         pushd "$emscriptenBuildDir"
-        emcmake cmake .. || return -1
+        emcmake cmake -DCMAKE_BUILD_TYPE="$buildType" .. || return -1
         emmake make  || return -1
         emcc libceramics.a -o ceramics.js || return -1
         popd
@@ -115,7 +115,7 @@ function main
         checkCmds cmake make || return -1
         createDirectoryIfNotExists "$localBuildDir"
         pushd "$localBuildDir"
-        cmake -DCMAKE_BUILD_TYPE=Debug .. || return -1
+        cmake -DCMAKE_BUILD_TYPE="$buildType" .. || return -1
         make  || return -1
         popd
     fi
