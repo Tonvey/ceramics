@@ -1,7 +1,7 @@
 #pragma once
 #include "../CeramicsMacro.h"
 CERAMICS_NAMESPACE_BEGIN
-enum KeyCode {
+enum EKeyCode {
 	None,
     // Keyboard
 	Backspace,

@@ -143,22 +143,22 @@ bool InputGLFW::anyKey()
     //TODO
     return false;
 }
-bool InputGLFW::getKey(KeyCode code)
+bool InputGLFW::getKey(EKeyCode code)
 {
     //TODO invalid
     bool ret = false;
     switch(code)
     {
-    case KeyCode::W:
+    case EKeyCode::W:
         ret = glfwGetKey( mWindow, GLFW_KEY_W ) == GLFW_REPEAT;
         break;
-    case KeyCode::S:
+    case EKeyCode::S:
         ret = glfwGetKey( mWindow, GLFW_KEY_S ) == GLFW_REPEAT;
         break;
-    case KeyCode::A:
+    case EKeyCode::A:
         ret = glfwGetKey( mWindow, GLFW_KEY_A ) == GLFW_REPEAT;
         break;
-    case KeyCode::D:
+    case EKeyCode::D:
         ret = glfwGetKey( mWindow, GLFW_KEY_D ) == GLFW_REPEAT;
         break;
     default:
@@ -166,21 +166,21 @@ bool InputGLFW::getKey(KeyCode code)
     }
     return ret;
 }
-bool InputGLFW::getKeyDown(KeyCode code)
+bool InputGLFW::getKeyDown(EKeyCode code)
 {
     bool ret = false;
     switch(code)
     {
-    case KeyCode::W:
+    case EKeyCode::W:
         ret = glfwGetKey( mWindow, GLFW_KEY_W ) == GLFW_PRESS;
         break;
-    case KeyCode::S:
+    case EKeyCode::S:
         ret = glfwGetKey( mWindow, GLFW_KEY_S ) == GLFW_PRESS;
         break;
-    case KeyCode::A:
+    case EKeyCode::A:
         ret = glfwGetKey( mWindow, GLFW_KEY_A ) == GLFW_PRESS;
         break;
-    case KeyCode::D:
+    case EKeyCode::D:
         ret = glfwGetKey( mWindow, GLFW_KEY_D ) == GLFW_PRESS;
         break;
     default:
@@ -188,21 +188,21 @@ bool InputGLFW::getKeyDown(KeyCode code)
     }
     return ret;
 }
-bool InputGLFW::getKeyUp(KeyCode code)
+bool InputGLFW::getKeyUp(EKeyCode code)
 {
     bool ret = false;
     switch(code)
     {
-    case KeyCode::W:
+    case EKeyCode::W:
         ret = glfwGetKey( mWindow, GLFW_KEY_W ) == GLFW_RELEASE;
         break;
-    case KeyCode::S:
+    case EKeyCode::S:
         ret = glfwGetKey( mWindow, GLFW_KEY_S ) == GLFW_RELEASE;
         break;
-    case KeyCode::A:
+    case EKeyCode::A:
         ret = glfwGetKey( mWindow, GLFW_KEY_A ) == GLFW_RELEASE;
         break;
-    case KeyCode::D:
+    case EKeyCode::D:
         ret = glfwGetKey( mWindow, GLFW_KEY_D ) == GLFW_RELEASE;
         break;
     default:

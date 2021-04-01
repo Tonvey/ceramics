@@ -9,9 +9,9 @@ public:
     virtual void update()=0;
 
     virtual bool anyKey()=0;
-    virtual bool getKey(KeyCode code)=0;
-    virtual bool getKeyDown(KeyCode code)=0;
-    virtual bool getKeyUp(KeyCode code)=0;
+    virtual bool getKey(EKeyCode code)=0;
+    virtual bool getKeyDown(EKeyCode code)=0;
+    virtual bool getKeyUp(EKeyCode code)=0;
 
     virtual bool getButton(std::string button)=0;
     virtual Real getAxis(std::string axis)=0;

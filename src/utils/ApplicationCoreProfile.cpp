@@ -74,20 +74,20 @@ void ApplicationCoreProfile::computeMatrixesFromInput(double elapse)
     //     mEyePos -= right * float(elapse) * mSpeed;
     // }
 
-    if(mInput->getKey(KeyCode::W))
+    if(mInput->getKey(EKeyCode::W))
     {
     //     mEyePos += direction * float(elapse) * mSpeed;
         //camera->position.setPosition(Vector3());
     }
-    if(mInput->getKey(KeyCode::S))
+    if(mInput->getKey(EKeyCode::S))
     {
     //     mEyePos -= direction * float(elapse) * mSpeed;
     }
-    if(mInput->getKey(KeyCode::A))
+    if(mInput->getKey(EKeyCode::A))
     {
     //     mEyePos -= right * float(elapse) * mSpeed;
     }
-    if(mInput->getKey(KeyCode::A))
+    if(mInput->getKey(EKeyCode::A))
     {
     //     mEyePos += right * float(elapse) * mSpeed;
     }

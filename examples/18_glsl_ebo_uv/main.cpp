@@ -178,7 +178,7 @@ public:
     void render(double elapse) override
     {
         this->computeMatrixesFromInput(elapse);
-        if(mInput->getKeyDown(KeyCode::W))
+        if(mInput->getKeyDown(EKeyCode::W))
         {
             camera->setPosition(camera->getPosition()+Vector3(elapse,0,0));
         }
