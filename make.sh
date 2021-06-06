@@ -61,7 +61,7 @@ function main
     local emscripten=0
     local emscriptenBuildDir="${curPath}/emBuild"
     local buildType="Release"
-    local clean="Release"
+    local clean=0
     local localBuildDir="${curPath}/localBuild"
     while getopts p:t:c opt
     do
